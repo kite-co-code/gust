@@ -1,0 +1,27 @@
+@utility link {
+    color: var(--link--color);
+    text-decoration: var(--link--text-decoration);
+
+    @media (hover: hover) {
+        &:hover {
+            color: var(--link--color-hover);
+            text-decoration: var(--link--text-decoration--hover);
+        }
+    }
+    @media (hover: none) {
+        &:active {
+            color: var(--link--color-hover);
+            text-decoration: var(--link--text-decoration--hover);
+        }
+    }
+}
+
+@utility link--2 {
+    --link--text-decoration: none;
+    --link--text-decoration--hover: underline;
+}
+
+@utility link--foreground {
+    --link--color: var(--color-foreground);
+    --link--color-hover: var(--color-foreground);
+}

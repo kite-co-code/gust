@@ -1,0 +1,97 @@
+/* --------------------------------------------------- */
+/* Type Style Mixins */
+/* --------------------------------------------------- */
+
+@utility heading-attributes {
+    font-family: var(--font-serif);
+    font-weight: var(--font-weight-normal);
+    line-height: 1.3;
+}
+
+@utility type-base {
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    font-weight: var(--font-weight-normal);
+    line-height: var(--leading-normal);
+}
+
+@utility type-meta {
+    font-size: var(--text-base);
+    line-height: 1.2;
+}
+
+@utility type-hero {
+    @apply heading-attributes;
+
+    font-size: rfs(36, 40);
+    line-height: 1.2;
+}
+
+@utility type-h1 {
+    @apply heading-attributes;
+
+    font-size: rfs(28, 36);
+}
+
+@utility type-h2 {
+    @apply heading-attributes;
+
+    font-size: rfs(26, 32);
+}
+
+@utility type-h3 {
+    @apply heading-attributes;
+
+    font-size: rfs(23, 28);
+}
+
+@utility type-h4 {
+    @apply heading-attributes;
+
+    font-size: rfs(20, 28);
+}
+
+@utility type-h5 {
+    @apply heading-attributes;
+
+    font-size: rfs(18, 22);
+}
+
+@utility type-h6 {
+    @apply heading-attributes;
+
+    font-size: var(--text-base);
+}
+
+/* WordPress Block Style Classes */
+.is-style-type-hero {
+    @apply type-hero;
+}
+
+.is-style-type-h1 {
+    @apply type-h1;
+}
+
+.is-style-type-h2 {
+    @apply type-h2;
+}
+
+.is-style-type-h3 {
+    @apply type-h3;
+}
+
+.is-style-type-h4 {
+    @apply type-h4;
+}
+
+.is-style-type-h5 {
+    @apply type-h5;
+}
+
+.is-style-type-h6 {
+    @apply type-h6;
+}
+
+.is-style-type-meta {
+    @apply type-meta;
+}

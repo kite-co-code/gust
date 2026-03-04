@@ -1,0 +1,27 @@
+@utility blockquote {
+    --blockquote--border-width: 2px;
+    --blockquote--padding-left: space(12);
+    --blockquote--border-offset: 0.5em;
+    --flow-space: spaceFluid(12, 16);
+
+    @apply margin-trim;
+
+    position: relative;
+    padding: 0;
+    padding-left: var(--blockquote--padding-left);
+    border: 0;
+
+    > :not(cite):not(.wp-block-quote__citation) {
+        @apply type-h3;
+    }
+
+    &::before {
+        position: absolute;
+        top: var(--blockquote--border-offset);
+        bottom: var(--blockquote--border-offset);
+        left: calc(var(--blockquote--border-width) * -1);
+        width: var(--blockquote--border-width);
+        background-color: var(--color-foreground);
+        content: "";
+    }
+}

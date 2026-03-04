@@ -1,0 +1,97 @@
+/* Form Variables */
+
+@layer base {
+    :root {
+        --input--background-color: hsl(
+            var(--color-brand-2--h),
+            var(--color-brand-2--s),
+            98%
+        );
+        --input--background-color--focus: var(--color-background);
+        --input--background-color--highlight: hsl(
+            var(--color-brand-2--h),
+            var(--color-brand-2--s),
+            90%
+        );
+        --input--border-width: 1px;
+        --input--border-color: var(--color-brand-1);
+        --input--border-radius: 1.6875em;
+        --input--color: var(--color-brand-1);
+        --input--color-focus: var(--color-brand-1);
+        --input--outline-color--focus: var(--input--border-color);
+        --input--outline-width--focus: 1px;
+        --input--gap: space(8);
+        --input--padding-y: 0.9em;
+        --input--padding-x: 1.4em;
+        --input--padding: var(--input--padding-y) var(--input--padding-x);
+        --input--placeholder-color: hsla(var(--color-brand-1--hsl), 0.8);
+
+        --form--label-spacing: space(8);
+
+        --form--textarea-height: 100px;
+
+        --checkbox--size: 1.25em;
+        --checkbox--padding: calc(var(--checkbox--size) / 4);
+        --checkbox--border-width: 2px;
+
+        --checkbox--check-size: calc(var(--checkbox--size) - (var(--checkbox--padding) * 2));
+        --checkbox--check-stroke: 0.15em;
+        --checkbox--border-radius: 0.125em;
+
+        --radio--size: 1.25em;
+        --radio--padding: calc(var(--radio--size) / 4);
+        --radio--border-width: 2px;
+    }
+}
+
+@utility input {
+    @apply no-focus-be-careful; /* we are adding custom focus styles here */
+
+    display: block;
+    width: 100%;
+    padding: var(--input--padding-y) var(--input--padding-x);
+    border: var(--input--border-width) solid var(--input--border-color);
+    border-radius: var(--input--border-radius);
+    background: var(--input--background-color);
+    box-shadow: none;
+    color: var(--input--color);
+    font-family: inherit;
+    line-height: inherit;
+    transition: transition(color, background-color, border-color, box-shadow, transform);
+
+    &:focus,
+    &:focus-within {
+        background: var(--input--background-color--focus);
+        box-shadow: 0 0 0 var(--input--outline-width--focus) var(--input--outline-color--focus);
+        color: var(--input--color-focus);
+    }
+}
+
+@utility input--button-height {
+    --input--padding-y: calc(var(--btn--padding-y) + (var(--btn--border-width) - var(--input--border-width)));
+}
+
+@utility input-group {
+    @apply input;
+
+    display: flex;
+    gap: var(--input--gap);
+    align-items: center;
+
+    input {
+        border-radius: 0;
+        padding: 0;
+        border: 0;
+        background-color: transparent;
+        padding-inline-end: 0;
+    }
+
+    label {
+        width: 100%;
+    }
+
+    .btn {
+        font-size: 1em;
+        padding: 0;
+    }
+}

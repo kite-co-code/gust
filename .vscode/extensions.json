@@ -1,0 +1,8 @@
+{
+    "recommendations": [
+        "bmewburn.vscode-intelephense-client",
+        "biomejs.biome",
+        "open-southeners.laravel-pint",
+        "syler.sass-indented"
+    ]
+}
