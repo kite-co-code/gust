@@ -18,6 +18,7 @@
         "deploy:production:dry": "npm run build:production && bash dev-scripts/deploy.sh production --dry-run",
         "pot": "node dev-scripts/generate-pot.js",
         "scaffold": "node dev-scripts/scaffold-component.js",
+        "init-colors": "node dev-scripts/init-color-scheme.js",
         "lint": "biome check .",
         "lint:fix": "biome check --write .",
         "format": "biome format --write .",

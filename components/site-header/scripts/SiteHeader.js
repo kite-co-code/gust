@@ -13,6 +13,7 @@ export default class SiteHeader {
         this.searchPanelEl = this.el.querySelector('.site-header__search-panel');
         this.searchDesktopEl = this.el.querySelector('.site-header__search-desktop');
 
+        this.buttonsEl = this.el.querySelector('.site-header__buttons');
         this.menuTogglerEls = this.el.querySelectorAll('.js-site-header-toggle');
         this.searchTogglerEls = this.el.querySelectorAll('.js-search-toggle');
         this.searchCloseEl = this.el.querySelector('.js-search-close');
@@ -178,6 +179,6 @@ export default class SiteHeader {
     }
 
     isMobileMode() {
-        return isElementVisible(this.burgerEl);
+        return isElementVisible(this.buttonsEl);
     }
 }

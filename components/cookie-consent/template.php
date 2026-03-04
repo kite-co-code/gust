@@ -1,6 +1,6 @@
 <?php if (! empty($this->content)) { ?>
     <div class="<?= classes('cookie-consent', $this->classes) ?>" <?= attributes($this->attributes) ?>>
-        <div class="cookie-consent__banner has-brand-1-background-color">
+        <div class="cookie-consent__banner has-accent-background-color">
             <div class="cookie-consent__message">
                 <?= wp_kses_post($this->content); ?>
             </div>

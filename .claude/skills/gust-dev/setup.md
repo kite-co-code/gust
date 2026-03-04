@@ -18,7 +18,7 @@ This file defines:
 
 Work from the plan and checklist created in step 1. After each step is complete, ask for review and commit before proceeding.
 
-1. Read `.docs/_WEBSITE-SPEC.md` and `.env` and Compare with existing files in `Theme/` and `_src/components/` to create a SITE_SETUP.md checklist.
+1. Read `.docs/_WEBSITE-SPEC.md` and `.env` and Compare with existing files in `Theme/` and `components/` to create a SITE_SETUP.md checklist.
 2. Begin by setting up post types, routes and taxonomies and creating the ACF Field Groups for them.
 3. Create components as defined in the spec. Use gust-dev/components.md as reference.
 4. Test with debug log
@@ -137,7 +137,7 @@ Quick reference for spec-defined components:
 1. Create directory: `components/{name}/`
 2. Create class: `{Name}.php` with `::make()` factory
 3. Create template: `template.php`
-4. If block: Create `acf.php` with `acf_register_block_type()`
+4. If block: Create `block.json` with ACF block registration config
 
 ## Creating Routes
 
@@ -225,8 +225,8 @@ When reading the spec, check for:
 |--------------|--------|
 | Post Types | `Theme/PostTypes/{Name}.php` |
 | Taxonomies | `Theme/Taxonomies/{Name}.php` |
-| Components [Block] | `components/{name}/` with `acf.php` |
-| Components [Partial] | `components/{name}/` without `acf.php` |
+| Components [Block] | `components/{name}/` with `block.json` |
+| Components [Partial] | `components/{name}/` without `block.json` |
 | Theme Options | ACF Options page fields |
 | Post Type Archives | Route registered in `Theme/Modules/{Name}/module.php` |
 | Search / 404 / Shared Archives | `Theme/Routes/routes.php` entries |

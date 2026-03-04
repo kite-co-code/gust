@@ -5,7 +5,7 @@
 **Title**: <!-- e.g., Acme Corp -->
 **Live URL**: <!-- e.g., https://acme.com -->
 **Staging URL**: <!-- e.g., https://staging.acme.com -->
-**PHP Version**: 8.2+
+**PHP Version**: 8.3+
 
 <!-- Brief description of the website's purpose and target audience -->
 

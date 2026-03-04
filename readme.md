@@ -1,9 +1,8 @@
 # Gust
 
-Gust is a WordPress theme framework that brings component-based architecture, a module system, intelligent routing and a
-  modern build pipeline to WordPress development. Optimised for AI development workflows with Claude Code.
+A WordPress theme framework for custom development. Build portable components and editor blocks with co-located CSS, JS and templating. Auto-loading modules keep features self-contained. A cohesive CSS system of design tokens, layout utilities and contextual color, built on top of Tailwind v4. A routing system links editable block content to dynamic pages (archives, search, 404) and also supports custom static routes.
 
-*This is my personal development framework, not a polished product. Hopefully some parts are useful as reference or starting points.*
+*Personal, opinionated framework – not a polished product.*
 
 - **Components** - Co-located template, logic, styles, and scripts in portable directories
 - **Modules** - Self-contained features that auto-load (e.g., ACF integration, post types)
@@ -44,7 +43,7 @@ components/accordion/
 ├── template.php       # Template markup
 ├── styles.pcss        # Component styles (bundled)
 ├── scripts.js         # Component JS (bundled)
-├── acf.php           # ACF block registration (optional)
+├── block.json        # ACF block registration (optional)
 └── group_*.json      # ACF field group (optional)
 ```
 
@@ -117,31 +116,45 @@ Browse all utilities with live examples at `/_dev/utilities` (development only).
 
 
 ### ACF Blocks
-Components become Gutenberg blocks by adding `acf.php`:
+Components become Gutenberg blocks by adding `block.json`:
 
-```php
-acf_register_block_type([
-    'name' => 'accordion',
-    'title' => 'Accordion',
-    'category' => 'theme-blocks',
-    'render_callback' => function ($block) {
-        $args = \Gust\Component::generateArgsFromBlock($block, get_fields());
-        echo \Gust\Components\Accordion::make(...$args);
+```json
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "acf/accordion",
+    "title": "Accordion",
+    "description": "An accordion block",
+    "category": "theme-blocks",
+    "icon": "arrow-down-alt2",
+    "acf": {
+        "mode": "auto",
+        "renderCallback": "Gust\\Components\\Accordion::renderBlock"
     },
-]);
+    "supports": {
+        "anchor": true,
+        "align": ["wide", "full"],
+        "color": {
+            "background": true,
+            "text": false,
+            "gradients": false
+        }
+    }
+}
 ```
 
-- Block field groups auto-load from component directories
-- Supports anchor, className, backgroundColor from block attributes
-- Preview mode for block editor
+- `renderBlock` is inherited from `ComponentBase` — no additional PHP needed
+- Block field groups (`group_component_*.json`) auto-load from component directories
+- ACF fields are passed to the component via `get_fields()` in `renderBlock()`
+- Supports anchor, alignment, and color controls via the `supports` key
 
 ---
 
 ## Getting Started
 
 ### Requirements
-- PHP 8.0+
-- Node v20+ (see `.nvmrc`)
+- PHP >=8.0
+- Node 20 (see `.nvmrc`)
 
 ### Setup
 ```bash
@@ -159,8 +172,9 @@ Access WordPress at your normal URL (.env `APP_URL`). Don't use localhost:5173 d
 |---------|-------------|
 | `npm run dev` | Vite dev server with HMR |
 | `npm run build` | Production build |
-| `npm run deploy` | Full production deploy |
-| `npm run scaffold` | Scaffold new component |
+| `npm run deploy:production` | Build + deploy to production |
+| `npm run deploy:staging` | Build + deploy to staging |
+| `npm run scaffold <name>` | Scaffold new component |
 | `npm run pot` | Generate translation files |
 | `npm run lint` | Check code (Biome) |
 | `npm run fix` | Fix all code (Biome + PHP Pint) |
@@ -169,6 +183,19 @@ Access WordPress at your normal URL (.env `APP_URL`). Don't use localhost:5173 d
 `dev-scripts/site-setup.sh` configures a fresh WordPress install for development. Requires WP-CLI.
 
 Enables debugging, sets UK locale, disables comments/pings, creates homepage, removes default content/plugins/themes, sets pretty permalinks, and activates all composer-installed plugins.
+
+### Deployment
+
+Deploy via rsync to staging or production. Environment config (SSH host, path) is defined in `wp-sync.yml`.
+
+```bash
+npm run deploy:staging          # build + deploy to staging
+npm run deploy:staging:dry      # dry-run (no files transferred)
+npm run deploy:production       # build + deploy to production
+npm run deploy:production:dry   # dry-run
+```
+
+The production build runs `npm install && composer install --no-dev && vite build` before rsync.
 
 ---
 
@@ -215,8 +242,8 @@ Modules in `Theme/Modules/*/module.php` auto-load via `Gust\Module::init()`. Eac
 
 ### Theme Configuration
 `assets/theme-config.json` defines design tokens used across:
-- CSS variables (`--color-darkgreen`)
-- Tailwind classes (`text-darkgreen`)
+- CSS variables (`--color-accent`)
+- Tailwind classes (`text-accent`)
 - Block editor color palette
 
 ### Color System
@@ -239,12 +266,12 @@ Color configuration is in `assets/theme-config.json`.
 **Usage:**
 ```html
 <!-- Full color context (bg + text + links) -->
-<section class="color-context-darkgreen">
-  <p>White text on dark green, links inherit</p>
+<section class="color-context-accent">
+  <p>White text on accent color, links inherit</p>
 </section>
 
 <!-- Just foreground color -->
-<span class="foreground-from-brand-1">Colored text</span>
+<span class="foreground-from-accent">Colored text</span>
 ```
 
 **Config structure** (`assets/theme-config.json`):
@@ -252,16 +279,16 @@ Color configuration is in `assets/theme-config.json`.
 {
   "colors": {
     "base": {
-      "darkgreen": {
-        "color": "#1e4545",
-        "name": "Dark Green",
+      "blue": {
+        "color": "#0707a3",
+        "name": "Blue",
         "block_editor": true,
         "foreground": "var(--color-white)",
         "properties": {
           "--link--color": "var(--color-white)"
         }
       },
-      "brand-1": { "namedColor": "darkgreen" }
+      "accent": { "namedColor": "blue" }
     }
   }
 }
@@ -375,7 +402,7 @@ attributes(['style' => ['color' => 'red', 'font-size' => '1rem']])
 
 ## Development Environment (`/_dev`)
 
-Built-in dev routes for component testing and QA. **Only available when `WP_ENVIRONMENT_TYPE=development`.**
+Built-in dev routes for component testing and QA. **Only available when `WP_ENVIRONMENT_TYPE=development`** (set in `.env`).
 
 ### Routes
 
@@ -426,10 +453,12 @@ The theme includes Claude Code skills in `.claude/skills/` for AI-assisted devel
 
 ### Available Skills
 
-| Skill | Trigger | Description |
-|-------|---------|-------------|
-| `gust-dev` | test, debug, component, scaffold | Component development workflows |
-| `website-spec` | spec, define, post type | Fill in website specification |
+| Skill | Description |
+|-------|-------------|
+| `gust-dev` | Component development workflows (scaffold, test, debug, setup) |
+| `website-spec` | Fill in the website specification |
+
+Skills can be invoked naturally in conversation (e.g. "scaffold a card component from the spec") or explicitly with `/gust-dev`.
 
 ### gust-dev Workflows
 
@@ -443,20 +472,45 @@ scaffold component from spec → reads .docs/_WEBSITE-SPEC.md → generates file
 # Quick test
 : > ../../debug.log && curl -sL $APP_URL -o /dev/null && cat ../../debug.log
 
-# Full test with Playwright
-mcp__playwright__browser_navigate → snapshot → console_messages → check debug.log
+# Full test with Chrome DevTools MCP
+navigate → snapshot DOM → check console → check debug.log
 ```
 
 **Components** - Patterns and usage reference for component development.
 
 **Setup** - Create post types, taxonomies, routes from website spec.
 
-### website-spec Workflows
+---
 
-Define components, data structures, and pages in `.docs/_WEBSITE-SPEC.md`:
-- **Components** - Block/partial definitions with fields
-- **Data Structure** - Post types, taxonomies, ACF fields
-- **Pages** - Routes and templates
+## Website Specification
+
+`.docs/_WEBSITE-SPEC.md` is the single source of truth for a project's content model, routes, and components. It is used by AI-assisted workflows to scaffold code and keep implementation aligned with the design intent.
+
+### Structure
+
+| Section | Description |
+|---------|-------------|
+| **Overview** | Project title, URLs, PHP version |
+| **Required Plugins** | Composer-managed plugins for the project |
+| **Content Types** | Custom post types with URL, fields, archive routing |
+| **Taxonomies** | Taxonomy definitions with archive routing |
+| **Standalone Routes** | Pages and routes not tied to a content type |
+| **Site Settings** | Global ACF options page fields |
+| **Menus** | Registered nav menu locations |
+| **Components** | Block/partial definitions with ACF field groups |
+| **Integrations** | Third-party services and API keys |
+| **Other Functionality** | Cron jobs, CLI commands, custom behaviors |
+
+### Usage
+
+Fill in the spec before starting development. The `website-spec` skill helps write or expand it:
+
+```
+"Add an Events post type to the spec with start date, end date, and venue fields"
+"Define a Page Header component as an ACF block with heading, subheading, and CTA"
+```
+
+Once the spec is populated, the `gust-dev` scaffold workflow reads it to generate components, post types, taxonomies, and routes.
 
 ---
 

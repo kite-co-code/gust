@@ -55,6 +55,17 @@ export default function generateComponentImportsPlugin() {
                     generateImports();
                 }
             });
+
+            server.watcher.on('change', (path) => {
+                if (!path.match(/\/components\/[^/]+\/styles\.pcss$/)) return;
+
+                for (const mod of server.moduleGraph.idToModuleMap.values()) {
+                    if (mod.id?.endsWith('.pcss') || mod.id?.endsWith('.css')) {
+                        server.moduleGraph.invalidateModule(mod);
+                    }
+                }
+                server.ws.send({ type: 'full-reload' });
+            });
         },
     };
 }

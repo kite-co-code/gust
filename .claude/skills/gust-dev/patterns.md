@@ -17,35 +17,35 @@ Use both **Tailwind** and **BEM**:
 
 ## Colors
 
-Colors defined in `assets/theme-config.json`. Use CSS custom properties:
-
-```pcss
-.component {
-    color: var(--color-neutral);
-    background: var(--color-neutral);
-}
-```
+Colors defined per project in `assets/theme-config.json` — check that file for available color names before using any color utilities.
 
 **Generated per color:**
 - `--color-{name}` - hex
 - `--color-{name}--hsl` - HSL format
 - `--color-{name}--foreground` - contrasting text
 
+```pcss
+.component {
+    color: var(--color-{name});          /* raw color */
+    background: var(--color-{name});
+}
+```
+
 ### Color Context Utilities
 
-Set background + foreground + link colors:
+Set background + foreground + link colors together — always prefer this over setting `background-color` alone:
 
 ```php
-<section class="color-context-neutral">
-    <!-- Background: neutral, text: white, links: white -->
+<section class="color-context-{name}">
+    <!-- sets background, foreground, link colors -->
 </section>
 ```
 
 Sets: `--color-background`, `--color-foreground`, `background-color`, `color`, `--link--color`, `--focus--color`
 
 **Also available:**
-- `has-{color}-background-color` - WordPress block editor alias
-- `foreground-from-{color}` - text color only (no background)
+- `has-{name}-background-color` - WordPress block editor alias (same as color-context)
+- `foreground-from-{name}` - text color only (no background)
 
 ## Spacing
 
@@ -128,22 +128,24 @@ Grid: `[full-start] gutter [wide-start] 12-cols [wide-end] gutter [full-end]`
 
 ## Typography
 
-**Type utilities** (use with `@apply`):
+Type utilities are defined per project in `assets/styles/3-patterns/_type-styles.pcss` — check that file for available names before using any `type-{name}` utility.
+
+**Use with `@apply` in component CSS:**
 
 ```pcss
 .component__heading {
-    @apply type-h2;
+    @apply type-h2;       /* example — verify name exists in _type-styles.pcss */
 }
 
 .component__preheading {
-    @apply type-meta;
+    @apply type-meta;     /* example — verify name exists in _type-styles.pcss */
 }
 ```
 
 **Responsive font with `rfs()`:**
 ```pcss
 @utility type-h3 {
-    font-size: rfs(24, 36);  /* 24px at min, 36px at max viewport */
+    font-size: rfs(24, 36);  /* min px at min viewport, max px at max viewport */
 }
 ```
 

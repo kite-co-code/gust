@@ -83,10 +83,9 @@ Colors defined in `assets/theme-config.json`, processed by `build-scripts/postcs
 - `has-{name}-background-color` — WordPress block editor alias (same as color-context)
 - `foreground-from-{name}` — sets only foreground/text color, no background
 
-### Available colors (from theme-config.json)
+### Available colors
 
-Base: `darkgreen`, `lightgreen`, `blue`, `peach`, `lightblue`, `red`, `white`, `black`, `grey`
-Aliases: `brand-1` → darkgreen, `brand-2` → lightgreen, `brand-3` → peach, `foreground` → darkgreen, `background` → white, `error` → red
+Colors are defined per project in [`assets/theme-config.json`](../../assets/theme-config.json). Check that file for the current color names before using any `color-context-{name}`, `--color-{name}`, or `foreground-from-{name}` utilities.
 
 ---
 
@@ -99,7 +98,7 @@ Type utilities in `assets/styles/3-patterns/_type-styles.pcss`. Each bundles fon
 .component__preheading { @apply type-meta; }
 ```
 
-Available: `type-hero`, `type-h1`, `type-h2`, `type-h3`, `type-h4`, `type-h5`, `type-h6`, `type-base`, `type-meta`
+Available type utilities are defined per project in [`assets/styles/3-patterns/_type-styles.pcss`](../../assets/styles/3-patterns/_type-styles.pcss). Check that file for the current names before using any `type-{name}` utility.
 
 WordPress block editor aliases: `.is-style-type-{name}`
 

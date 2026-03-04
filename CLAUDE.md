@@ -3,7 +3,7 @@
 Gust is a WordPress development framework built on top of the WordPress ecosystem, designed to provide a modern development experience while adhering to WordPress best practices.
 
 Key features include:
-- **Components**: Typed PHP classes (`Gust\Components\*`) with `::make()` factories, optional `validate()` and `transform()` hooks. Auto-discovered from `components/`. Editor integration via ACF blocks (`acf.php` per component).
+- **Components**: Typed PHP classes (`Gust\Components\*`) with `::make()` factories, optional `validate()` and `transform()` hooks. Auto-discovered from `components/`. Editor integration via ACF blocks (`block.json` per component).
 - **Module System**: Encapsulated theme features in `Theme/Modules/*/module.php`, each with a static `init()`. Auto-loaded; disable via `gust/modules/disabled` filter.
 - **Router**: `Theme/Routes/routes.php` handles owned routes and WordPress archive decoration via `Gust\Router`.
 - **ACF Pro**: Custom fields, option pages, and editor blocks. Field groups managed as local JSON in `acf-json/`. Blocks render via `ComponentName::fromBlock()`.

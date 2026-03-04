@@ -1,28 +1,8 @@
 {
     "colors": {
         "base": {
-            "darkgreen": {
-                "color": "#1e4545",
-                "name": "Dark Green",
-                "block_editor": true,
-                "foreground": "var(--color-white)",
-                "properties": {
-                    "--link--color": "var(--color-white)",
-                    "--link--color-hover": "var(--color-white)"
-                }
-            },
-            "lightgreen": {
-                "color": "#9db9b9",
-                "name": "Light Green",
-                "block_editor": true,
-                "foreground": "var(--color-black)",
-                "properties": {
-                    "--link--color": "var(--color-black)",
-                    "--link--color-hover": "var(--color-black)"
-                }
-            },
             "blue": {
-                "color": "#1d324e",
+                "color": "#0707a3",
                 "name": "Blue",
                 "block_editor": true,
                 "foreground": "var(--color-white)",
@@ -31,53 +11,92 @@
                     "--link--color-hover": "var(--color-white)"
                 }
             },
-            "peach": {
-                "color": "#ebca98",
-                "name": "Peach",
-                "block_editor": true
+            "blue-100": {
+                "color": "#ebebf8",
+                "name": "Light Blue",
+                "block_editor": true,
+                "foreground": "var(--color-charcoal)",
+                "properties": {
+                    "--link--color": "var(--color-accent)",
+                    "--link--color-hover": "var(--color-accent)"
+                }
             },
-            "lightblue": {
-                "color": "#87d1d5"
-            },
-            "red": {
-                "color": "#ad474b",
+            "charcoal": {
+                "color": "#1a1a2a",
+                "name": "Charcoal",
+                "block_editor": true,
                 "foreground": "var(--color-white)",
                 "properties": {
-                    "--link--color": "var(--color-white)",
+                    "--link--color": "var(--color-blue-100)",
                     "--link--color-hover": "var(--color-white)"
                 }
             },
-            "white": {
-                "color": "#fff",
-                "foreground": "var(--color-brand-1)"
-            },
-            "black": {
-                "color": "#222",
+            "slate": {
+                "color": "#4a4a5c",
+                "name": "Slate",
+                "block_editor": true,
                 "foreground": "var(--color-white)",
                 "properties": {
-                    "--link--color": "var(--color-white)",
+                    "--link--color": "var(--color-blue-100)",
                     "--link--color-hover": "var(--color-white)"
                 }
             },
             "grey": {
-                "color": "#444",
+                "color": "#6b6b7b",
+                "name": "Grey",
                 "foreground": "var(--color-white)",
                 "properties": {
                     "--link--color": "var(--color-white)",
                     "--link--color-hover": "var(--color-white)"
                 }
             },
-            "brand-1": {
-                "namedColor": "darkgreen"
+            "silver": {
+                "color": "#d0d0da",
+                "name": "Silver",
+                "foreground": "var(--color-charcoal)"
+            },
+            "light": {
+                "color": "#f2f2f7",
+                "name": "Light",
+                "block_editor": true,
+                "foreground": "var(--color-charcoal)",
+                "properties": {
+                    "--link--color": "var(--color-accent)",
+                    "--link--color-hover": "var(--color-charcoal)"
+                }
+            },
+            "white": {
+                "color": "#ffffff",
+                "foreground": "var(--color-charcoal)",
+                "properties": {
+                    "--link--color": "var(--color-accent)",
+                    "--link--color-hover": "var(--color-charcoal)"
+                }
+            },
+            "black": {
+                "color": "#111118",
+                "foreground": "var(--color-white)",
+                "properties": {
+                    "--link--color": "var(--color-blue-100)",
+                    "--link--color-hover": "var(--color-white)"
+                }
+            },
+            "red": {
+                "color": "#c0392b",
+                "foreground": "var(--color-white)",
+                "properties": {
+                    "--link--color": "var(--color-white)",
+                    "--link--color-hover": "var(--color-white)"
+                }
+            },
+            "accent": {
+                "namedColor": "blue"
             },
             "brand-2": {
-                "namedColor": "lightgreen"
-            },
-            "brand-3": {
-                "namedColor": "peach"
+                "namedColor": "blue-100"
             },
             "foreground": {
-                "namedColor": "darkgreen"
+                "namedColor": "charcoal"
             },
             "background": {
                 "namedColor": "white"

@@ -21,7 +21,7 @@ class PageHeader extends ComponentBase
     {
         return [
             'image_position' => 'inset',
-            'background' => 'brand-1',
+            'background' => 'accent',
             'show_breadcrumbs' => true,
         ];
     }

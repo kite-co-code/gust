@@ -7,7 +7,6 @@
     align-items: center;
     justify-content: center;
     pointer-events: none;
-    gap: space(4);
 
     @media (min-width: theme('screens.md')) {
         bottom: space(16);
@@ -22,15 +21,16 @@
         width: auto;
         max-width: min(
             var(--container-md),
-            calc(100vw - (var(---container-padding)))
-        ); /* Intentionally a bit wider than standard content-width-fluid-lg */
+            calc(100vw - (var(--container-padding)))
+        );
         flex-direction: column;
         align-items: center;
         padding: space(8);
+        gap: space(8);
         box-shadow: var(--base--shadow);
         opacity: 1;
         pointer-events: initial;
-    overflow: var(--rounded-overflow, visible);
+        overflow: var(--rounded-overflow, visible);
         text-align: center;
         transform: translateY(0);
         transition: transition(opacity, transform, visibility);
@@ -61,7 +61,7 @@
         margin-bottom: space(8);
 
         @media (min-width: theme('screens.md')) {
-            margin-right: var(---container-padding);
+            margin-right: var(--container-padding);
             margin-bottom: 0;
         }
 

@@ -206,7 +206,7 @@ Base classes inline, dynamic via `classes()`:
 use Gust\Helpers;
 ?>
 
-<div class="<?= classes('component-name', $this->classes) ?>" <?= Helpers::buildAttributes($this->attributes); ?>>
+<div class="<?= classes('component-name', $this->classes) ?>" <?= attributes($this->attributes); ?>>
     ...
 </div>
 ```

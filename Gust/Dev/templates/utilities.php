@@ -78,7 +78,7 @@
         width: 100%;
         height: 100%;
         min-height: 80px;
-        background: linear-gradient(135deg, var(--color-brand-2) 25%, var(--color-brand-3) 100%);
+        background: linear-gradient(135deg, var(--color-brand-2) 25%, var(--color-accent) 100%);
     }
 </style>
 
@@ -366,16 +366,12 @@
         <small><code class="style-guide__code">.color-context-{color}</code> <code class="style-guide__code">.has-{color}-background-color</code></small>
         <p style="margin: 0.5rem 0;">Sets background color, foreground color, focus color, and link colors based on the color's configuration.</p>
         <div class="style-guide__demo" style="padding: 0; overflow: hidden; border-radius: var(--radius--lg);">
-            <div class="color-context-brand-1" style="padding: 1.5rem;">
-                <strong>.color-context-brand-1</strong>
+            <div class="color-context-accent" style="padding: 1.5rem;">
+                <strong>.color-context-accent</strong>
                 <p style="margin: 0.5rem 0 0;">Text with <a href="#">a link</a> inherits correct colors.</p>
             </div>
             <div class="color-context-brand-2" style="padding: 1.5rem;">
                 <strong>.color-context-brand-2</strong>
-                <p style="margin: 0.5rem 0 0;">Text with <a href="#">a link</a> inherits correct colors.</p>
-            </div>
-            <div class="color-context-brand-3" style="padding: 1.5rem;">
-                <strong>.color-context-brand-3</strong>
                 <p style="margin: 0.5rem 0 0;">Text with <a href="#">a link</a> inherits correct colors.</p>
             </div>
         </div>
@@ -388,8 +384,8 @@
         <p style="margin: 0.5rem 0;">Sets only the foreground color (text, links, focus) without changing background.</p>
         <div class="style-guide__demo">
             <div style="display: flex; gap: 2rem; flex-wrap: wrap;">
-                <div class="foreground-from-brand-1 bg-brand-1">
-                    <strong>.foreground-from-brand-1</strong>
+                <div class="foreground-from-accent bg-accent">
+                    <strong>.foreground-from-accent</strong>
                     <p style="margin: 0;">With <a href="#">a link</a></p>
                 </div>
                 <div class="foreground-from-blue bg-blue">
@@ -485,12 +481,12 @@
         <small><code class="style-guide__code">.margin-trim</code> <code class="style-guide__code">.margin-trim-first</code> <code class="style-guide__code">.margin-trim-last</code></small>
         <div class="style-guide__demo">
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-                <div style="border: 2px solid var(--color-brand-1); padding: 0.5rem;">
+                <div style="border: 2px solid var(--color-accent); padding: 0.5rem;">
                     <p><strong>Without .margin-trim:</strong></p>
                     <p style="margin: 1rem 0;">Paragraph with margins</p>
                     <p style="margin: 1rem 0;">Another paragraph</p>
                 </div>
-                <div class="margin-trim" style="border: 2px solid var(--color-brand-1); padding: 0.5rem;">
+                <div class="margin-trim" style="border: 2px solid var(--color-accent); padding: 0.5rem;">
                     <p><strong>With .margin-trim:</strong></p>
                     <p style="margin: 1rem 0;">Paragraph with margins</p>
                     <p style="margin: 1rem 0;">Another paragraph</p>

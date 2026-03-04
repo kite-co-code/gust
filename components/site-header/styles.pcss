@@ -16,7 +16,7 @@
 .site-header {
     --site-header--spacing: space(12);
     --site-header--icon-size: 18px;
-    --site-header--logo-width: space(120);
+    --site-header--logo-width: space(100);
 
     --link--color: var(--color-foreground);
     --link--color-hover: var(--color-foreground);
@@ -36,7 +36,7 @@
     pointer-events: none;
 
     @media (width >= theme('screens.site-header')) {
-        --site-header--spacing: space(16);
+        --site-header--spacing: space(20);
         --site-header--logo-width: space(170);
         --menu-item--arrow-size: 0.625rem;
         --menu-item--gap: space(32);
@@ -64,8 +64,8 @@
     width: 100%;
     height: var(--site-header--height);
     align-items: center;
-    padding-right: var(---container-padding);
-    padding-left: var(---container-padding);
+    padding-right: var(--container-padding);
+    padding-left: var(--container-padding);
     background-color: var(--color-background);
     gap: var(--site-header--spacing);
     justify-content: space-between;
@@ -195,7 +195,7 @@
 .site-header__menu-panel {
     .site-header__panel-content {
         gap: var(--menu-item--gap);
-        padding: space(40) var(---container-padding) var(---container-padding);
+        padding: space(40) var(--container-padding) var(--container-padding);
     }
 }
 
@@ -203,7 +203,7 @@
     .site-header__panel-content {
         align-items: center;
         justify-content: center;
-        padding: var(---container-padding);
+        padding: var(--container-padding);
     }
 }
 
@@ -215,10 +215,9 @@
 
 .site-header__search-desktop {
     position: absolute;
-    right: var(--site-header--icon-size);
+    right: 100%;
     display: flex;
     align-items: center;
-    padding-inline: space(28);
     opacity: 0;
     pointer-events: none;
     transition:
