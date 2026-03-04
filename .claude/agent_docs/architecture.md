@@ -70,11 +70,6 @@ class ComponentName extends ComponentBase
 add_filter('gust/component/accordion', fn($args) => $args);
 ```
 
-**Generate component class from existing directory:**
-```bash
-node dev-scripts/generate-component-class.js accordion  # Single
-node dev-scripts/generate-component-class.js --all     # All
-```
 
 ## Router System
 

@@ -11,13 +11,14 @@
       "Bash(npm run fix:php:*)",
       "Bash(npm run build:*)",
       "Bash(grep:*)",
-      "mcp__playwright__browser_navigate"
+      "mcp__playwright__browser_navigate",
+      "mcp__plugin_chrome-devtools-mcp_chrome-devtools__navigate_page"
     ]
   },
+  "enableAllProjectMcpServers": true,
   "enabledMcpjsonServers": [
     "context7",
     "filesystem",
     "github"
-  ],
-  "enableAllProjectMcpServers": true
+  ]
 }

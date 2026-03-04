@@ -50,7 +50,7 @@ function themeConfigWatcherPlugin() {
             server.watcher.on('change', (file) => {
                 if (file !== configPath) return;
                 for (const mod of server.moduleGraph.idToModuleMap.values()) {
-                    if (mod.id?.endsWith('.pcss') || mod.id?.endsWith('.css')) {
+                    if (mod.file?.endsWith('.pcss') || mod.file?.endsWith('.css')) {
                         server.moduleGraph.invalidateModule(mod);
                     }
                 }

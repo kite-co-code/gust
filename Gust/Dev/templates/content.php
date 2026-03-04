@@ -1,6 +1,6 @@
 <?php
 /**
- * Content Flow Test
+ * Content Test
  *
  * Tests .content-flow spacing, prose max-width, alignwide/alignfull, and
  * consecutive has-background pull-together behaviour.
@@ -30,38 +30,38 @@ $short = 'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum 
 
 <!-- alignwide -->
 <div class="wp-block-group alignwide" style="padding: var(--space-layout); background: var(--color-brand-2, #e8e8f0); text-align: center;">
-    <p><strong>alignwide block</strong></p>
+    <p><strong><code data-dev-ui>alignwide</code> block</strong></p>
 </div>
 
 <p><?= $short ?></p>
 
 <!-- alignfull (no background) -->
-<div class="wp-block-group alignfull" style="padding: var(--space-layout); background: var(--color-accent, #d0d0e8); text-align: center;">
-    <p><strong>alignfull — no has-background</strong></p>
+<div class="wp-block-group alignfull" style="padding: var(--space-layout); text-align: center; border: 1px solid #000;">
+    <p><strong><code data-dev-ui>alignfull</code> — no <code data-dev-ui>has-background</code></strong></p>
 </div>
 
 <p><?= $short ?></p>
 
 <!-- Two consecutive alignfull.has-background — should touch (--flow-space: 0) -->
-<div class="wp-block-group alignfull has-background has-accent-background-color">
+<div class="wp-block-group alignfull has-background has-blue-background-color">
     <div style="padding: var(--space-layout); text-align: center;">
-        <p><strong>First alignfull.has-background</strong></p>
+        <p><strong>First <code data-dev-ui>alignfull.has-background</code></strong></p>
         <p><?= $short ?></p>
     </div>
 </div>
-<div class="wp-block-group alignfull has-background has-brand-2-background-color">
+<div class="wp-block-group alignfull has-background has-blue-background-color">
     <div style="padding: var(--space-layout); text-align: center;">
-        <p><strong>Second alignfull.has-background — pulled up (no gap)</strong></p>
+        <p><strong>Second <code data-dev-ui>alignfull.has-background</code> — pulled up (no gap)</strong></p>
         <p><?= $short ?></p>
     </div>
 </div>
 
-<p><?= $short ?></p>
+<h3><?= $short ?></h3>
 
 <!-- Last alignfull.has-background — pulls footer up -->
-<div class="wp-block-group alignfull has-background has-accent-background-color">
+<div class="wp-block-group alignfull has-background has-blue-background-color">
     <div style="padding: var(--space-layout); text-align: center;">
-        <p><strong>Last alignfull.has-background — footer pulled up</strong></p>
+        <p><strong>Last <code data-dev-ui>alignfull.has-background</code> — footer pulled up</strong></p>
         <p><?= $short ?></p>
     </div>
 </div>

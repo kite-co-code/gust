@@ -12,7 +12,7 @@ A WordPress theme framework for custom development. Build portable components an
 - **Tailwind v4** - Tailwind used for custom utilities and available globally, but used sparingly in templates.
 - **ACF Blocks** - Components become Gutenberg blocks with co-located field definitions
 - **Vite Build** - HMR, glob imports, manifest-based cache busting
-- **Dev Environment** - `/_dev` routes for component testing, style guide, and QA
+- **Dev Kit** - `/_dev` browser-based environment for component testing, style guide, and QA
 - **WordPress Optimizations** - Asset handling, color system, image helpers, SVG support, menu utilities
 - **JS Utilities** - Accessible UI helpers including `Disclosure` (expandable sections, accordions, nav menus) and `Dialog` (modal dialogs), plus viewport, mutation/resize observer, and dynamic element utilities
 - **AI Development** - Claude Code skills for AI-assisted development workflows (component scaffolding, testing, website spec generation)
@@ -400,19 +400,20 @@ attributes(['style' => ['color' => 'red', 'font-size' => '1rem']])
 
 ---
 
-## Development Environment (`/_dev`)
+## Dev Kit (`/_dev`)
 
-Built-in dev routes for component testing and QA. **Only available when `WP_ENVIRONMENT_TYPE=development`** (set in `.env`).
+Browser-based reference environment for component testing and QA. **Only available when `WP_ENVIRONMENT_TYPE=development`** (set in `.env`).
 
 ### Routes
 
 | URL | Description |
 |-----|-------------|
-| `/_dev` | Dev tools index |
+| `/_dev` | Dev Kit index |
 | `/_dev/components` | List all components with examples |
 | `/_dev/components/{name}` | View specific component examples |
-| `/_dev/globals` | Theme colors, typography, spacing |
-| `/_dev/utilities` | CSS utility class reference |
+| `/_dev/globals` | Theme colours, design tokens |
+| `/_dev/utilities` | CSS utility and pattern class reference |
+| `/_dev/content-flow` | WP block spacing and alignment behaviour |
 
 ### Component Examples
 

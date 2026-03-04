@@ -17,4 +17,14 @@
             margin-bottom: calc(var(--site-footer--margin-top) * -1);
         }
     }
+
+    /* Restore layout-size gap when prose follows a major/layout block */
+    > :where(
+        .alignwide, .alignfull, .section,
+        .wp-block-group, .wp-block-cover, .wp-block-image, .wp-block-video,
+        .wp-block-media-text, .wp-block-separator, .wp-block-table,
+        .wp-block-gallery, .wp-block-embed
+    ) + :where(p, ul, ol, h1, h2, h3, h4, h5, h6, .wp-block-heading, .wp-block-paragraph, .wp-block-list) {
+        --flow-space: var(--space-layout);
+    }
 }

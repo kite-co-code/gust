@@ -16,6 +16,9 @@ class Head
         \add_action('wp_head', [__CLASS__, 'metaElements'], 0);
         \add_action('wp_head', [__CLASS__, 'linkElements'], 0);
         \add_action('wp_head', [__CLASS__, 'javascriptDetection'], 0);
+        \add_action('wp_head', [__CLASS__, 'renderFaviconTags']);
+        \add_action('admin_head', [__CLASS__, 'renderFaviconTags']);
+        \add_action('login_head', [__CLASS__, 'renderFaviconTags']);
 
         \add_filter('Gust\wordpress\head\meta', [__CLASS__, 'addThemeColorMeta']);
         \add_filter('Gust\wordpress\head\links', [__CLASS__, 'addWebmanifestLink']);
@@ -42,6 +45,23 @@ class Head
         foreach ($meta_items as $meta_item) {
             echo '<meta '.attributes($meta_item).">\n";
         }
+    }
+
+    /**
+     * Output favicon <link> and <meta> tags.
+     *
+     * Hooked into wp_head, admin_head, and login_head.
+     */
+    public static function renderFaviconTags(): void
+    {
+        $base = \get_theme_file_uri('public/build');
+        ?>
+        <link rel="icon" type="image/png" href="<?= $base ?>/favicon-96x96.png" sizes="96x96" />
+        <link rel="icon" type="image/svg+xml" href="<?= $base ?>/favicon.svg" />
+        <link rel="shortcut icon" href="<?= $base ?>/favicon.ico" />
+        <link rel="apple-touch-icon" sizes="180x180" href="<?= $base ?>/apple-touch-icon.png" />
+        <meta name="apple-mobile-web-app-title" content="<?= esc_attr(\get_bloginfo('name')) ?>" />
+        <?php
     }
 
     /**

@@ -3,9 +3,11 @@
  * HTML Elements kitchen sink for style guide.
  */
 ?>
-<section class="style-guide__section">
-    <section>
-        <hgroup>
+<section class="dev-kit__section flow">
+    <h2 class="dev-page-title">HTML Elements</h2>
+
+    <section class="flow">
+        <hgroup class="content-flow">
             <h1>h1 HTML5 Kitchen Sink</h1>
             <h2>h2 Back in my quaint <a href='#'>garden</a></h2>
             <h3>h3 Jaunty <a href='#'>zinnias</a> vie with flaunting phlox</h3>
@@ -13,7 +15,7 @@
             <h5>h5 Expect skilled signwriters to use many jazzy alphabets effectively.</h5>
             <h6>h6 Pack my box with five dozen liquor jugs.</h6>
         </hgroup>
-        <div class="style-guide__type-styles">
+        <div class="dev-kit__type-styles content-flow">
             <h2 class="is-style-type-hero">Typestyle: hero</h2>
             <p class="is-style-type-meta">Typestyle: meta</p>
         </div>
