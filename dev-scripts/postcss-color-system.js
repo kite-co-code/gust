@@ -123,6 +123,13 @@ export default function postcssColorSystem() {
 			// Re-read config on every run so changes in dev are picked up immediately
 			colors = loadColors();
 
+			// Attach root.source to every programmatic node so Vite doesn't warn
+			// "PostCSS plugin did not pass the from option"
+			const src = root.source;
+			const newDecl = (opts) => new Declaration({ ...opts, source: src });
+			const newRule = (opts) => new Rule({ ...opts, source: src });
+			const newAtRule = (opts) => new AtRule({ ...opts, source: src });
+
 			// Generate @source inline for Tailwind v4 JIT to include dynamic classes
 			const colorNames = Object.keys(colors.base);
 			const dynamicClasses = colorNames.flatMap((name) => [
@@ -130,7 +137,7 @@ export default function postcssColorSystem() {
 				`color-context-${name}`,
 				`foreground-from-${name}`,
 			]);
-			const sourceRule = new AtRule({
+			const sourceRule = newAtRule({
 				name: 'source',
 				params: `inline("${dynamicClasses.join(' ')}")`,
 			});
@@ -149,7 +156,7 @@ export default function postcssColorSystem() {
 
 					if (!exists) {
 						atRule.append(
-							new Declaration({
+							newDecl({
 								prop: prop,
 								value: `var(--color-${colorName})`,
 							}),
@@ -171,7 +178,7 @@ export default function postcssColorSystem() {
 				}
 
 				if (!targetRule) {
-					targetRule = new Rule({ selector });
+					targetRule = newRule({ selector });
 				}
 
 				// Generate custom properties for each color
@@ -184,7 +191,7 @@ export default function postcssColorSystem() {
 					if (colorValue) {
 						// Add main color property
 						targetRule.append(
-							new Declaration({
+							newDecl({
 								prop: propName,
 								value: colorValue,
 							}),
@@ -193,7 +200,7 @@ export default function postcssColorSystem() {
 						// Add HSL variant
 						const hslValue = hexToHSL(colorValue);
 						targetRule.append(
-							new Declaration({
+							newDecl({
 								prop: `${propName}--hsl`,
 								value: hslValue,
 							}),
@@ -201,15 +208,15 @@ export default function postcssColorSystem() {
 
 						// Add individual H, S, L components
 						const [h, s, l] = hslValue.split(' ');
-						targetRule.append(new Declaration({ prop: `${propName}--h`, value: h }));
-						targetRule.append(new Declaration({ prop: `${propName}--s`, value: s }));
-						targetRule.append(new Declaration({ prop: `${propName}--l`, value: l }));
+						targetRule.append(newDecl({ prop: `${propName}--h`, value: h }));
+						targetRule.append(newDecl({ prop: `${propName}--s`, value: s }));
+						targetRule.append(newDecl({ prop: `${propName}--l`, value: l }));
 					}
 
 					// Add foreground color if specified
 					if (colorMap.foreground) {
 						targetRule.append(
-							new Declaration({
+							newDecl({
 								prop: `${propName}--foreground`,
 								value: colorMap.foreground,
 							}),
@@ -219,7 +226,7 @@ export default function postcssColorSystem() {
 					// Add additional properties if specified
 					// if (colorMap.properties) {
 					// 	Object.entries(colorMap.properties).forEach(([prop, value]) => {
-					// 		targetRule.append(new Declaration({ prop, value }));
+					// 		targetRule.append(newDecl({ prop, value }));
 					// 	});
 					// }
 				});
@@ -235,7 +242,7 @@ export default function postcssColorSystem() {
 
 			// Helper function to create background context utilities
 			const createBackgroundContextUtility = (className, colorName, colorMap) => {
-				const utilityRule = new AtRule({
+				const utilityRule = newAtRule({
 					name: 'utility',
 					params: className
 				});
@@ -243,7 +250,7 @@ export default function postcssColorSystem() {
 				// Set background color via custom property
 				if (colorName !== 'background') {
 					utilityRule.append(
-						new Declaration({
+						newDecl({
 							prop: '--color-background',
 							value: `var(--color-${colorName})`,
 						}),
@@ -251,7 +258,7 @@ export default function postcssColorSystem() {
 				}
 
 				utilityRule.append(
-					new Declaration({
+					newDecl({
 						prop: 'background-color',
 						value: 'var(--color-background)',
 					}),
@@ -260,19 +267,19 @@ export default function postcssColorSystem() {
 				// Set foreground color if defined
 				if (colorMap.foreground) {
 					utilityRule.append(
-						new Declaration({
+						newDecl({
 							prop: '--color-foreground',
 							value: colorMap.foreground,
 						}),
 					);
 					utilityRule.append(
-						new Declaration({
+						newDecl({
 							prop: '--focus--color',
 							value: 'var(--color-foreground)',
 						}),
 					);
 					utilityRule.append(
-						new Declaration({
+						newDecl({
 							prop: 'color',
 							value: 'var(--color-foreground)',
 						}),
@@ -282,7 +289,7 @@ export default function postcssColorSystem() {
 				// Set additional properties (link colors, etc.)
 				if (colorMap.properties) {
 					Object.entries(colorMap.properties).forEach(([prop, value]) => {
-						utilityRule.append(new Declaration({ prop, value }));
+						utilityRule.append(newDecl({ prop, value }));
 					});
 				}
 
@@ -307,25 +314,25 @@ export default function postcssColorSystem() {
 
 				// Generate foreground-from-{color} utilities
 				if (actualColorMap.foreground) {
-					const foregroundUtilityRule = new AtRule({
+					const foregroundUtilityRule = newAtRule({
 						name: 'utility',
 						params: `foreground-from-${colorName}`
 					});
 
 					foregroundUtilityRule.append(
-						new Declaration({
+						newDecl({
 							prop: '--color-foreground',
 							value: actualColorMap.foreground,
 						}),
 					);
 					foregroundUtilityRule.append(
-						new Declaration({
+						newDecl({
 							prop: '--focus--color',
 							value: 'var(--color-foreground)',
 						}),
 					);
 					foregroundUtilityRule.append(
-						new Declaration({
+						newDecl({
 							prop: 'color',
 							value: 'var(--color-foreground)',
 						}),
@@ -334,7 +341,7 @@ export default function postcssColorSystem() {
 					// Set additional properties (link colors, etc.) for foreground utilities
 					if (actualColorMap.properties) {
 						Object.entries(actualColorMap.properties).forEach(([prop, value]) => {
-							foregroundUtilityRule.append(new Declaration({ prop, value }));
+							foregroundUtilityRule.append(newDecl({ prop, value }));
 						});
 					}
 
