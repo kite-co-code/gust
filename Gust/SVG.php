@@ -131,11 +131,16 @@ class SVG
     }
 
     /**
-     * Build the path to the SVG asset in the theme
+     * Build the path to the SVG asset in the theme.
+     * In dev mode reads from assets/static/images/, in production from public/build/images/.
      */
     public static function path(string $name): string
     {
-        return \Gust\Asset::path('build/images/'.$name);
+        $base = \Gust\Vite::isRunning()
+            ? get_theme_file_path('assets/static/images')
+            : \Gust\Paths::assetPath('build/images');
+
+        return "{$base}/{$name}";
     }
 
     /**
