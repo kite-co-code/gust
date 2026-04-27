@@ -45,7 +45,7 @@ class Enqueue
      */
     public static function enqueueEditorAssets(): void
     {
-        \Gust\Vite::enqueueScript('gust-editor', 'assets/editor-scripts.js', ['wp-blocks', 'wp-dom-ready', 'wp-edit-post']);
+        \Gust\Vite::enqueueScript('gust-editor', 'assets/editor-scripts.js', ['wp-blocks', 'wp-dom-ready', 'wp-edit-post', 'wp-hooks', 'wp-compose', 'wp-block-editor', 'wp-components']);
     }
 
     /**
