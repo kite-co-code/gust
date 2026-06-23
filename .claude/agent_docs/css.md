@@ -106,7 +106,7 @@ Colors are defined per project in [`assets/theme-config.json`](../../assets/them
 
 ## Typography
 
-Type utilities in `assets/styles/3-patterns/_type-styles.pcss`. Check that file for the current names before using any `type-{name}` utility.. Each bundles font-family, size, weight, line-height, and letter-spacing. Use with `@apply` in CSS or as a class in templates. Never raw Tailwind font/size properties. Defined in `assets/styles/3-patterns/_type-styles.pcss`. Semantic names - e.g.: `type-hero`, `type-h1`–`type-h6`, `type-base`, `type-meta`.
+Type utilities in `assets/styles/3-patterns/_type-styles.pcss`. Check that file for the current names before using any `type-{name}` utility.. Each bundles font-family, size, weight, line-height, and letter-spacing. Use with `@apply` in CSS or as a class in templates. Never raw Tailwind font/size properties. Defined in `assets/styles/3-patterns/_type-styles.pcss`. Semantic names - e.g.: `type-hero`, `type-h1`–`type-h6`, `type-regular`, `type-meta`.
 
 **Responsive font sizing with `rfs()`:**
 ```pcss

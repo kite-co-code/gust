@@ -1,0 +1,211 @@
+{
+    "key": "group_component_testimonial_cards",
+    "title": "Block - Testimonial Cards",
+    "fields": [
+        {
+            "key": "field_tc_tab_content",
+            "label": "Content",
+            "name": "",
+            "type": "tab",
+            "placement": "top",
+            "endpoint": 0
+        },
+        {
+            "key": "field_tc_heading",
+            "label": "Heading",
+            "name": "heading",
+            "type": "text",
+            "required": 0
+        },
+        {
+            "key": "field_tc_subheading",
+            "label": "Subheading",
+            "name": "subheading",
+            "type": "wysiwyg",
+            "required": 0,
+            "tabs": "all",
+            "toolbar": "basic_formatting",
+            "media_upload": 0,
+            "delay": 0
+        },
+        {
+            "key": "field_tc_button",
+            "label": "Button",
+            "name": "button",
+            "type": "link",
+            "required": 0,
+            "return_format": "array"
+        },
+        {
+            "key": "field_tc_tab_testimonials",
+            "label": "Testimonials",
+            "name": "",
+            "type": "tab",
+            "placement": "top",
+            "endpoint": 0
+        },
+        {
+            "key": "field_tc_card_source",
+            "label": "Source",
+            "name": "card_source",
+            "type": "button_group",
+            "instructions": "",
+            "required": 0,
+            "choices": {
+                "custom": "Custom",
+                "stories": "From Stories"
+            },
+            "default_value": "custom",
+            "layout": "horizontal",
+            "return_format": "value"
+        },
+        {
+            "key": "field_tc_custom_items",
+            "label": "Testimonials",
+            "name": "custom_items",
+            "type": "repeater",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_tc_card_source",
+                        "operator": "==",
+                        "value": "custom"
+                    }
+                ]
+            ],
+            "min": 1,
+            "max": 0,
+            "layout": "block",
+            "button_label": "Add Testimonial",
+            "sub_fields": [
+                {
+                    "key": "field_tc_custom_stars",
+                    "label": "Stars",
+                    "name": "stars",
+                    "type": "button_group",
+                    "choices": {
+                        "1": "1",
+                        "2": "2",
+                        "3": "3",
+                        "4": "4",
+                        "5": "5"
+                    },
+                    "default_value": "5",
+                    "layout": "horizontal",
+                    "return_format": "value",
+                    "wrapper": { "width": "50" },
+                    "parent_repeater": "field_tc_custom_items"
+                },
+                {
+                    "key": "field_tc_custom_image",
+                    "label": "Photo",
+                    "name": "image",
+                    "type": "image",
+                    "required": 0,
+                    "return_format": "array",
+                    "preview_size": "thumbnail",
+                    "wrapper": { "width": "50" },
+                    "parent_repeater": "field_tc_custom_items"
+                },
+                {
+                    "key": "field_tc_custom_quote",
+                    "label": "Quote",
+                    "name": "quote",
+                    "type": "textarea",
+                    "required": 1,
+                    "rows": 3,
+                    "parent_repeater": "field_tc_custom_items"
+                },
+                {
+                    "key": "field_tc_custom_author_name",
+                    "label": "Name",
+                    "name": "author_name",
+                    "type": "text",
+                    "required": 0,
+                    "wrapper": { "width": "50" },
+                    "parent_repeater": "field_tc_custom_items"
+                },
+                {
+                    "key": "field_tc_custom_author_detail",
+                    "label": "Detail",
+                    "name": "author_detail",
+                    "type": "text",
+                    "instructions": "e.g. Open Water Swimmer, London",
+                    "required": 0,
+                    "wrapper": { "width": "50" },
+                    "parent_repeater": "field_tc_custom_items"
+                }
+            ]
+        },
+        {
+            "key": "field_tc_story_items",
+            "label": "Stories",
+            "name": "story_items",
+            "type": "repeater",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_tc_card_source",
+                        "operator": "==",
+                        "value": "stories"
+                    }
+                ]
+            ],
+            "min": 1,
+            "max": 0,
+            "layout": "table",
+            "button_label": "Add Story",
+            "sub_fields": [
+                {
+                    "key": "field_tc_story_post",
+                    "label": "Story",
+                    "name": "story",
+                    "type": "post_object",
+                    "required": 1,
+                    "post_type": ["story"],
+                    "filters": ["search"],
+                    "return_format": "object",
+                    "wrapper": { "width": "70" },
+                    "parent_repeater": "field_tc_story_items"
+                },
+                {
+                    "key": "field_tc_story_stars",
+                    "label": "Stars",
+                    "name": "stars",
+                    "type": "button_group",
+                    "choices": {
+                        "1": "1",
+                        "2": "2",
+                        "3": "3",
+                        "4": "4",
+                        "5": "5"
+                    },
+                    "default_value": "5",
+                    "layout": "horizontal",
+                    "return_format": "value",
+                    "wrapper": { "width": "30" },
+                    "parent_repeater": "field_tc_story_items"
+                }
+            ]
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "block",
+                "operator": "==",
+                "value": "acf/testimonial-cards"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "active": true,
+    "description": "",
+    "show_in_rest": 0
+}

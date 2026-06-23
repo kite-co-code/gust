@@ -1,0 +1,23 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 2,
+    "name": "acf/get-in-touch",
+    "title": "Get In Touch",
+    "description": "Contact details block with phone numbers and email.",
+    "category": "theme-blocks",
+    "icon": "email",
+    "keywords": ["contact", "phone", "email"],
+    "acf": {
+        "mode": "auto",
+        "renderCallback": "Gust\\Components\\GetInTouch::renderBlock"
+    },
+    "supports": {
+        "anchor": true,
+        "align": false,
+        "color": {
+            "background": false,
+            "text": false,
+            "gradients": false
+        }
+    }
+}

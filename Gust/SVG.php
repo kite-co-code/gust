@@ -119,6 +119,13 @@ class SVG
             $doc->documentElement->setAttribute('height', $svgInfo['h']);
         }
 
+        // If fill was specified, set it. Otherwise, try to set it from svgInfo.
+        if (! empty($args['fill'])) {
+            $doc->documentElement->setAttribute('fill', $args['fill']);
+        } elseif (! empty($svgInfo['fill'])) {
+            $doc->documentElement->setAttribute('fill', $svgInfo['fill']);
+        }
+
         // Output the SVG markup and strip the XML doctype declaration.
         // https://stackoverflow.com/questions/5706086/php-domdocument-output-without-xml-version-1-0-encoding-utf-8/17362447
         $svg = $doc->saveXML($doc->documentElement);

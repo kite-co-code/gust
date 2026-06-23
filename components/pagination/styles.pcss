@@ -1,6 +1,8 @@
 .pagination {
     --flow-space: var(--space-base);
     --section--margin-bottom: var(--space-base);
+
+    margin-top: spaceFluid(24, 40);
 }
 
 .nav-links {
@@ -23,9 +25,9 @@
         --btn--border-color: var(--color-white);
         --btn--color: var(--color-foreground);
 
-        --btn--background-color--hover: var(--color-brand-2);
-        --btn--border-color--hover: var(--color-brand-2);
-        --btn--color-hover: var(--color-foreground);
+        --btn--background-color--hover: var(--color-navy);
+        --btn--border-color--hover: var(--color-navy);
+        --btn--color-hover: var(--color-white);
 
         --btn--size: var(--pagination--size);
 
@@ -43,12 +45,12 @@
     }
 
     .current {
-        --btn--background-color: var(--color-brand-2);
-        --btn--border-color: var(--color-brand-2);
-        --btn--color: var(--color-foreground);
+        --btn--background-color: var(--color-navy);
+        --btn--border-color: var(--color-navy);
+        --btn--color: var(--color-white);
 
-        --btn--background-color--hover: var(--color-brand-2);
-        --btn--border-color--hover: var(--color-brand-2);
+        --btn--background-color--hover: var(--color-white);
+        --btn--border-color--hover: var(--color-navy);
         --btn--color-hover: var(--color-foreground);
     }
 
@@ -62,13 +64,17 @@
 
     .next,
     .prev {
-        --btn--background-color: var(--color-background);
-        --btn--border-color: var(--color-brand-2);
-        --btn--color: var(--color-accent);
 
-        --btn--background-color--hover: var(--color-brand-2);
-        --btn--border-color--hover: var(--color-brand-2);
-        --btn--color-hover: var(--color-foreground);
+        @apply btn--icon;
+        @apply btn--square;
+        
+        --btn--background-color: var(--color-background);
+        --btn--border-color: var(--color-navy);
+        --btn--color: var(--color-navy);
+
+        --btn--background-color--hover: var(--color-navy);
+        --btn--border-color--hover: var(--color-navy);
+        --btn--color-hover: var(--color-white);
 
         @apply btn--icon;
         @apply btn--square;
@@ -76,8 +82,13 @@
         display: inline-block;
 
         &::after {
+            @apply mask-icon;
+
+            inset: 0;
+            margin: auto;
+            width: 9px;
+            height: 9px;
             mask-image: url('/images/icons/chevron-right.svg');
-            mask-size: 0.5625rem; /* 9px */
         }
     }
 
@@ -86,4 +97,13 @@
             transform: rotate(180deg);
         }
     }
+}
+
+.nav-links > .page-numbers {
+    border-radius: unset;
+    border: solid 0.5px var(--color-navy);
+}
+
+.nav-links > .page-numbers:hover {
+    color: var(--color-white) !important;
 }

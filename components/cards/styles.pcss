@@ -1,6 +1,8 @@
+@import 'swiper/css' layer(vendor);
+
 .cards {
-    --grid--column-gap: spaceFluid(12, 16);
-    --grid--row-gap: var(--grid--column-gap);
+    --col-gap: spaceFluid(16, 24);
+    --row-gap: spaceFluid(24, 40);
     --cards--min-width: 14.375rem; /* 230px */
 
     :where(.cards__header) {
@@ -13,20 +15,68 @@
     :where(.cards__heading) {
         max-width: var(--heading--max-width);
         margin-inline: auto;
-        text-align: center;
+        text-align: left;
     }
 
     :where(.cards__subheading) {
         @apply margin-trim;
-        @apply content-width-2xs;
+        @apply heading-attributes;
 
         margin: var(--space-base) auto;
+        text-align: left;
+        color: var(--color-mid-blue);
+        font-size: rfs(32, 44);
+        line-height: 1;
+        letter-spacing: -0.5px;
+        text-transform: uppercase;
+
+        & > * {
+            font-size: inherit;
+            line-height: inherit;
+            letter-spacing: inherit;
+            font-weight: inherit;
+        }
     }
 
     :where(.cards__items) {
         @apply flex-grid;
+        
 
         justify-content: center;
+    }
+
+    &:where(.cards--source--custom):not([class*='cards--columns-']) {
+        .cards__items {
+            @apply card-grid-square;
+
+            justify-content: normal;
+        }
+
+        .g-card {
+            width: 100%;
+            max-width: none;
+        }
+    }
+
+    &:where(.cards--taxonomy-term-grid) {
+        .cards__items {
+            display: grid;
+            grid-template-columns: 1fr;
+            justify-content: normal;
+
+            @media (min-width: theme('screens.md')) {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            @media (min-width: theme('screens.lg')) {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+        }
+
+        .g-card {
+            width: 100%;
+            max-width: none;
+        }
     }
 
     :where(.cards__footer) {
@@ -42,7 +92,6 @@
 
     &:not(.alignfull) {
         overflow: var(--rounded-overflow, visible);
-        border-radius: var(--rounded-border-radius);
     }
 
     &.alignfull {
@@ -65,7 +114,15 @@
 
     &[class*='cards--columns-'] {
         .cards__items {
-            grid-template-columns: repeat(var(--grid--columns), minmax(0, 1fr));
+            display: grid;
+            grid-template-columns: repeat(var(--grid--columns, 1), minmax(0, 1fr));
+            justify-content: normal;
+            margin-bottom: var(--section--header--margin-bottom);
+        }
+
+        .g-card {
+            width: 100%;
+            max-width: none;
         }
     }
 
@@ -104,20 +161,21 @@
     }
 
     &:where(.cards--slider-on-mobile) {
-        @media (width < theme('screens.lg')) {
+        @media (max-width: 1023px) {
             --animate--translateY: 0;
 
             .cards__items {
-                position: relative;
-                display: flex;
-                flex-wrap: nowrap;
-                justify-content: flex-start;
+                position: relative !important;
+                display: flex !important;
+                flex-wrap: nowrap !important;
+                justify-content: flex-start !important;
+                grid-template-columns: unset !important;
                 padding-bottom: space(8);
                 margin-right: calc(-1 * var(--container-padding));
                 margin-bottom: calc(space(8) * -1);
                 margin-left: calc(-1 * var(--container-padding));
                 column-gap: 0;
-                overflow-x: auto;
+                overflow-x: auto !important;
                 scroll-snap-type: x mandatory;
                 will-change: transform;
 
@@ -138,7 +196,7 @@
                 min-height: 100%;
                 flex: 0 0 80%;
                 margin-top: 0;
-                margin-right: var(--grid--column-gap);
+                margin-right: var(--col-gap);
                 scroll-snap-align: center;
 
                 @media (min-width: theme('screens.sm')) {
@@ -152,9 +210,153 @@
         }
     }
 
-    &:where(.cards--type--icons) {
+    &:where(.cards--type--horizontal) {
+        .cards__items {
+            display: grid;
+            grid-template-columns: 1fr;
+            justify-content: normal;
+
+            @media (min-width: theme('screens.md')) {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        .g-card {
+            width: 100%;
+            max-width: none;
+        }
+    }
+
+    &.cards--type--carousel {
+        --cards--carousel--btn-size: 45px;
+        --cards--carousel--gap: space(24);
+        --cards--carousel--slides: 1.2;
+        --cards--carousel--nav-top: calc(
+            ((100cqw - ((var(--cards--carousel--slides) - 1) * var(--cards--carousel--gap))) / var(--cards--carousel--slides)) / 2
+        );
+
+        @media (min-width: theme('screens.md')) {
+            --cards--carousel--slides: 2;
+        }
+
         @media (min-width: theme('screens.lg')) {
-            --grid--column-gap: spaceFluid(16, 24);
+            --cards--carousel--slides: 3;
+        }
+
+        &:where(.cards--columns-1) {
+            @media (min-width: theme('screens.md')) {
+                --cards--carousel--slides: 1;
+            }
+        }
+
+        &:where(.cards--columns-2) {
+            @media (min-width: theme('screens.lg')) {
+                --cards--carousel--slides: 2;
+            }
+        }
+
+        &:where(.cards--columns-4) {
+            @media (min-width: theme('screens.lg')) {
+                --cards--carousel--slides: 4;
+            }
+        }
+
+        display: block;
+
+        .cards__swiper-wrap {
+            position: relative;
+            container-type: inline-size;
+        }
+
+        .cards__swiper {
+            overflow: clip;
+            width: 100%;
+        }
+
+        .cards__items {
+            display: flex;
+            flex-wrap: nowrap;
+            grid-template-columns: none;
+            justify-content: flex-start;
+            gap: 0;
+            will-change: auto;
+        }
+
+        .cards__slide {
+            height: auto;
+            display: flex;
+            flex-shrink: 0;
+            transform: translateZ(0);
+        }
+
+        .g-card {
+            width: 100%;
+            max-width: none;
+            height: 100%;
+
+            .g-card__image-inner > * {
+                transform: translateZ(0) scale(var(--g-card--image-scale, 1));
+                backface-visibility: hidden;
+                transition-property: transform;
+            }
+
+            &.has-link {
+                &:hover,
+                &:focus-visible {
+                    &:not(.has-embed) {
+                        .g-card__image-inner > * {
+                            transform: translateZ(0) scale(var(--g-card--image-scale--hover, 1.04));
+                        }
+                    }
+                }
+            }
+        }
+
+        .cards__prev,
+        .cards__next {
+            position: absolute;
+            top: var(--cards--carousel--nav-top);
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: var(--cards--carousel--btn-size);
+            height: var(--cards--carousel--btn-size);
+            padding: 0;
+            border: 1px solid var(--color-navy);
+            border-radius: 0;
+            background: var(--color-white);
+            color: var(--color-navy);
+            cursor: pointer;
+            transform: translateY(-50%);
+            transition: opacity 0.2s;
+
+            &:hover {
+                opacity: 0.6;
+            }
+
+            &.swiper-button-disabled {
+                opacity: 0.3;
+                cursor: not-allowed;
+            }
+        }
+
+        .cards__prev {
+            left: max(
+                calc(var(--cards--carousel--btn-size) / -2),
+                calc(var(--container-padding) * -1)
+            );
+
+            .btn__icon {
+                rotate: 180deg;
+            }
+        }
+
+        .cards__next {
+            right: max(
+                calc(var(--cards--carousel--btn-size) / -2),
+                calc(var(--container-padding) * -1)
+            );
         }
     }
 }

@@ -1,0 +1,25 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 2,
+    "name": "acf/homepage-hero-header",
+    "title": "Homepage Hero Header",
+    "category": "theme-blocks",
+    "icon": "cover-image",
+    "keywords": ["hero"],
+    "align": "full",
+    "acf": {
+        "mode": "auto",
+        "postTypes": ["page", "gust-template"],
+        "renderCallback": "Gust\\Components\\HomepageHeroHeader::renderBlock"
+    },
+    "supports": {
+        "anchor": true,
+        "align": false,
+        "multiple": false,
+        "color": {
+            "background": false,
+            "text": false,
+            "gradients": false
+        }
+    }
+}

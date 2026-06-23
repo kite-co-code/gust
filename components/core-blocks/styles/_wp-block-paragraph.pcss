@@ -1,7 +1,21 @@
 /* stylelint-disable selector-no-qualifying-type */
 
 p {
+    @apply type-regular;
+
     &.has-background {
         padding: var(--space-base) spaceFluid(12, 16);
+    }
+
+    &.is-style-type-small {
+        @apply type-small;
+    }
+
+    &.is-style-type-regular {
+        @apply type-regular;
+    }
+
+    &.is-style-type-large {
+        @apply type-large;
     }
 }

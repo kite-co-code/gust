@@ -1,4 +1,4 @@
-import { resolve } from 'node:path';
+import { normalize, resolve } from 'node:path';
 import fg from 'fast-glob';
 import laravel from 'laravel-vite-plugin';
 import { defineConfig } from 'vite';
@@ -48,7 +48,7 @@ function themeConfigWatcherPlugin() {
         configureServer(server) {
             server.watcher.add(configPath);
             server.watcher.on('change', (file) => {
-                if (file !== configPath) return;
+                if (normalize(file) !== normalize(configPath)) return;
                 for (const mod of server.moduleGraph.idToModuleMap.values()) {
                     if (mod.file?.endsWith('.pcss') || mod.file?.endsWith('.css')) {
                         server.moduleGraph.invalidateModule(mod);

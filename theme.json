@@ -4,6 +4,17 @@
     "settings": {
         "appearanceTools": false,
         "blocks": {
+            "core/heading": {
+                "color": {
+                    "background": false
+                }
+            },
+            "core/paragraph": {
+                "color": {
+                    "background": false
+                },
+                "typography": {}
+            },
             "core/button": {
                 "appearanceTools": false,
                 "border": {

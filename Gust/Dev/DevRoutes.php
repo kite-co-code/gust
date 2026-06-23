@@ -468,6 +468,7 @@ class DevRoutes
             'utilities' => 'Utilities',
             'components' => 'Components',
             'content' => 'Content',
+            'all-components' => 'All Components',
         ];
         $nav_html = '<nav class="dev-topbar__nav">';
         foreach ($nav_items as $route => $label) {
@@ -680,6 +681,7 @@ class DevRoutes
         $content .= '<li><a href="'.\esc_url(\home_url('/_dev/utilities/')).'">Utilities</a></li>';
         $content .= '<li><a href="'.\esc_url(\home_url('/_dev/components/')).'">Components</a></li>';
         $content .= '<li><a href="'.\esc_url(\home_url('/_dev/content/')).'">Content</a></li>';
+        $content .= '<li><a href="'.\esc_url(\home_url('/_dev/all-components/')).'">All Components</a></li>';
         $content .= '</ul>';
         $content .= '</div>';
 

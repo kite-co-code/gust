@@ -45,13 +45,17 @@ export default function generateComponentImportsPlugin() {
             server.watcher.add('components/*/styles.pcss');
 
             server.watcher.on('add', (path) => {
-                if (path.endsWith('/styles.pcss')) {
+                const normalizedPath = path.replace(/\\/g, '/');
+
+                if (normalizedPath.endsWith('/styles.pcss')) {
                     generateImports();
                 }
             });
 
             server.watcher.on('unlink', (path) => {
-                if (path.endsWith('/styles.pcss')) {
+                const normalizedPath = path.replace(/\\/g, '/');
+
+                if (normalizedPath.endsWith('/styles.pcss')) {
                     generateImports();
                 }
             });
@@ -59,7 +63,9 @@ export default function generateComponentImportsPlugin() {
         },
 
         handleHotUpdate({ file, server }) {
-            if (!file.match(/components\/[^/]+\/styles\.pcss$/)) return;
+            const normalizedFile = file.replace(/\\/g, '/');
+
+            if (!normalizedFile.match(/components\/[^/]+\/styles\.pcss$/)) return;
 
             // Component styles can't be standalone Vite modules (they need main.pcss context),
             // so we find main.pcss in the module graph and return it as the affected module.

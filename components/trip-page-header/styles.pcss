@@ -1,0 +1,221 @@
+.trip-page-header {
+    color: var(--color-white);
+    background-color: var(--color-navy);
+}
+
+.trip-page-header__media {
+    position: relative;
+    overflow: hidden;
+}
+
+.trip-page-header__media::before,
+.trip-page-header__media::after {
+    position: absolute;
+    z-index: 1;
+    pointer-events: none;
+    content: "";
+    inset-inline: 0;
+}
+
+.trip-page-header__media::before {
+    top: 0;
+    height: 38%;
+    background: linear-gradient(180deg, hsl(var(--color-black--hsl) / 0.75) 0%, hsl(var(--color-black--hsl) / 0) 100%);
+}
+
+.trip-page-header__media::after {
+    bottom: 0;
+    height: 19%;
+    background: linear-gradient(0deg, hsl(var(--color-navy--hsl) / 1) 0%, hsl(var(--color-navy--hsl) / 0) 100%);
+}
+
+
+.trip-page-header__media-inner {
+    aspect-ratio: 1440 / 605;
+    min-height: rem(280);
+}
+
+.trip-page-header__media-inner img {
+    transform: scale(1.02);
+}
+
+.trip-page-header__content {
+    position: relative;
+    z-index: 2;
+}
+
+.trip-page-header__inner {
+    padding-block: spaceFluid(24, 40) spaceFluid(28, 40);
+}
+
+/* Main layout: single column grid with rows for heading, info-row, description, stats */
+.trip-page-header__layout {
+    display: grid;
+    gap: space(24);
+}
+
+.trip-page-header__heading {
+    max-width: 14ch;
+    margin: 0;
+    word-break: normal;
+    overflow-wrap: normal;
+    text-wrap: balance;
+}
+
+/* Info row: summary (left) + CTA (right) */
+.trip-page-header__info-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: space(16);
+}
+
+.trip-page-header__summary {
+    display: flex;
+    flex-wrap: wrap;
+    gap: space(12) space(20);
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.trip-page-header__summary-item {
+    @apply type-h6;
+
+    display: inline-flex;
+    align-items: center;
+    gap: space(8);
+    color: var(--color-white);
+}
+
+.trip-page-header__summary-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    width: rem(16);
+    height: rem(16);
+    color: currentColor;
+}
+
+.trip-page-header__summary-icon svg,
+.trip-page-header__summary-icon svg * {
+    display: block;
+    width: 100%;
+    height: 100%;
+    fill: currentColor;
+}
+
+.trip-page-header__summary-currency {
+    font-family: var(--font-sans);
+    font-size: rem(18);
+    font-weight: 700;
+    line-height: 1;
+}
+
+.trip-page-header__actions {
+    flex: 0 0 auto;
+}
+
+.trip-page-header__cta {
+    width: min(100%, rem(300));
+    min-height: rem(45);
+}
+
+.trip-page-header__description {
+    @apply type-large;
+
+    max-width: rem(710);
+    margin: 0;
+    color: var(--color-white);
+}
+
+.trip-page-header__stats {
+    display: grid;
+    gap: space(24);
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    max-width: var(--container-sm);
+    margin-top: space(16);
+    min-width: 0;
+}
+
+.trip-page-header__stat {
+    display: grid;
+    gap: space(4);
+    padding-top: space(12);
+    border-top: 0.5px solid var(--color-neutral);
+}
+
+.trip-page-header__stat-label {
+    font-family: var(--font-display);
+    font-size: rem(18);
+    font-weight: 400;
+    line-height: 1.33;
+    letter-spacing: 0.75px;
+    text-transform: uppercase;
+    color: var(--color-neutral);
+}
+
+.trip-page-header__stat-value {
+    @apply type-h6;
+
+    color: var(--color-white);
+}
+
+@media (min-width: theme('screens.md')) {
+    .trip-page-header__media-inner {
+        aspect-ratio: auto;
+        min-height: 0;
+        height: rem(605);
+    }
+
+    .trip-page-header__content {
+        min-height: rem(575); /* matches media height minus the top and bottom 
+        gradient heights (605 - 38% of 605 - 19% of 605) */
+    }
+
+    .trip-page-header__heading {
+        max-width: none;
+        text-wrap: balance;
+    }
+
+    .trip-page-header__inner {
+        height: 100%;
+        padding-top: space(16);
+        padding-bottom: space(40);
+        display: flex;
+        align-items: stretch;
+    }
+
+    .trip-page-header__layout {
+        width: 100%;
+        align-content: start;
+        gap: space(24);
+    }
+
+    .trip-page-header__info-row {
+        flex-wrap: nowrap;
+        gap: space(24);
+    }
+
+    .trip-page-header__cta {
+        width: rem(300);
+    }
+
+    .trip-page-header__stats {
+        margin-top: space(36);
+    }
+}
+
+@media (width < theme('screens.md')) {
+
+    .trip-page-header__cta {
+        width: 100%;
+    }
+
+    .trip-page-header__actions {
+        width: 100%;
+    }
+}

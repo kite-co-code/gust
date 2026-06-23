@@ -1,0 +1,112 @@
+{
+    "key": "group_component_trip_cards",
+    "title": "Block - Trip Cards",
+    "fields": [
+        {
+            "key": "field_trip_cards_tab_content",
+            "label": "Content",
+            "name": "",
+            "type": "tab",
+            "placement": "top"
+        },
+        {
+            "key": "field_trip_cards_heading",
+            "label": "Heading",
+            "name": "heading",
+            "type": "text",
+            "required": 0
+        },
+        {
+            "key": "field_trip_cards_subheading",
+            "label": "Subheading",
+            "name": "subheading",
+            "type": "wysiwyg",
+            "required": 0,
+            "tabs": "all",
+            "toolbar": "basic_formatting",
+            "media_upload": 0
+        },
+        {
+            "key": "field_trip_cards_tab_cards",
+            "label": "Cards",
+            "name": "",
+            "type": "tab",
+            "placement": "top"
+        },
+        {
+            "key": "field_trip_cards_card_source",
+            "label": "Card Source",
+            "name": "card_source",
+            "type": "button_group",
+            "required": 0,
+            "choices": {
+                "recent": "Recent Trips",
+                "selected": "Selected Trips"
+            },
+            "default_value": "recent",
+            "layout": "horizontal",
+            "return_format": "value"
+        },
+        {
+            "key": "field_trip_cards_limit",
+            "label": "Limit",
+            "name": "limit",
+            "type": "button_group",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_trip_cards_card_source",
+                        "operator": "==",
+                        "value": "recent"
+                    }
+                ]
+            ],
+            "choices": {
+                "3": "3",
+                "6": "6"
+            },
+            "default_value": "3",
+            "layout": "horizontal",
+            "return_format": "value"
+        },
+        {
+            "key": "field_trip_cards_selected",
+            "label": "Selected Trips",
+            "name": "selected",
+            "type": "relationship",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_trip_cards_card_source",
+                        "operator": "==",
+                        "value": "selected"
+                    }
+                ]
+            ],
+            "post_type": ["trip"],
+            "filters": ["search"],
+            "min": "1",
+            "max": "6",
+            "return_format": "object"
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "block",
+                "operator": "==",
+                "value": "acf/trip-cards"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "active": true,
+    "description": "",
+    "show_in_rest": 0
+}

@@ -6,7 +6,6 @@
                 "core/heading",
                 "core/list",
                 "core/list-item",
-                "core/quote",
                 "core/table",
                 "core/image",
                 "core/buttons",
@@ -15,9 +14,6 @@
                 "core/column",
                 "core/group",
                 "core/separator",
-                "core/embed",
-                "core/shortcode",
-                "core/html",
                 "core/freeform",
                 "core/block",
                 "core/missing"
@@ -56,6 +52,8 @@
 
         "image_sizes": {
             "gust_super": [2500, 2500, false],
+            "full_width": [2600, 600, true],
+            "gust_card_square": [400, 400, true],
             "1536x1536": false
         },
         "jpeg_upload_quality": 90,

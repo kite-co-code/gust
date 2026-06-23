@@ -28,7 +28,7 @@ export default function globImportPlugin() {
             // Process each glob import
             for (const match of matches) {
                 const globPattern = match[1];
-                const fullPattern = resolve(fileDir, globPattern);
+                const fullPattern = resolve(fileDir, globPattern).replaceAll('\\', '/');
 
                 // Find matching files
                 const files = fg.sync(fullPattern);
@@ -36,7 +36,7 @@ export default function globImportPlugin() {
                 // Generate individual imports with proper relative paths
                 const imports = files
                     .map((file) => {
-                        let relativePath = relative(fileDir, file);
+                        let relativePath = relative(fileDir, file).replaceAll('\\', '/');
                         if (!relativePath.startsWith('.')) {
                             relativePath = './' + relativePath;
                         }

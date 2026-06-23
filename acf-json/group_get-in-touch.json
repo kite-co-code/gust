@@ -1,0 +1,91 @@
+{
+    "key": "group_get_in_touch",
+    "title": "Get In Touch",
+    "fields": [
+        {
+            "key": "field_git_contacts",
+            "label": "Contact Items",
+            "name": "get_in_touch_contacts",
+            "type": "repeater",
+            "instructions": "Contact methods shown in the \"Get in touch\" section across the site.",
+            "required": 0,
+            "collapsed": "field_git_contact_label",
+            "min": 0,
+            "max": 0,
+            "layout": "block",
+            "button_label": "Add Contact",
+            "sub_fields": [
+                {
+                    "key": "field_git_contact_icon",
+                    "label": "Icon",
+                    "name": "icon",
+                    "type": "select",
+                    "instructions": "",
+                    "required": 1,
+                    "choices": {
+                        "whatsapp": "WhatsApp",
+                        "email": "Email",
+                        "phone": "Phone"
+                    },
+                    "default_value": "phone",
+                    "return_format": "value",
+                    "ui": 1,
+                    "wrapper": {
+                        "width": "20"
+                    },
+                    "parent_repeater": "field_git_contacts"
+                },
+                {
+                    "key": "field_git_contact_label",
+                    "label": "Label",
+                    "name": "label",
+                    "type": "text",
+                    "instructions": "Display text (e.g. \"Message via Whatsapp\", \"info@swimquest.uk.com\", \"Office\").",
+                    "required": 1,
+                    "wrapper": {
+                        "width": "25"
+                    },
+                    "parent_repeater": "field_git_contacts"
+                },
+                {
+                    "key": "field_git_contact_value",
+                    "label": "Value",
+                    "name": "value",
+                    "type": "text",
+                    "instructions": "Secondary text shown after the label, e.g. a phone number. Leave blank for WhatsApp/email rows.",
+                    "required": 0,
+                    "wrapper": {
+                        "width": "25"
+                    },
+                    "parent_repeater": "field_git_contacts"
+                },
+                {
+                    "key": "field_git_contact_url",
+                    "label": "URL",
+                    "name": "url",
+                    "type": "text",
+                    "instructions": "Link target (e.g. https://wa.me/..., mailto:..., tel:...). Leave blank for no link.",
+                    "required": 0,
+                    "placeholder": "https://wa.me/... or mailto:... or tel:...",
+                    "wrapper": {
+                        "width": "30"
+                    },
+                    "parent_repeater": "field_git_contacts"
+                }
+            ]
+        }
+    ],
+    "location": [[
+        {
+            "param": "options_page",
+            "operator": "==",
+            "value": "acf-options-general"
+        }
+    ]],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "active": true
+}

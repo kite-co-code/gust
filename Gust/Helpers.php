@@ -261,4 +261,17 @@ class Helpers
 
         return \Gust\Paths::assetURL('build/'.$path);
     }
+
+    /**
+     * Checks if the current page has a page header block.
+     *
+     * @param  int|string|\WP_Post|null  $post  Optional. Post ID or post object.
+     * @return bool
+     */
+    public static function hasPageHeaderBlock($post = null): bool
+    {
+        return \has_block('acf/page-header', $post)
+            || \has_block('acf/homepage-hero-header', $post)
+            || \has_block('acf/trip-page-header', $post);
+    }
 }

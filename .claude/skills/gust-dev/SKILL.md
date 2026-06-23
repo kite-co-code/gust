@@ -14,6 +14,7 @@ Workflows for the Gust WordPress theme framework.
 | [Components](components.md) | Scaffold, build, and use components |
 | [Patterns](patterns.md) | CSS architecture, colors, spacing, layout |
 | [Setup](setup.md) | Build from website spec (post types, taxonomies, routes) |
+| [Editor Overrides](editor-overrides.md) | Fix component styles broken in the block editor |
 
 ## Workflow Selection
 

@@ -1,0 +1,16 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 2,
+    "name": "acf/text-items",
+    "title": "Text Items",
+    "category": "theme-blocks",
+    "icon": "list-view",
+    "acf": {
+        "mode": "preview",
+        "renderCallback": "Gust\\Components\\TextItems::renderBlock"
+    },
+    "supports": {
+        "anchor": false,
+        "align": false
+    }
+}

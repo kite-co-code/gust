@@ -1,0 +1,50 @@
+.quote {
+    display: grid;
+    gap: spaceFluid(12, 16);
+    justify-items: start;
+
+    .quote__mark {
+        width: 1.5625rem;
+
+        svg {
+            width: 100%;
+            height: auto;
+        }
+    }
+
+    .quote__content {
+        position: relative;
+        padding: 0;
+        margin: 0;
+        border: 0;
+        background: none;
+
+        &::before {
+            content: none;
+        }
+
+        > .quote__text {
+            @apply type-h5;
+        }
+    }
+
+    .quote__text {
+        margin: 0;
+    }
+
+    .quote__citation {
+        display: grid;
+        gap: 0;
+    }
+
+    .quote__credit {
+        color: var(--color-mid-blue);
+    }
+
+    .quote__credit,
+    .quote__role {
+        @apply type-quote-credit;
+
+        display: block;
+    }
+}

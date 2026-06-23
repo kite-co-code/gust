@@ -1,0 +1,112 @@
+@import 'swiper/css' layer(vendor);
+
+sq-gallery {
+    --gallery-image-height: clamp(350px, 60vh, 450px);
+
+    display: block;
+    padding-block: var(--space--layout);
+    overflow: clip;
+
+    .gallery__header {
+        margin-bottom: spaceFluid(24, 40);
+    }
+
+    .gallery__heading {
+        margin-top: 0;
+        margin: 0;
+    }
+
+    .gallery__swiper-wrap {
+        position: relative;
+    }
+
+    .gallery__prev,
+    .gallery__next {
+        position: absolute;
+        top: calc((100% - var(--gallery-caption-space, 60px)) / 2);
+        transform: translateY(-50%);
+
+        z-index: 10;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 45px;
+        height: 45px;
+        padding: 0;
+        border: 1px solid var(--color-navy);
+        border-radius: 0;
+        background: var(--color-white);
+        cursor: pointer;
+        font-size: rem(25);
+        color: var(--color-navy);
+        transition: opacity 0.2s;
+
+        &:hover {
+            opacity: 0.6;
+        }
+
+        &.swiper-button-disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+    }
+
+    .gallery__prev {
+        left: -22.5px;
+    }
+
+    .gallery__next {
+        right: -22.5px;
+    }
+
+    .gallery__prev .btn__icon {
+        rotate: 180deg;
+    }
+
+    .gallery__swiper {
+        overflow: clip;
+        width: 100%;
+    }
+
+    .swiper-wrapper {
+        align-items: center;
+        padding-bottom: var(--gallery-caption-space, 60px);
+    }
+
+    .gallery__slide {
+        position: relative;
+        display: flex;
+        align-items: center;
+        width: auto;
+        height: auto;
+        margin: 0;
+
+        img {
+            display: block;
+            width: auto;
+            height: var(--gallery-image-height);
+        }
+
+        @media (width < theme('screens.sm')) {
+            width: 100%;
+
+            img {
+                width: 100%;
+                height: auto;
+            }
+        }
+
+        .image--figure {
+            position: static;
+        }
+
+        .image__figcaption {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            margin-top: space(12);
+        }
+    }
+}

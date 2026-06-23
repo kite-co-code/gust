@@ -1,0 +1,19 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 2,
+    "name": "acf/trip-page-header",
+    "title": "Trip Page Header",
+    "category": "theme-blocks",
+    "icon": "cover-image",
+    "align": "full",
+    "acf": {
+        "mode": "auto",
+        "postTypes": ["trip"],
+        "renderCallback": "Gust\\Components\\TripPageHeader::renderBlock"
+    },
+    "supports": {
+        "anchor": false,
+        "align": false,
+        "multiple": false
+    }
+}

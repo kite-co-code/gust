@@ -70,15 +70,7 @@
             "append": ""
         }
     ],
-    "location": [
-        [
-            {
-                "param": "block",
-                "operator": "==",
-                "value": "acf\/banner"
-            }
-        ]
-    ],
+    "location": [],
     "menu_order": 0,
     "position": "normal",
     "style": "default",
@@ -86,7 +78,7 @@
     "instruction_placement": "label",
     "hide_on_screen": "",
     "active": true,
-    "description": "",
+    "description": "Banner is rendered programmatically (see components/banner/Banner.php). The block.json registration is disabled (block.json.disabled), so the field group has no location rule.",
     "show_in_rest": 0,
-    "modified": 1692711852
+    "modified": 1782518400
 }

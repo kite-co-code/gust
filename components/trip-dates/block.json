@@ -1,0 +1,24 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 2,
+    "name": "acf/trip-dates",
+    "title": "Trip Dates",
+    "description": "Displays departure dates and booking links for the current trip. Data is read from the trip's ACF fields — no block-level editing.",
+    "category": "theme-blocks",
+    "icon": "calendar-alt",
+    "acf": {
+        "mode": "preview",
+        "postTypes": ["trip"],
+        "renderCallback": "Gust\\Components\\TripDates::renderBlock"
+    },
+    "supports": {
+        "anchor": true,
+        "align": false,
+        "multiple": false,
+        "color": {
+            "background": false,
+            "text": false,
+            "gradients": false
+        }
+    }
+}

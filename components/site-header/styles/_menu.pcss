@@ -19,10 +19,12 @@
         @apply link--2;
 
         display: inline-flex;
-
-        @media (width < theme('screens.site-header')) {
-            @apply type-h3;
-        }
+        font-family: var(--font-display);
+        font-size: 20px;
+        font-weight: 400;
+        line-height: 1.2;
+        letter-spacing: 0.75px;
+        text-transform: uppercase;
 
         &:not([href]) {
             cursor: default;
@@ -84,6 +86,131 @@
         &:where(.menu-item--current) {
             > .menu-item__wrap a {
                 --link--text-decoration: underline;
+            }
+        }
+
+        /* Mobile: horizontal divider between top-level items */
+        &:where(.menu-item--depth-0) {
+            @media (width < theme('screens.site-header')) {
+                border-bottom: 1px solid var(--color-neutral);
+            }
+        }
+
+    }
+
+    /* Sub-menu toggle button — renders a chevron arrow */
+    .sub-menu-toggler {
+        @apply button-reset;
+
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: space(4);
+        color: var(--link--color);
+        margin-left: space(8);
+
+        &::before {
+            content: '';
+            display: block;
+            width: var(--menu-item--arrow-size);
+            height: var(--menu-item--arrow-size);
+            border-right: 2px solid currentColor;
+            border-bottom: 2px solid currentColor;
+            margin-bottom: 4px;
+
+            /* Mobile: right-pointing (collapsed), down-pointing (expanded) */
+            @media (width < theme('screens.site-header')) {
+                transform: rotate(-45deg);
+                transition: transform var(--site-header--menu--duration) var(--site-header--menu--ease);
+            }
+
+            /* Desktop: always down-pointing, no animation */
+            @media (width >= theme('screens.site-header')) {
+                transform: rotate(45deg);
+            }
+        }
+
+        /* Mobile expanded state */
+        @media (width < theme('screens.site-header')) {
+            &[aria-expanded='true']::before {
+                transform: rotate(45deg);
+            }
+        }
+    }
+
+    /* Sub-menu container */
+    .sub-menu {
+        /* Mobile: expand inline with left indentation */
+        @media (width < theme('screens.site-header')) {
+
+            a {
+                @apply type-small;
+
+                text-transform: none;
+            }
+
+            .sub-menu__heading {
+                display: none;
+            }
+
+            .menu-list {
+                gap: space(16);
+            }
+
+            .menu-item__wrap {
+                min-height: 0;
+            }
+        }
+
+        /* Desktop: mega-menu full-width panel */
+        &.sub-menu--depth-0 {
+            @media (width >= theme('screens.site-header')) {
+                @apply color-context-white content-width-md;
+
+                position: fixed;
+                top: calc(var(--site-header--top) + var(--site-header--height) + space(24));
+                left: 0;
+                right: 0;
+                padding: space(40);
+                box-shadow: 0 0 space(10) rgb(0 0 0 / 0.1);
+                z-index: 10;
+
+                .sub-menu__inner {
+                    display: grid;
+                    grid-template-columns: repeat(3, 1fr);
+                    column-gap: space(32);
+                    row-gap: space(24);
+                }
+
+                .sub-menu__heading {
+                    @apply type-regular;
+
+                    grid-column: 1 / 2;
+                    grid-row: 1;
+                    margin: 0;
+                    text-transform: uppercase;
+                    color: var(--color-navy);
+                    text-align: left;
+                    font-weight: 600;
+                }
+
+                a {
+                    @apply type-small;
+
+                    text-transform: none;
+                    font-family: var(--font-body);
+                    letter-spacing: -0.2px;
+                    color: var(--color-navy);
+                }
+
+                > .sub-menu__inner > .menu-list {
+                    grid-column: 1 / -1;
+                    grid-row: 2;
+                    grid-auto-flow: row;
+                    grid-template-columns: repeat(3, 1fr);
+                    gap: space(12) space(32);
+                    text-align: left;
+                }
             }
         }
     }

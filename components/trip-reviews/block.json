@@ -1,0 +1,18 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 2,
+    "name": "acf/trip-reviews",
+    "title": "Trip Reviews",
+    "category": "theme-blocks",
+    "icon": "format-status",
+    "acf": {
+        "mode": "preview",
+        "postTypes": ["trip"],
+        "renderCallback": "Gust\\Components\\TripReviews::renderBlock"
+    },
+    "supports": {
+        "anchor": false,
+        "align": false,
+        "multiple": false
+    }
+}

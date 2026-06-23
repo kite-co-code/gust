@@ -34,6 +34,8 @@ class LogoGrid extends ComponentBase
         ?string $columns = null,
         ?string $display = null,
         array $items = [],
+        array $logos = [],
+        ?string $featured_text = null,
         ...$others
     ): ?static {
         return static::createFromArgs(static::mergeArgs(get_defined_vars()));

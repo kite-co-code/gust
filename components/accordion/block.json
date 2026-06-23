@@ -1,6 +1,6 @@
 {
     "$schema": "https://schemas.wp.org/trunk/block.json",
-    "apiVersion": 3,
+    "apiVersion": 2,
     "name": "acf/accordion",
     "title": "Accordion",
     "description": "An accordion block",
@@ -15,7 +15,8 @@
         "align": false,
         "color": {
             "text": false,
-            "gradients": false
+            "gradients": false,
+            "background": false
         }
     }
 }

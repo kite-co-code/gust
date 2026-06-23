@@ -25,7 +25,7 @@ class Router
         }
 
         // Hook into WordPress
-        \add_action('parse_request', [static::class, 'matchOwnedRoutes'], 1);
+        \add_action('template_redirect', [static::class, 'matchOwnedRoutes'], 0);
         \add_action('template_redirect', [static::class, 'matchDecoratedRoutes'], 1);
         \add_filter('template_include', [static::class, 'resolveTemplate'], 999);
 
@@ -134,15 +134,14 @@ class Router
         }
     }
 
-    public static function matchOwnedRoutes(\WP $wp): void
+    public static function matchOwnedRoutes(): void
     {
+        global $wp;
         $path = '/'.trim($wp->request, '/');
         $route = Matcher::matchOwned(static::$routes, $path);
 
         if ($route) {
             static::$current = $route;
-            static::dispatch($route);
-            exit;
         }
     }
 

@@ -1,0 +1,17 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 2,
+    "name": "acf/promo",
+    "title": "Promo",
+    "description": "Promotional call-to-action with title, subheading, and button.",
+    "category": "theme-blocks",
+    "icon": "megaphone",
+    "acf": {
+        "mode": "auto",
+        "renderCallback": "Gust\\Components\\Promo::renderBlock"
+    },
+    "supports": {
+        "anchor": true,
+        "align": ["wide", "full"]
+    }
+}

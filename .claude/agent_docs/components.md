@@ -256,7 +256,7 @@ Map spec fields to ACF types:
 ```json
 {
     "$schema": "https://schemas.wp.org/trunk/block.json",
-    "apiVersion": 3,
+    "apiVersion": 2,
     "name": "acf/my-component",
     "title": "My Component",
     "description": "",
@@ -274,6 +274,8 @@ Map spec fields to ACF types:
 ```
 
 The `renderBlock` method is inherited from `ComponentBase` — no PHP file needed.
+
+> **Important:** Always use `"apiVersion": 2`. apiVersion 3 uses an iFrame canvas which forces ACF fields into the Block Inspector sidebar. apiVersion 2 renders the ACF edit form inline in the block canvas, which is the expected editor experience.
 
 ## Using Components
 

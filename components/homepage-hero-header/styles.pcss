@@ -1,0 +1,248 @@
+.homepage-hero-header {
+    --homepage-hero-header--grid-alignment-x: center;
+    --homepage-hero-header--text-align: center;
+    --homepage-hero-header--gap: spaceFluid(12, 16);
+    --homepage-hero-header--grid-template-areas: 'content';
+    --homepage-hero-header--padding-top: var(--space-layout);
+    --homepage-hero-header--padding-block: var(--space-layout);
+
+    --homepage-hero-header--content--spacing: space(24);
+    --homepage-hero-header--mini-image--size: 6.25rem; /* 100px */
+    --homepage-hero-header--inset-image--aspect-ratio: 5/4;
+    --homepage-hero-header--heading--max-width: 16em;
+    --homepage-hero-header--subheading--max-width: 24em;
+
+    --section--margin-bottom: spaceFluid(24, 32);
+
+    @apply margin-trim;
+
+    position: relative;
+    display: grid;
+    align-items: center;
+    justify-content: center;
+    height: 800px;
+    grid-template-columns: var(--width-fluid-md);
+    isolation: isolate; /* Create local stacking context */
+    justify-items: var(--homepage-hero-header--grid-alignment-x);
+    background-color: var(--color-white);
+    color: var(--color-navy);
+
+    @media (min-width: theme('screens.md')) {
+        --homepage-hero-header--mini-image--size: 9.375rem; /* 150px */
+        --homepage-hero-header--inset-image--aspect-ratio: 10/9;
+    }
+
+    &.has-inset-image {
+        --homepage-hero-header--text-align: left;
+        --homepage-hero-header--grid-alignment-x: flex-start;
+        --homepage-hero-header--grid-template-areas: 'content' 'media';
+        --homepage-hero-header--padding-block: spaceFluid(16, 24);
+
+        @media (min-width: theme('screens.md')) {
+            --homepage-hero-header--grid-template-areas: 'content media';
+            --homepage-hero-header--grid-template-columns: 1fr 50%;
+        }
+
+        @media (min-width: theme('screens.lg')) {
+            --homepage-hero-header--padding-block: space(32);
+        }
+
+        &.has-breadcrumbs {
+            @media (width < theme('screens.md')) {
+                --homepage-hero-header--padding-block: calc(spaceFluid(16, 24) + spaceFluid(8, 12))
+                    spaceFluid(16, 24);
+            }
+        }
+    }
+
+    &.has-mini-image {
+        --homepage-hero-header--grid-template-areas: 'media' 'content';
+    }
+
+    &.has-background-image {
+        color: var(--color-white);
+
+        .homepage-hero-header__bg-image {
+            position: absolute;
+            inset: 0;
+            z-index: -1;
+            overflow: hidden;
+
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+
+            &::before,
+            &::after {
+                content: '';
+                position: absolute;
+                z-index: 1;
+                pointer-events: none;
+                inset-inline: 0;
+            }
+
+            &::before {
+                top: 0;
+                height: 38%;
+                background: linear-gradient(180deg, hsl(var(--color-black--hsl) / 0.75) 0%, hsl(var(--color-black--hsl) / 0) 100%);
+            }
+
+            &::after {
+                bottom: 0;
+                height: 33%;
+                background: linear-gradient(180deg, var(--color-white) 0%, var(--color-navy) 100%);
+                mix-blend-mode: multiply;
+            }
+        }
+    }
+
+    &:where(.homepage-hero-header--type--article) {
+        --homepage-hero-header--padding-block: spaceFluid(16, 24);
+
+        &.has-breadcrumbs {
+            --homepage-hero-header--padding-block: calc(spaceFluid(16, 24) + spaceFluid(4, 8))
+                spaceFluid(16, 24);
+        }
+    }
+
+    :where(.homepage-hero-header__inner) {
+        display: grid;
+        width: 100%;
+        gap: var(--homepage-hero-header--gap);
+        grid-template-areas: var(--homepage-hero-header--grid-template-areas);
+        grid-template-columns: var(--homepage-hero-header--grid-template-columns, auto);
+        padding-block: var(--homepage-hero-header--padding-block);
+        place-items: center;
+    }
+
+    :where(.homepage-hero-header__content) {
+        position: absolute;
+        bottom: 60px;
+        /* Explicit left/right anchoring — without these, iOS Safari uses the
+         * "static position" (centered in the grid area) as the left edge and
+         * then applies width: 100% on top of that, pushing content right of
+         * the viewport. Headless Chrome normalises this; iOS does not. */
+        inset-inline: 0;
+        display: grid;
+        flex-flow: column nowrap;
+        grid-area: content;
+        justify-items: var(--homepage-hero-header--grid-alignment-x);
+        text-align: var(--homepage-hero-header--text-align);
+    }
+
+    :where(.homepage-hero-header__heading) {
+        max-width: var(--homepage-hero-header--heading--max-width);
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+
+    :where(.homepage-hero-header__subheading) {
+        @apply margin-trim;
+        @apply type-large;
+
+        max-width: var(--homepage-hero-header--subheading--max-width);
+        margin-top: var(--homepage-hero-header--content--spacing, var(--space-base));
+    }
+
+    :where(.homepage-hero-header__meta) {
+        margin-top: var(--homepage-hero-header--content--spacing, var(--space-base));
+    }
+
+    :where(.homepage-hero-header__labels) {
+        --grid--row-gap: space(4);
+        --grid--column-gap: space(4);
+
+        margin-top: var(--homepage-hero-header--content--spacing, var(--space-base));
+
+        .flex-list {
+            justify-content: center;
+        }
+    }
+
+    :where(.homepage-hero-header__buttons) {
+        --grid--row-gap: space(4);
+        --grid--column-gap: space(4);
+
+        margin-top: var(--homepage-hero-header--content--spacing, var(--space-base));
+
+        .flex-list {
+            justify-content: var(--homepage-hero-header--grid-alignment-x);
+        }
+    }
+
+    :where(.homepage-hero-header__mini-image) {
+        :where(.homepage-hero-header__mini-image-inner) {
+            width: var(--homepage-hero-header--mini-image--size);
+            height: var(--homepage-hero-header--mini-image--size);
+            flex-flow: column nowrap;
+            border-radius: 999px;
+            margin-right: auto;
+            margin-left: auto;
+            box-shadow: var(--base--shadow);
+        }
+    }
+
+    :where(.homepage-hero-header__inset-image) {
+        overflow: var(--rounded-overflow, visible);
+        border-radius: var(--rounded-border-radius);
+        width: 100%;
+        grid-area: media;
+
+        :where(.homepage-hero-header__inset-image-inner) {
+            position: relative;
+            width: 100%;
+            aspect-ratio: var(--homepage-hero-header--inset-image--aspect-ratio);
+        }
+    }
+
+    .breadcrumbs {
+        @apply content-width-md;
+
+        position: absolute;
+        z-index: 101; /* Above background image and header */
+        top: 0;
+        width: 100%;
+        padding-top: spaceFluid(4, 8);
+        inset-inline: 0;
+        text-align: left;
+    }
+
+    &.has-background {
+        padding-top: var(--media-content--outer-padding-block, 0);
+        padding-bottom: var(--media-content--outer-padding-block, 0);
+    }
+
+    &:where(.homepage-hero-header--type--article) {
+        .homepage-hero-header__heading {
+            @apply type-h2;
+        }
+    }
+
+    &:where(.homepage-hero-header--type--guide) {
+        --homepage-hero-header--grid-alignment-x: flex-start;
+        --homepage-hero-header--text-align: left;
+        padding-inline: var(--content-gutter);
+        justify-content: flex-start;
+
+        .homepage-hero-header__subheading {
+            @apply type-large;
+            color: var(--color-mid-blue);
+        }
+
+        .homepage-hero-header__heading {
+            color: var(--color-navy);
+        }
+
+        :where(.homepage-hero-header__inner) {
+            padding-block: spaceFluid(24, 32) 0;
+            place-items: start;
+        }
+
+        :where(.homepage-hero-header__content) {
+            max-width: 44rem;
+        }
+    }
+
+}

@@ -1,6 +1,6 @@
 {
     "$schema": "https://schemas.wp.org/trunk/block.json",
-    "apiVersion": 3,
+    "apiVersion": 2,
     "name": "acf/cards",
     "title": "Cards",
     "description": "A cards block",
@@ -12,10 +12,11 @@
     },
     "supports": {
         "anchor": true,
-        "align": ["wide", "full"],
+        "align": false,
         "color": {
             "text": false,
-            "gradients": false
+            "gradients": false,
+            "background": false
         }
     }
 }

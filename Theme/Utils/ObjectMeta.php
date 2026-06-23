@@ -32,6 +32,19 @@ class ObjectMeta
 
     public static function getObjectAuthor($object)
     {
+        if ($object instanceof \WP_Post && $object->post_type === 'story') {
+            $contributor = \get_field('contributor_name', $object->ID);
+
+            if (empty($contributor)) {
+                return false;
+            }
+
+            return [
+                'title' => $contributor,
+                'url' => null,
+            ];
+        }
+
         if (empty($object->post_author)) {
             return false;
         }

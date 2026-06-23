@@ -5,20 +5,22 @@ use Gust\Components\Image;
 
 <footer class="<?= classes('site-footer', $this->classes) ?>" <?= attributes($this->attributes) ?>>
     <div class="site-footer__inner content-width-fluid-lg">
-        <div class="site-footer__top alignwide">
-            <div class="site-footer__logo">
-                <?= \Gust\Components\Link::make(
-                    url: home_url('/'),
-                    content: \Gust\Image::get('logo-alt.svg', [
-                        'alt' => get_bloginfo('name'),
-                    ]),
-                    content_filter: false,
-                ); ?>
-            </div>
+        <?php if (! empty($this->featured_in_logos)) { ?>
+            <?= \Gust\Components\LogoGrid::make(
+                logos: $this->featured_in_logos,
+                featured_text: $this->featured_in_heading,
+                classes: ['site-footer__featured'],
+            ); ?>
+        <?php } ?>
 
+        <div class="site-footer__top alignwide type-small">
             <?php if ($top_text = get_field('footer_text_top', 'option')) { ?>
                 <div class="site-footer__top-text">
                     <?= wp_kses_post($top_text); ?>
+                    <?= \Gust\Components\SocialIcons::make(
+                        // translators: 1: Social network name.
+                        title: __('Visit our %s page', 'gust'),
+                    ); ?>
                 </div>
             <?php } ?>
 
@@ -28,25 +30,18 @@ use Gust\Components\Image;
                 classes: [
                     'site-footer__menu',
                     'site-footer__menu-1',
+                    'type-small',
                 ],
                 heading: true,
-            ); ?>
-
-            <?= \Gust\Components\Menu::make(
-                theme_location: 'footer-2',
-                max_depth: 1,
-                classes: [
-                    'site-footer__menu',
-                    'site-footer__menu-2',
-                ],
-                heading: true,
+                aria_label: __('Footer', 'gust'),
             ); ?>
 
             <div class="site-footer__right">
-                <?= \Gust\Components\SocialIcons::make(
-                    // translators: 1: Social network name.
-                    title: __('Visit our %s page', 'gust'),
-                ); ?>
+                <?php if ($footer_form = get_field('footer_form', 'option')) { ?>
+                    <div class="site-footer__form">
+                        <?= do_shortcode(wp_kses_post($footer_form)); ?>
+                    </div>
+                <?php } ?>
 
                 <?php if (! empty($this->content['images'])) { ?>
                     <div class="site-footer__images flex-grid">
@@ -67,7 +62,7 @@ use Gust\Components\Image;
         <div class="site-footer__bottom">
             <div class="site-footer__bottom__inner alignwide">
                 <?php if ($bottom_text = get_field('footer_text_bottom', 'option')) { ?>
-                    <div class="site-footer__bottom-text">
+                    <div class="site-footer__bottom-text type-small">
                         <?= wp_kses_post($bottom_text); ?>
                     </div>
                 <?php } ?>

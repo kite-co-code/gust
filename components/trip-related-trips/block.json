@@ -1,0 +1,18 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 2,
+    "name": "acf/trip-related-trips",
+    "title": "Trip Related Trips",
+    "category": "theme-blocks",
+    "icon": "admin-site-alt3",
+    "acf": {
+        "mode": "preview",
+        "postTypes": ["trip"],
+        "renderCallback": "Gust\\Components\\TripRelatedTrips::renderBlock"
+    },
+    "supports": {
+        "anchor": false,
+        "align": false,
+        "multiple": false
+    }
+}

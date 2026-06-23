@@ -20,7 +20,7 @@ class SiteFooter extends ComponentBase
     protected static function getDefaults(): array
     {
         return [
-            'background_color' => 'brand-2',
+            'background_color' => 'white',
         ];
     }
 
@@ -42,6 +42,25 @@ class SiteFooter extends ComponentBase
      */
     protected static function transform(array $args): array
     {
+        $args['featured_in_heading'] = get_field('featured_in_heading', 'option') ?: 'Featured in';
+        $args['featured_in_logos'] = [];
+
+        if (have_rows('featured_in_logos', 'option')) {
+            while (have_rows('featured_in_logos', 'option')) {
+                the_row();
+
+                $image = get_sub_field('image');
+                if (empty($image)) {
+                    continue;
+                }
+
+                $args['featured_in_logos'][] = [
+                    'image' => array_merge($image, ['size' => 'medium']),
+                    'link' => get_sub_field('link') ?: null,
+                ];
+            }
+        }
+
         if (have_rows('footer_images', 'option')) {
             $args['content']['images'] = [];
 

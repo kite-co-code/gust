@@ -1,0 +1,18 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 2,
+    "name": "acf/trip-includes",
+    "title": "Trip Includes",
+    "category": "theme-blocks",
+    "icon": "yes-alt",
+    "acf": {
+        "mode": "preview",
+        "postTypes": ["trip"],
+        "renderCallback": "Gust\\Components\\TripIncludes::renderBlock"
+    },
+    "supports": {
+        "anchor": false,
+        "align": false,
+        "multiple": false
+    }
+}

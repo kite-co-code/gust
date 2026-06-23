@@ -9,6 +9,7 @@ class Editor
         \add_action('after_setup_theme', [__CLASS__, 'editorSupport']);
         \add_filter('block_categories_all', [__CLASS__, 'blockCategory']);
         \add_filter('allowed_block_types_all', [__CLASS__, 'allowedBlockTypes'], 10, 2);
+        \add_filter('block_editor_settings_all', [__CLASS__, 'editorSettings'], 10, 2);
     }
 
     public static function editorSupport(): void
@@ -77,6 +78,27 @@ class Editor
             $allowed = array_merge($allowed, array_keys(\acf_get_block_types()));
         }
 
+        // Remove Columns and Group blocks to prevent transform options on Cards.
+        $allowed = array_diff($allowed, ['core/columns', 'core/group']);
+
         return $allowed;
+    }
+
+    /**
+     * Disable Openverse in the block editor media panel.
+     *
+     * @param  array  $editorSettings  Default editor settings.
+     * @param  \WP_Block_Editor_Context  $context  Editor context.
+     */
+    public static function editorSettings(array $editorSettings, \WP_Block_Editor_Context $context): array
+    {
+        $editorSettings['enableOpenverseMediaCategory'] = false;
+
+        // Remove the Attributes (block bindings) panel for blocks where it's not useful to clients.
+        foreach (['core/paragraph', 'core/heading'] as $block) {
+            unset($editorSettings['__experimentalBlockBindingsSupportedAttributes'][$block]);
+        }
+
+        return $editorSettings;
     }
 }

@@ -13,9 +13,10 @@
     <!-- Buttons -->
     <div class="dev-kit__subsection">
         <h3 data-dev-ui>Buttons</h3>
-        <small><code class="dev-kit__code">.btn</code> and variants</small>
+        <small><code class="dev-kit__code">.btn</code> and variants — League Gothic 400, 18px, uppercase, 0.75px tracking</small>
         <div class="dev-kit__demo">
             <div class="flex-list">
+                <input type="submit" class="btn" value="Submit">
                 <button class="btn">.btn</button>
                 <button class="btn btn--small">.btn--small</button>
                 <button class="btn btn--label">.btn--label</button>
@@ -92,15 +93,18 @@
         <h3 data-dev-ui>Typography</h3>
         <small><code class="dev-kit__code">.type-*</code> styles</small>
         <div class="dev-kit__demo">
-            <div class="type-hero">.type-hero</div>
-            <div class="type-h1">.type-h1</div>
-            <div class="type-h2">.type-h2</div>
-            <div class="type-h3">.type-h3</div>
-            <div class="type-h4">.type-h4</div>
-            <div class="type-h5">.type-h5</div>
-            <div class="type-h6">.type-h6</div>
-            <div class="type-base">.type-base</div>
-            <div class="type-meta">.type-meta</div>
+            <div class="type-hero">.type-hero — League Gothic 400, 64→96px, uppercase</div>
+            <div class="type-h1">.type-h1 — League Gothic 400, 64→96px, uppercase</div>
+            <div class="type-h2">.type-h2 — Inter 700, 26→44px, uppercase</div>
+            <div class="type-h3">.type-h3 — Inter 700, 24→40px</div>
+            <div class="type-h4">.type-h4 — Inter 700, 22→32px</div>
+            <div class="type-h5">.type-h5 — Inter 700, 18→24px</div>
+            <div class="type-h6">.type-h6 — Inter 700, 16→18px</div>
+            <div class="type-large">.type-large — Inter 400, 18→22px</div>
+            <div class="type-base">.type-base — Inter 400, 18px</div>
+            <div class="type-small">.type-small — Inter 400, 16px</div>
+            <div class="type-meta">.type-meta — Inter 500, 16px</div>
+            <div class="type-button">.type-button — Inter 700, 18px</div>
         </div>
     </div>
 
@@ -363,8 +367,8 @@
                     <strong>.foreground-from-accent</strong>
                     <p style="margin: 0;">With <a href="#">a link</a></p>
                 </div>
-                <div class="foreground-from-blue bg-blue">
-                    <strong>.foreground-from-blue</strong>
+                <div class="foreground-from-navy bg-navy">
+                    <strong>.foreground-from-navy</strong>
                     <p style="margin: 0;">With <a href="#">a link</a></p>
                 </div>
                 <div class="foreground-from-red bg-red">

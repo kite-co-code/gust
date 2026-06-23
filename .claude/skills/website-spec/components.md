@@ -95,6 +95,41 @@ When multiple components need defining:
 - **items** (relationship, post_type: {type}) - Manual override; if empty, auto-populates
 ```
 
+### Locked Template Section
+Use this when a post type is built from a fixed sequence of blocks and some sections pull from post-level ACF or related posts instead of block fields.
+
+```markdown
+### {Section Name} [Block]
+Locked template section for the {post type} single page.
+
+**Render rule:**
+- Do not render if the required data source is empty.
+
+**Data source:**
+- Post-level ACF: {field names}
+- Related post: {relationship field}
+- Derived from taxonomies/meta: {logic}
+
+**Fields:**
+- **field_name** (type) - Description
+```
+
+### Hard-Coded Single Section
+Use this when a single post type is rendered entirely from PHP and post-level ACF, with no editor-managed body content.
+
+```markdown
+### {Section Name} [Partial]
+Hard-coded section in the {post type} single template.
+
+**Render rule:**
+- Do not render if the required post-level data is empty.
+
+**Data source:**
+- Post-level ACF: {field names}
+- Relationships: {field names}
+- Taxonomies/meta: {logic}
+```
+
 ## Partial vs Block
 
 | Partial | Block |

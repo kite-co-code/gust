@@ -1,0 +1,62 @@
+.print-page-action {
+    display: flex;
+    justify-content: center;
+    margin-block: space(32);
+}
+
+@media print {
+    .site-header,
+    .site-footer,
+    .breadcrumbs,
+    .print-page-action,
+    .wp-block-navigation,
+    .skip-link {
+        display: none !important;
+    }
+
+    :root {
+        --color-background: #fff;
+        --color-foreground: #000;
+    }
+
+    html,
+    body {
+        background: #fff !important;
+        color: #000 !important;
+    }
+
+    .site-main {
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    .page-header {
+        page-break-after: avoid;
+    }
+
+    .page-header__hero-image,
+    .page-header__inset-image,
+    .page-header__mini-image,
+    .page-header__square-image {
+        display: none !important;
+    }
+
+    a {
+        color: #000 !important;
+        text-decoration: underline;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+        page-break-after: avoid;
+    }
+
+    img,
+    figure,
+    table {
+        page-break-inside: avoid;
+    }
+
+    @page {
+        margin: 1.5cm;
+    }
+}

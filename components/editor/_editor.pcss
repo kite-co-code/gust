@@ -90,6 +90,26 @@
     @apply margin-trim;
 }
 
+/* */
+/* Accordion: override WP admin .button styles (specificity 0,2,0) */
+/* .accordion__item__header uses Button component which always adds .button class */
+/* */
+.accordion .accordion__item .accordion__item__header {
+    display: grid;
+    color: var(--color-foreground);
+    background-color: var(--color-neutral);
+}
+
+/* */
+/* Gallery: override WP admin .button styles for prev/next navigation buttons */
+/* */
+.gallery__swiper-wrap .gallery__prev,
+.gallery__swiper-wrap .gallery__next {
+    display: flex;
+    color: var(--color-navy);
+    background-color: var(--color-white);
+}
+
 .acf-icon {
     background-color: #fff;
     color: #555d66;

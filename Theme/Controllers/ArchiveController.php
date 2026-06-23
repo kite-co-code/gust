@@ -2,23 +2,13 @@
 
 namespace Theme\Controllers;
 
-use Gust\Components\Cards;
 use Gust\Components\NoContent;
 use Gust\Components\Pagination;
+use Gust\Components\TripCards;
 use Gust\WordPress\PageObject;
 
 class ArchiveController
 {
-    public function prepare(): void
-    {
-        // Modify query if needed
-        // \add_action('pre_get_posts', function ($query) {
-        //     if ($query->is_main_query() && ! \is_admin()) {
-        //         $query->set('posts_per_page', 12);
-        //     }
-        // });
-    }
-
     public static function renderLoop(): string
     {
         $object = PageObject::get();
@@ -32,7 +22,7 @@ class ArchiveController
         \ob_start();
 
         if (! empty($items)) {
-            echo Cards::make(items: $items);
+            echo TripCards::make(items: $items);
             echo Pagination::make();
         } else {
             echo NoContent::make(object: $object);

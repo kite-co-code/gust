@@ -1,0 +1,51 @@
+{
+    "key": "group_itinerary_fields",
+    "title": "Itinerary Fields",
+    "fields": [
+        {
+            "key": "field_itinerary_preview_days",
+            "label": "Preview Days",
+            "name": "preview_days",
+            "type": "repeater",
+            "instructions": "Add up to three teaser days for the trip itinerary preview. The full itinerary content can still be managed in the Gutenberg editor below.",
+            "required": 0,
+            "collapsed": "field_itinerary_preview_day_title",
+            "min": 0,
+            "max": 3,
+            "layout": "block",
+            "button_label": "Add Preview Day",
+            "sub_fields": [
+                {
+                    "key": "field_itinerary_preview_day_title",
+                    "label": "Day Title",
+                    "name": "title",
+                    "type": "text",
+                    "instructions": "Short title for this day preview.",
+                    "required": 1
+                },
+                {
+                    "key": "field_itinerary_preview_day_summary",
+                    "label": "Summary",
+                    "name": "summary",
+                    "type": "textarea",
+                    "instructions": "Brief summary shown in the trip teaser.",
+                    "required": 1,
+                    "rows": 4,
+                    "new_lines": "br"
+                }
+            ]
+        }
+    ],
+    "location": [[
+        {
+            "param": "post_type",
+            "operator": "==",
+            "value": "itinerary"
+        }
+    ]],
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "active": true
+}

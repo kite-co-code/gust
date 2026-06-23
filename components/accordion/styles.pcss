@@ -1,30 +1,32 @@
 .accordion {
-    --accordion--items--border-y: var(--base--border);
+    --accordion--items--border-y: var(--border-orange);
     --accordion--item--padding-y: space(12);
-    --accordion--item--panel--padding-y: space(12);
+    --accordion--item--panel--padding-y: space(24);
     --accordion--btn--size: 2.1875rem; /* 35px */
     --accordion--icon--size: 0.75rem; /* 12px */
 
     :where(.accordion__header) {
         @apply margin-trim;
-
-        margin-bottom: var(--section--header--margin-bottom);
+        margin-bottom: space(32);
     }
 
     :where(.accordion__heading) {
         max-width: var(--heading--max-width);
-        margin-inline: auto;
-        text-align: center;
+        text-align: start;
+        text-transform: capitalize;
     }
 
     :where(.accordion__items) {
         border-top: var(--accordion--items--border-y);
+        border-right: var(--accordion--items--border-y);
+        border-left: var(--accordion--items--border-y);
     }
 
     :where(.accordion__item) {
         border-bottom: var(--accordion--items--border-y);
 
         :where(.accordion__item__heading) {
+            @apply type-h6;
             @apply content-width-2xs;
 
             padding: 0;
@@ -38,7 +40,7 @@
             width: 100%;
             align-items: center;
             justify-content: space-between;
-            padding: var(--accordion--item--padding-y) 0;
+            padding: var(--accordion--item--padding-y) spaceFluid(16, 24);
             margin: 0;
             background: none;
             color: var(--color-foreground);
@@ -46,6 +48,14 @@
             grid-template-areas: 'content button';
             grid-template-columns: 1fr var(--accordion--btn--size);
             text-align: left;
+
+            &[aria-expanded='true'] {
+                background-color: var(--color-neutral);
+            }
+
+            @media (min-width: theme('screens.md')) {
+                min-height: space(80);
+            }
 
             @media (hover: hover) {
                 &:hover {
@@ -85,12 +95,11 @@
             }
 
             &::before {
-                border-radius: var(--radius-sm);
-                background-color: var(--color-brand-2);
+                border: solid 1px var(--color-navy);
             }
 
             &::after {
-                background-color: var(--color-accent);
+                background-color: var(--color-black);
                 content: '';
                 mask-image: url('/images/icons/chevron-down.svg');
                 mask-position: center;
@@ -104,11 +113,17 @@
             overflow: hidden;
 
             :where(.accordion__item__panel-inner) {
+                @apply type-small;
                 @apply margin-trim;
 
-                max-width: var(--container-xs);
-                padding-bottom: var(--accordion--item--panel--padding-y);
+                background-color: var(--color-neutral);
+                padding: 0 spaceFluid(16, 24) var(--accordion--item--panel--padding-y);
+
             }
+        }
+
+        :where(.accordion__item__panel) p {
+            @apply type-small;
         }
     }
 }

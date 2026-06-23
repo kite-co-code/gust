@@ -45,3 +45,15 @@ $sample_id = ! empty($attachments) ? $attachments[0]->ID : null;
         <?php } ?>
     </div>
 </section>
+
+<section class="component-example-section">
+    <h2 class="component-example-section__title">Full-width Image</h2>
+    <p class="component-example-section__description">Image with full_width size (600px tall and viewport-wide), scales height with narrow viewports.</p>
+    <div class="component-example-section__preview">
+        <?php if ($sample_id) { ?>
+            <?= Image::make(id: $sample_id, size: 'full_width'); ?>
+        <?php } else { ?>
+            <p><em>No images in media library.</em></p>
+        <?php } ?>
+    </div>
+</section>

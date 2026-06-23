@@ -1,0 +1,41 @@
+{
+    "key": "group_component_image_full_width",
+    "title": "Full-width Image",
+    "fields": [
+        {
+            "key": "field_image_full_width_image",
+            "label": "Image",
+            "name": "image",
+            "type": "image",
+            "instructions": "Select an image to display full-width",
+            "required": 1,
+            "return_format": "id",
+            "preview_size": "medium",
+            "library": "all",
+            "min_width": "",
+            "min_height": "",
+            "min_size": "",
+            "max_width": "",
+            "max_height": "",
+            "max_size": "",
+            "mime_types": ""
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "block",
+                "operator": "==",
+                "value": "acf/image-full-width"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "Fields for the Full-width Image block"
+}

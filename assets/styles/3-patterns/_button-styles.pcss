@@ -2,21 +2,24 @@
 
 @layer base {
     :root {
-        /* --btn--font-size: rfs(18, 22); */
+        --btn--font-size: 18px;
+        --btn--font-family: var(--font-display);
+        --btn--font-weight: 400;
+        --btn--text-transform: uppercase;
+        --btn--letter-spacing: 0.75px;
 
-        --btn--padding-y: 0.2em;
-        --btn--padding-x: 1em;
+        --btn--padding-y: space(8);
+        --btn--padding-x: space(16);
 
-        --btn--border-width: 2px;
-        --btn--border-radius: 999px;
+        --btn--border-width: 0.5px;
 
-        --btn--background-color: var(--color-brand-2);
-        --btn--border-color: var(--color-brand-2);
-        --btn--color: var(--color-accent);
+        --btn--background-color: var(--color-orange);
+        --btn--border-color: var(--color-orange);
+        --btn--color: var(--color-navy);
 
-        --btn--background-color--hover: var(--color-accent);
-        --btn--border-color--hover: var(--color-accent);
-        --btn--color-hover: foreground-color("accent");
+        --btn--background-color--hover: var(--color-mid-blue);
+        --btn--border-color--hover: var(--color-mid-blue);
+        --btn--color-hover: var(--color-white);
 
         --btn--gap: 0.5em;
     }
@@ -36,7 +39,11 @@
     background-color: var(--btn--background-color);
     color: var(--btn--color);
     cursor: pointer;
+    font-family: var(--btn--font-family, inherit);
     font-size: var(--btn--font-size, inherit);
+    font-weight: var(--btn--font-weight, inherit);
+    letter-spacing: var(--btn--letter-spacing, normal);
+    text-transform: var(--btn--text-transform, none);
     gap: var(--btn--gap);
     line-height: inherit;
     text-align: center;
@@ -88,12 +95,12 @@
 }
 
 @utility btn--theme-2 {
-    --btn--background-color: var(--color-accent);
-    --btn--border-color: var(--color-accent);
-    --btn--color: var(--color-white);
+    --btn--background-color: transparent;
+    --btn--border-color: var(--color-navy);
+    --btn--color: var(--color-navy);
 
-    --btn--background-color--hover: var(--color-accent);
-    --btn--border-color--hover: var(--color-accent);
+    --btn--background-color--hover: var(--color-navy);
+    --btn--border-color--hover: var(--color-navy);
     --btn--color-hover: var(--color-white);
 }
 
@@ -107,23 +114,14 @@
     --btn--color-hover: var(--color-foreground);
 }
 
-/* @apply btn--theme-3 { */
-/*     --btn--background-color: var(--color-accent); */
-/*     --btn--border-color: var(--color-accent); */
-/*     --btn--color: var(--color-white); */
+@utility btn--inactive {
+    --btn--color: rgb(from var(--color-white) r g b / 0.4);
+    --btn--background-color: var(--color-navy);
+    --btn--border-color: var(--color-navy);
 
-/*     --btn--background-color--hover: hsl( */
-/*         var(--color-accent--h), */
-/*         calc(var(--color-accent--s) * 0.75), */
-/*         calc(var(--color-accent--l) * 0.75) */
-/*     ); */
-/*     --btn--border-color--hover: hsl( */
-/*         var(--color-accent--h), */
-/*         calc(var(--color-accent--s) * 0.75), */
-/*         calc(var(--color-accent--l) * 0.75) */
-/*     ); */
-/*     --btn--color-hover: var(--color-white); */
-/* } */
+    cursor: not-allowed;
+    pointer-events: none;
+}
 
 @utility btn--small {
     --btn--padding-y: 0;

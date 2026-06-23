@@ -1,0 +1,85 @@
+{
+    "key": "group_accommodation_fields",
+    "title": "Accommodation Fields",
+    "fields": [
+        {
+            "key": "field_accommodation_star_rating",
+            "label": "Star Rating",
+            "name": "star_rating",
+            "type": "number",
+            "instructions": "Whole number from 1 to 5.",
+            "required": 0,
+            "min": 1,
+            "max": 5,
+            "step": 1
+        },
+        {
+            "key": "field_accommodation_tags",
+            "label": "Tags",
+            "name": "tags",
+            "type": "repeater",
+            "instructions": "Short labels such as Free WiFi or Restaurant.",
+            "required": 0,
+            "collapsed": "field_accommodation_tag_label",
+            "layout": "table",
+            "button_label": "Add Tag",
+            "sub_fields": [
+                {
+                    "key": "field_accommodation_tag_label",
+                    "label": "Label",
+                    "name": "label",
+                    "type": "text",
+                    "required": 0
+                }
+            ]
+        },
+        {
+            "key": "field_accommodation_description",
+            "label": "Description",
+            "name": "description",
+            "type": "wysiwyg",
+            "instructions": "Top accommodation summary used on both the single page and trip teaser.",
+            "required": 0,
+            "tabs": "all",
+            "toolbar": "basic_formatting",
+            "media_upload": 0
+        },
+        {
+            "key": "field_accommodation_summary_gallery",
+            "label": "Summary Gallery",
+            "name": "summary_gallery",
+            "type": "gallery",
+            "instructions": "Min 1, max 3 images. These render as square crops in the teaser.",
+            "required": 0,
+            "min": 1,
+            "max": 3,
+            "insert": "append",
+            "library": "all",
+            "mime_types": "",
+            "preview_size": "medium",
+            "return_format": "array"
+        },
+        {
+            "key": "field_accommodation_rooms_intro",
+            "label": "Rooms Intro",
+            "name": "rooms_intro",
+            "type": "textarea",
+            "instructions": "Short copy shown above the View Accommodation CTA in the trip teaser.",
+            "required": 0,
+            "rows": 4,
+            "new_lines": "br"
+        }
+    ],
+    "location": [[
+        {
+            "param": "post_type",
+            "operator": "==",
+            "value": "accommodation"
+        }
+    ]],
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "active": true
+}

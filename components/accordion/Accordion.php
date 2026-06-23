@@ -30,6 +30,11 @@ class Accordion extends ComponentBase
         return static::createFromArgs(static::mergeArgs(get_defined_vars()));
     }
 
+    protected static function validate(array $args): bool
+    {
+        return ! empty($args['accordion_items']);
+    }
+
     protected static function transform(array $args): array
     {
         if (! empty($args['heading'])) {

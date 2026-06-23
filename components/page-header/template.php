@@ -1,26 +1,61 @@
 <header class="<?= classes('page-header', 'wp-block', 'alignfull', 'not-prose', $this->classes) ?>" <?= attributes($this->attributes) ?>>
-    <?php if ($this->show_breadcrumbs) { ?>
-        <?= \Gust\Components\Breadcrumbs::make(); ?>
+    <?php if (! empty($this->image) && $this->image_position === 'hero') { ?>
+        <div class="page-header__hero-image">
+            <div class="page-header__hero-image-inner img-fit">
+                <?= $this->image; ?>
+            </div>
+        </div>
     <?php } ?>
 
     <div class="page-header__inner">
-        <?php if (! empty($this->image) && $this->image_position === 'mini') { ?>
-            <div class="page-header__mini-image">
-                <div class="page-header__mini-image-inner img-fit">
+        <?php if (! empty($this->actions)) { ?>
+            <div class="page-header__actions">
+                <?php foreach ($this->actions as $action) {
+                    echo \Gust\Components\Button::make(
+                        content: $action['label'],
+                        classes: ['btn', 'btn--theme-2', 'page-header__actions__btn'],
+                        attributes: $action['attributes'] ?? [],
+                    );
+                } ?>
+            </div>
+        <?php } ?>
+
+        <?php if (! empty($this->image) && $this->image_position === 'square') { ?>
+            <div class="page-header__square-image">
+                <div class="page-header__square-image-inner img-fit">
                     <?= $this->image; ?>
                 </div>
             </div>
         <?php } ?>
 
         <div class="page-header__content">
+            <?php if (! empty($this->back_link)) { ?>
+                <a class="page-header__back-link" href="<?= esc_url($this->back_link['url']) ?>">
+                    <span class="page-header__back-link__icon" aria-hidden="true"></span>
+                    <span class="page-header__back-link__label"><?= esc_html($this->back_link['label']) ?></span>
+                </a>
+            <?php } elseif ($this->show_breadcrumbs) { ?>
+                <?= \Gust\Components\Breadcrumbs::make(); ?>
+            <?php } ?>
+
+            <?php if (($this->type ?? '') === 'guide') { ?>
+                <?php if (! empty($this->subheading)) { ?>
+                    <div class="page-header__subheading">
+                        <?= wp_kses_post($this->subheading); ?>
+                    </div>
+                <?php } ?>
+            <?php } ?>
+
             <?php if (! empty($this->heading)) { ?>
                 <?= \Gust\Components\Heading::make(...$this->heading); ?>
             <?php } ?>
 
-            <?php if (! empty($this->subheading)) { ?>
-                <div class="page-header__subheading">
-                    <?= wp_kses_post($this->subheading); ?>
-                </div>
+            <?php if (($this->type ?? '') !== 'guide') { ?>
+                <?php if (! empty($this->subheading)) { ?>
+                    <div class="page-header__subheading">
+                        <?= wp_kses_post($this->subheading); ?>
+                    </div>
+                <?php } ?>
             <?php } ?>
 
             <?php if (! empty($this->meta)) { ?>
@@ -46,25 +81,6 @@
                 </div>
             <?php } ?>
 
-            <?php if (! empty($this->buttons)) { ?>
-                <div class="page-header__buttons">
-                    <ul class="flex-list">
-                        <?php foreach ($this->buttons as $button) { ?>
-                            <li class="flex-list__item">
-                                <?= \Gust\Components\Link::make(...$button); ?>
-                            </li>
-                        <?php } ?>
-                    </ul>
-                </div>
-            <?php } ?>
         </div>
-
-        <?php if (! empty($this->image) && $this->image_position === 'inset') { ?>
-            <div class="page-header__inset-image">
-                <div class="page-header__inset-image-inner img-fit">
-                    <?= $this->image; ?>
-                </div>
-            </div>
-        <?php } ?>
     </div>
 </header>

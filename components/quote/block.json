@@ -1,0 +1,22 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 2,
+    "name": "acf/quote",
+    "title": "Quote",
+    "description": "A quote block with credit and role fields",
+    "category": "theme-blocks",
+    "icon": "format-quote",
+    "acf": {
+        "mode": "auto",
+        "renderCallback": "Gust\\Components\\Quote::renderBlock"
+    },
+    "supports": {
+        "anchor": true,
+        "align": false,
+        "color": {
+            "text": false,
+            "background": false,
+            "gradients": false
+        }
+    }
+}

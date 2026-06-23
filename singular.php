@@ -4,15 +4,23 @@ get_header();
 
 $object = \Gust\WordPress\PageObject::get();
 
-site_main_open(object: $object);
+$site_main_classes = ['site-main', 'site-main--single'];
 
-if (! has_block('acf/page-header')) {
-    echo \Gust\Components\PageHeader::make(object: $object);
-}
+site_main_open(classes: $site_main_classes, object: $object);
 
-while (have_posts()) {
-    the_post();
-    the_content();
+if ($object instanceof \WP_Post && $object->post_type === 'trip') {
+    echo \Gust\Components\TripSingle::make(object: $object);
+} elseif ($object instanceof \WP_Post && $object->post_type === 'events') {
+    echo \Gust\Components\EventSingle::make(object: $object);
+} else {
+    if (! \Gust\Helpers::hasPageHeaderBlock()) {
+        echo \Gust\Components\PageHeader::make(object: $object);
+    }
+
+    while (have_posts()) {
+        the_post();
+        the_content();
+    }
 }
 
 site_main_close();

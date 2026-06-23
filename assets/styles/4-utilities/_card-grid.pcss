@@ -1,0 +1,19 @@
+/* --------------------------------------------------- */
+/* Responsive card grid utilities.                       */
+/* 1 col mobile → 2 col tablet → 3 col desktop.         */
+/* Pair with image_size: 'gust_card_square' on Cards.   */
+/* --------------------------------------------------- */
+
+@utility card-grid-square {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--content-grid--gap);
+
+    @media (width >= theme('screens.md')) {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media (width >= theme('screens.lg')) {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}

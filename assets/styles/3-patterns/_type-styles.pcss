@@ -1,97 +1,164 @@
 /* --------------------------------------------------- */
-/* Type Style Mixins */
-/* --------------------------------------------------- */
+/* Type Style Utilities
+ * Desktop specs from swimquest-brand.md
+ * Mobile specs from Figma text styles panel
+ * rfs(mobile, desktop) — fluid between breakpoints
+ * --------------------------------------------------- */
 
+/* Shared Inter heading attributes (H2–H6) */
 @utility heading-attributes {
-    font-family: var(--font-serif);
-    font-weight: var(--font-weight-normal);
-    line-height: 1.3;
-}
-
-@utility type-base {
     font-family: var(--font-sans);
-    font-size: var(--text-base);
-    font-weight: var(--font-weight-normal);
-    line-height: var(--leading-normal);
+    font-weight: 700;
+    line-height: 1.25;
 }
 
-@utility type-meta {
-    font-size: var(--text-base);
-    line-height: 1.2;
-}
+/* ---- Display / H1 — League Gothic ---- */
 
 @utility type-hero {
-    @apply heading-attributes;
-
-    font-size: rfs(36, 40);
-    line-height: 1.2;
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: rfs(64, 96);
+    line-height: 0.9;
+    letter-spacing: 0;
+    text-transform: uppercase;
 }
 
 @utility type-h1 {
-    @apply heading-attributes;
-
-    font-size: rfs(28, 36);
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: rfs(64, 96);
+    line-height: 0.9;
+    letter-spacing: 0;
+    text-transform: uppercase;
 }
+
+/* ---- Headings H2–H6 — Inter Bold ---- */
 
 @utility type-h2 {
     @apply heading-attributes;
 
-    font-size: rfs(26, 32);
+    font-size: rfs(26, 44);
+    line-height: 1.31;
+    letter-spacing: -0.5px;
+    text-transform: uppercase;
+
+    @media (width >= theme("screens.md")) {
+        line-height: 1;
+    }
 }
 
 @utility type-h3 {
     @apply heading-attributes;
 
-    font-size: rfs(23, 28);
+    font-size: rfs(24, 40);
+    line-height: 1.25;
+    letter-spacing: -0.5px;
 }
 
 @utility type-h4 {
     @apply heading-attributes;
 
-    font-size: rfs(20, 24);
+    font-size: rfs(22, 32);
+    line-height: 1.25;
+    letter-spacing: -0.5px;
+    text-transform: capitalize;
 }
 
 @utility type-h5 {
     @apply heading-attributes;
 
-    font-size: rfs(18, 22);
+    font-size: rfs(18, 24);
+    line-height: 1.33;
 }
 
 @utility type-h6 {
     @apply heading-attributes;
 
-    font-size: var(--text-base);
+    font-size: rfs(16, 18);
+    line-height: 1.44;
+}
+
+/* ---- Body — Inter Regular ---- */
+
+@utility type-large {
+    font-family: var(--font-sans);
+    font-size: rfs(18, 22);
+    font-weight: 400;
+    line-height: 1.32;
+    letter-spacing: -0.5px;
+}
+
+@utility type-quote-credit {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: rem(18);
+    line-height: 1.33;
+    letter-spacing: 0.75px;
+    text-transform: uppercase;
+}
+
+@utility type-regular {
+    font-family: var(--font-sans);
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 1.39;
+    letter-spacing: -0.5px;
+}
+
+@utility type-small {
+    font-family: var(--font-sans);
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.375;
+    letter-spacing: -0.2px;
+}
+
+@utility type-meta {
+    font-family: var(--font-sans);
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.375;
+    letter-spacing: -0.2px;
+}
+
+@utility type-button {
+    font-family: var(--font-sans);
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1.33;
 }
 
 /* WordPress Block Style Classes */
 .is-style-type-hero {
     @apply type-hero;
 }
-
 .is-style-type-h1 {
     @apply type-h1;
 }
-
 .is-style-type-h2 {
     @apply type-h2;
 }
-
 .is-style-type-h3 {
     @apply type-h3;
 }
-
 .is-style-type-h4 {
     @apply type-h4;
 }
-
 .is-style-type-h5 {
     @apply type-h5;
 }
-
 .is-style-type-h6 {
     @apply type-h6;
 }
-
+.is-style-type-regular {
+    @apply type-regular;
+}
+.is-style-type-small {
+    @apply type-small;
+}
+.is-style-type-large {
+    @apply type-large;
+}
 .is-style-type-meta {
     @apply type-meta;
 }

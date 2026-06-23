@@ -1,0 +1,45 @@
+{
+    "key": "group_story_contributor",
+    "title": "Story",
+    "fields": [
+        {
+            "key": "field_story_contributor_name",
+            "label": "Contributor",
+            "name": "contributor_name",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Name shown in the byline (e.g. \"Jane Smith\"). Leave empty to hide the byline.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "By ",
+            "append": "",
+            "maxlength": ""
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "post_type",
+                "operator": "==",
+                "value": "story"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "side",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "show_in_rest": 0,
+    "modified": 1777448000
+}

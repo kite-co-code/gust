@@ -1,9 +1,15 @@
 <article class="<?= classes('g-card', 'animate-element', $this->classes) ?>" <?= attributes($this->attributes) ?>>
     <div class="g-card__inner">
-        <?php if (! empty($this->content['heading']) || ! empty($this->content['text'])) { ?>
+        <?php if (! empty($this->content['heading']) || ! empty($this->content['text']) || ! empty($this->content['meta'])) { ?>
             <div class="g-card__header">
                 <?php if (! empty($this->content['heading'])) { ?>
                     <?= \Gust\Components\Heading::make(...$this->content['heading']); ?>
+                <?php } ?>
+
+                <?php if (! empty($this->content['meta'])) { ?>
+                    <div class="g-card__meta">
+                        <?= wp_kses_post($this->content['meta']); ?>
+                    </div>
                 <?php } ?>
 
                 <?php if (! empty($this->content['text'])) { ?>
@@ -11,12 +17,6 @@
                         <?= wp_kses_post($this->content['text']); ?>
                     </div>
                 <?php } ?>
-            </div>
-        <?php } ?>
-
-        <?php if (! empty($this->content['meta'])) { ?>
-            <div class="g-card__meta">
-                <?= wp_kses_post($this->content['meta']); ?>
             </div>
         <?php } ?>
 

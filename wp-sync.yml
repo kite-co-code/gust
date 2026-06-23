@@ -11,17 +11,22 @@ pull:
 
 push:
     db: true
-    themes: true
+    themes: false
     plugins: true
     uploads: true
-    db_backup: false
+    db_backup: true
 
 environments:
-    # staging:
-    # host: user@host
-    # port: 722
-    # path: /home/.../public_html
+    local:
+        url: https://swimquest.ddev.site
+
+    staging:
+        host: benmeyer@benmeyer.digital
+        port: 22
+        path: /home/benmeyer/swimquest.benmeyer.digital
+        url: https://swimquest.benmeyer.digital
 
     production:
         host: user@host
         path: /home/.../public_html
+        url: https://swimquest.co.uk

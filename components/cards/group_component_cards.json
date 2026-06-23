@@ -109,6 +109,8 @@
             "choices": {
                 "recent": "Recent Posts",
                 "selected": "Selected Posts",
+                "trip_styles": "Trip Styles",
+                "destinations": "Destinations",
                 "custom": "Custom Content"
             },
             "allow_null": 0,
@@ -213,27 +215,6 @@
                     "parent_repeater": "field_5e29665057d3f"
                 },
                 {
-                    "key": "field_5e6919a792921",
-                    "label": "Meta",
-                    "name": "meta",
-                    "aria-label": "",
-                    "type": "wysiwyg",
-                    "instructions": "",
-                    "required": 0,
-                    "conditional_logic": 0,
-                    "wrapper": {
-                        "width": "",
-                        "class": "",
-                        "id": ""
-                    },
-                    "default_value": "",
-                    "tabs": "all",
-                    "toolbar": "basic_formatting",
-                    "media_upload": 0,
-                    "delay": 0,
-                    "parent_repeater": "field_5e29665057d3f"
-                },
-                {
                     "key": "field_5e691dc59f7bd",
                     "label": "Link",
                     "name": "link",
@@ -276,7 +257,7 @@
                 "id": ""
             },
             "choices": {
-                "post": "Posts"
+                "story": "Stories"
             },
             "allow_null": 0,
             "default_value": "",
@@ -338,13 +319,77 @@
                 "class": "",
                 "id": ""
             },
-            "post_type": "",
+            "post_type": ["page", "story", "events", "guide"],
             "taxonomy": "",
             "filters": ["search", "post_type", "taxonomy"],
             "elements": "",
-            "min": "",
-            "max": "",
+            "min": "1",
+            "max": "9",
             "return_format": "object"
+        },
+        {
+            "key": "field_682ca1f0a0002",
+            "label": "Trip Styles",
+            "name": "selected_trip_styles",
+            "aria-label": "",
+            "type": "taxonomy",
+            "instructions": "Leave empty to show all trip styles, or select specific ones.",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_5e691705dc321",
+                        "operator": "==",
+                        "value": "trip_styles"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "taxonomy": "trip_style",
+            "field_type": "multi_select",
+            "allow_null": 1,
+            "add_term": 0,
+            "save_terms": 0,
+            "load_terms": 0,
+            "return_format": "object",
+            "multiple": 1
+        },
+        {
+            "key": "field_682ca1f0a0003",
+            "label": "Destinations",
+            "name": "selected_destinations",
+            "aria-label": "",
+            "type": "taxonomy",
+            "instructions": "Leave empty to show all destinations, or select specific ones.",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_5e691705dc321",
+                        "operator": "==",
+                        "value": "destinations"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "taxonomy": "country",
+            "field_type": "multi_select",
+            "allow_null": 1,
+            "add_term": 0,
+            "save_terms": 0,
+            "load_terms": 0,
+            "return_format": "object",
+            "multiple": 1,
+            "min": "2",
+            "max": "6"
         },
         {
             "key": "field_5e666ecfc8971",
@@ -379,38 +424,13 @@
             },
             "choices": {
                 "default": "Default",
-                "icons": "Icons"
+                "horizontal": "Horizontal",
+                "carousel": "Carousel"
             },
             "allow_null": 0,
             "default_value": "",
             "layout": "horizontal",
             "return_format": "value"
-        },
-        {
-            "key": "field_61a60e240606a",
-            "label": "Card Background Color",
-            "name": "card_background_color",
-            "aria-label": "",
-            "type": "select",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "50",
-                "class": "",
-                "id": ""
-            },
-            "choices": {
-                "default": "Default",
-                "none": "None"
-            },
-            "default_value": false,
-            "allow_null": 0,
-            "multiple": 0,
-            "ui": 1,
-            "ajax": 0,
-            "return_format": "value",
-            "placeholder": ""
         },
         {
             "key": "field_61a6151c59e10",
@@ -428,8 +448,7 @@
             },
             "choices": {
                 "default": "Default",
-                "contain": "Contain",
-                "cover": "Cover"
+                "contain": "Contain"
             },
             "default_value": false,
             "allow_null": 0,
@@ -454,14 +473,11 @@
                 "id": ""
             },
             "choices": {
-                "default": "Default",
                 "2": "2",
                 "3": "3",
-                "4": "4",
-                "5": "5",
-                "6": "6"
+                "4": "4"
             },
-            "default_value": false,
+            "default_value": 3,
             "allow_null": 0,
             "multiple": 0,
             "ui": 0,
@@ -475,9 +491,17 @@
             "name": "slider_on_mobile",
             "aria-label": "",
             "type": "true_false",
-            "instructions": "Only compatible with align full.",
+            "instructions": "Enable horizontal scrolling on mobile viewports.",
             "required": 0,
-            "conditional_logic": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_61a65a57e8190",
+                        "operator": "!=",
+                        "value": "carousel"
+                    }
+                ]
+            ],
             "wrapper": {
                 "width": "50",
                 "class": "",
@@ -508,5 +532,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1683874712
+    "modified": 1809900000
 }

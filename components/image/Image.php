@@ -51,6 +51,28 @@ class Image extends ComponentBase
             $args['attributes']['sizes'] = $args['sizes'];
         }
 
+        // Check if 'full_width' class is present or size is set to 'full_width'
+        $isFullWidth = isset($args['size']) && $args['size'] === 'full_width';
+        if (! $isFullWidth && ! empty($args['classes']) && in_array('full_width', $args['classes'])) {
+            $isFullWidth = true;
+            $args['size'] = 'full_width'; // Ensure WP uses the registered size
+        }
+
+        if ($isFullWidth) {
+            // Ensure registered image size and forced 600px height styling.
+            $args['size'] = 'full_width';
+
+            $existingClass = trim($args['attributes']['class'] ?? '');
+            $args['attributes']['class'] = trim(($existingClass ? $existingClass . ' ' : '') . 'object-cover block');
+
+            $existingStyle = trim($args['attributes']['style'] ?? '');
+            $args['attributes']['style'] = trim(($existingStyle ? $existingStyle . '; ' : '') . 'width:100%;aspect-ratio:1/1;max-height:600px;object-fit:cover;display:block;');
+
+            if (empty($args['attributes']['sizes'])) {
+                $args['attributes']['sizes'] = '100vw';
+            }
+        }
+
         if (! empty($args['id'])) {
             $args['output'] = wp_get_attachment_image(
                 $args['id'],

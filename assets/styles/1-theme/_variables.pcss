@@ -10,6 +10,7 @@
         /* space(px) → rem, spaceFluid(min, max) → responsive calc() */
 
         --container-padding: 16px; /* Default inline padding for the page */
+        --content-gutter: 20px; /* Content layout gutter used by content-grid and fluid width utilities */
         --space-base: rem(16); /* Default vertical spacing between text elements */
 
         /* Default vertical spacing between larger components and blocks */
@@ -18,13 +19,22 @@
 
         @media (width >= theme("screens.sm")) {
             --container-padding: rem(30);
+            --content-gutter: var(--container-padding);
             --space-layout: space(64);
+        }
+
+        @media (width >= theme("screens.lg")) {
+            --content-gutter: rem(80);
+        }
+
+        @media (width >= 1568px) {
+            --content-gutter: 19rem;
         }
 
         /* --------------------------------------------------- */
         /* Widths */
         /* --------------------------------------------------- */
-        --width-fluid-container: calc(100% - (var(--container-padding) * 2));
+        --width-fluid-container: calc(100% - (var(--content-gutter) * 2));
 
         --width-fluid-2xs: min(var(--container-2xs), var(--width-fluid-container));
         --width-fluid-xs: min(var(--container-xs), var(--width-fluid-container));
@@ -40,7 +50,8 @@
         /* --------------------------------------------------- */
         /* Border */
         /* --------------------------------------------------- */
-        --base--border: 2px solid var(--color-accent);
+        --base--border: 2px solid var(--color-light);
+        --border-orange: 1px solid var(--color-orange);
 
         /* --------------------------------------------------- */
         /* Focus */
@@ -58,7 +69,7 @@
         /* --------------------------------------------------- */
         /* Grids */
         /* --------------------------------------------------- */
-        --col-gap: spaceFluid(8, 12);
+        --col-gap: spaceFluid(8, 20);
         --row-gap: var(--col-gap);
         --cols: 1;
         --col-min-width: rem(300);
@@ -102,6 +113,12 @@
         @media (min-width: theme("screens.fluid-max")) {
             --fluid-screen: calc(var(--fluid-max-width) * 1px);
         }
+
+        /* --------------------------------------------------- */
+        /* Transitions */
+        /* --------------------------------------------------- */
+        --transition--duration: 200ms;
+        --transition--ease: var(--ease-out-quad);
 
         /* --------------------------------------------------- */
         /* General */
