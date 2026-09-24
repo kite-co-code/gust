@@ -21,7 +21,7 @@ Key features include:
 
 - **PHP errors**: `cat ../../debug.log` after page load
 - **WP Login**: If you need to log in to the dashboard, create a user via WP CLI: `wp user create agent-user --role=administrator --user_pass=strongpassword` and then delete it afterwards.
-- **WP data**: WP CLI — run with `--path=../../../../` (e.g. `wp post-type list`)
+- **WP data**: WP CLI — run with `--path=../../../` (e.g. `wp post-type list`)
 - **Rendering/UI**: Chrome DevTools MCP — navigate, snapshot DOM, check console. Prefer DOM over screenshots unless visual testing is needed.
 - **Visual changes**: Take a screenshot and ask the user to confirm before marking done.
 - Get `APP_URL` from `.env`: `APP_URL=$(grep '^APP_URL' .env | cut -d= -f2)`

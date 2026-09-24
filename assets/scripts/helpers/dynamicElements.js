@@ -77,7 +77,9 @@ const dynamicElements = {
     },
 
     initExistingElements(selector, callback) {
-        document.querySelectorAll(selector)?.forEach((el) => this.initElement(el, callback));
+        document.querySelectorAll(selector)?.forEach((el) => {
+            this.initElement(el, callback);
+        });
     },
 
     handleMutations(mutations) {
@@ -90,7 +92,9 @@ const dynamicElements = {
                         if (node.matches(selector)) {
                             this.initElement(node, callback);
                         } else {
-                            node.querySelectorAll(selector)?.forEach((el) => this.initElement(el, callback));
+                            node.querySelectorAll(selector)?.forEach((el) => {
+                                this.initElement(el, callback);
+                            });
                         }
                     });
                 }

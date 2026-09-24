@@ -257,13 +257,13 @@ cat ../../debug.log
 **2. Verify with WP CLI** (run from WP root):
 ```bash
 # Post types registered
-wp post-type list --path=../../../../
+wp post-type list --path=../../../
 
 # Taxonomies registered
-wp taxonomy list --path=../../../../
+wp taxonomy list --path=../../../
 
 # Check specific post type exists
-wp post-type get <slug> --path=../../../../
+wp post-type get <slug> --path=../../../
 ```
 
 **3. Browser check** — navigate and confirm no visual errors:

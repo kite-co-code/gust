@@ -32,27 +32,27 @@ export default class Dialog {
 
     init() {
         this.dialogOpenElements?.forEach((element) => {
-            element.addEventListener('click', (e) => {
+            element.addEventListener('click', () => {
                 if (element.dataset.dialogContentTemplate) {
                     this.content = document.querySelector(
                         `[data-dialog-content='${element.dataset.dialogContentTemplate}']`
                     );
                 }
 
-                this.open(e);
+                this.open();
             });
         });
 
         this.dialogCloseElements?.forEach((element) => {
-            element.addEventListener('click', (e) => {
-                this.close(e);
+            element.addEventListener('click', () => {
+                this.close();
             });
         });
 
         // Optionally close dialog when clicking on backdrop
         this.el.addEventListener('click', (e) => {
             if (this.options.backdropClose && e.target === this.el) {
-                this.close(e);
+                this.close();
             }
         });
 
@@ -64,7 +64,7 @@ export default class Dialog {
         this.setScrollbarWidth();
     }
 
-    open(e) {
+    open() {
         if (this.options.modal) {
             if (!this.options.allowBodyScroll) this.fixBody();
 
@@ -85,11 +85,11 @@ export default class Dialog {
 
         // If a dialog type has been set, add it as a data attribute
         if (this.type) {
-            this.el.setAttribute('data-type', type);
+            this.el.setAttribute('data-type', this.type);
         }
     }
 
-    close(e) {
+    close() {
         this.el.close();
     }
 
@@ -123,7 +123,7 @@ export default class Dialog {
         // Use this to stop elements jumping when dialog is opened
         document.documentElement.style.setProperty(
             '--scrollbar-width',
-            window.innerWidth - document.documentElement.clientWidth + 'px'
+            `${window.innerWidth - document.documentElement.clientWidth}px`
         );
     }
 
