@@ -158,8 +158,8 @@ Components become Gutenberg blocks by adding `block.json`:
 
 ### Requirements
 
-- PHP >=8.0
-- Node 20 (see `.nvmrc`)
+- PHP >=8.2
+- Node 24 (see `.nvmrc`)
 
 ### Setup
 
@@ -316,7 +316,6 @@ Color configuration is in `assets/theme-config.json`.
 - `theme.json` - WordPress FSE/block settings
 - `vite.config.js` - Vite build configuration
 - `postcss.config.js` - PostCSS plugins
-- `tailwind.config.js` - Tailwind configuration
 - `biome.json` - Biome linting/formatting
 - `pint.json` - Laravel Pint PHP style
 

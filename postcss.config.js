@@ -1,5 +1,4 @@
 import tailwindcss from '@tailwindcss/postcss';
-import autoprefixer from 'autoprefixer';
 import postcssFunctions from 'postcss-functions';
 import postcssSimpleVars from 'postcss-simple-vars';
 import postcssColorSystem from './dev-scripts/postcss-color-system.js';
@@ -13,7 +12,6 @@ const config = {
         postcssFunctions(functionsConfig),
         postcssSimpleVars(),
         tailwindcss(),
-        autoprefixer(),
     ],
 };
 

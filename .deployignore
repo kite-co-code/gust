@@ -34,7 +34,6 @@ package.json
 pint.json
 postcss.config.js
 readme.md
-tailwind.config.js
 vite.config.js
 webpack.config.js
 wp-sync.yml
