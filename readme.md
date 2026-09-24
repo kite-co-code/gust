@@ -165,25 +165,25 @@ Components become Gutenberg blocks by adding `block.json`:
 
 ```bash
 cp .env.example .env    # Update with your APP_URL
-npm run setup           # Install deps + build (add ACF Pro key to auth.json before running)
-npm run site-setup      # Configure WP site for dev (optional, see dev-scripts/site-setup.sh)
-npm run dev             # Start Vite dev server
+pnpm run setup          # Install deps + build (add ACF Pro key to auth.json before running)
+pnpm run site-setup     # Configure WP site for dev (optional, see dev-scripts/site-setup.sh)
+pnpm run dev            # Start Vite dev server
 ```
 
 Access WordPress at your normal URL (.env `APP_URL`). Don't use localhost:5173 directly.
 
 ### Commands
 
-| Command                     | Description                     |
-| --------------------------- | ------------------------------- |
-| `npm run dev`               | Vite dev server with HMR        |
-| `npm run build`             | Production build                |
-| `npm run deploy:production` | Build + deploy to production    |
-| `npm run deploy:staging`    | Build + deploy to staging       |
-| `npm run scaffold <name>`   | Scaffold new component          |
-| `npm run pot`               | Generate translation files      |
-| `npm run lint`              | Check code (Biome)              |
-| `npm run fix`               | Fix all code (Biome + PHP Pint) |
+| Command                      | Description                     |
+| ---------------------------- | ------------------------------- |
+| `pnpm run dev`               | Vite dev server with HMR        |
+| `pnpm run build`             | Production build                |
+| `pnpm run deploy:production` | Build + deploy to production    |
+| `pnpm run deploy:staging`    | Build + deploy to staging       |
+| `pnpm run scaffold <name>`   | Scaffold new component          |
+| `pnpm run pot`               | Generate translation files      |
+| `pnpm run lint`              | Check code (Biome)              |
+| `pnpm run fix`               | Fix all code (Biome + PHP Pint) |
 
 ### Site Setup Script
 
@@ -196,13 +196,13 @@ Enables debugging, sets UK locale, disables comments/pings, creates homepage, re
 Deploy via rsync to staging or production. Environment config (SSH host, path) is defined in `wp-sync.yml`.
 
 ```bash
-npm run deploy:staging          # build + deploy to staging
-npm run deploy:staging:dry      # dry-run (no files transferred)
-npm run deploy:production       # build + deploy to production
-npm run deploy:production:dry   # dry-run
+pnpm run deploy:staging         # build + deploy to staging
+pnpm run deploy:staging:dry     # dry-run (no files transferred)
+pnpm run deploy:production      # build + deploy to production
+pnpm run deploy:production:dry  # dry-run
 ```
 
-The production build runs `npm install && composer install --no-dev && vite build` before rsync.
+The production build runs `pnpm install && composer install --no-dev && vite build` before rsync.
 
 ---
 
@@ -335,7 +335,7 @@ Color configuration is in `assets/theme-config.json`.
 ### Generate Component
 
 ```bash
-npm run scaffold my-component
+pnpm run scaffold my-component
 ```
 
 ### Component Class Structure
@@ -428,7 +428,7 @@ Browser-based reference environment for component testing and QA. **Only availab
 ### Routes
 
 | URL                       | Description                              |
-| ------------------------- | ---------------------------------------- |
+| ----------------------------- | ---------------------------------------- |
 | `/_dev`                   | Dev Kit index                            |
 | `/_dev/components`        | List all components with examples        |
 | `/_dev/components/{name}` | View specific component examples         |
@@ -476,7 +476,7 @@ The theme includes Claude Code skills in `.claude/skills/` for AI-assisted devel
 ### Available Skills
 
 | Skill          | Description                                                    |
-| -------------- | -------------------------------------------------------------- |
+| ----------------------------- | -------------------------------------------------------------- |
 | `gust-dev`     | Component development workflows (scaffold, test, debug, setup) |
 | `website-spec` | Fill in the website specification                              |
 
@@ -513,7 +513,7 @@ navigate → snapshot DOM → check console → check debug.log
 ### Structure
 
 | Section                 | Description                                         |
-| ----------------------- | --------------------------------------------------- |
+| ----------------------------- | --------------------------------------------------- |
 | **Overview**            | Project title, URLs, PHP version                    |
 | **Required Plugins**    | Composer-managed plugins for the project            |
 | **Content Types**       | Custom post types with URL, fields, archive routing |

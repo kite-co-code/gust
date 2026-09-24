@@ -7,10 +7,10 @@ Create and modify components in the Gust framework.
 ## Scaffold New Component
 
 ```bash
-npm run scaffold my-component              # Class + template only
-npm run scaffold my-component --styles     # Add styles.pcss
-npm run scaffold my-component --block      # Add block.json
-npm run scaffold my-component --all        # All optional files
+pnpm run scaffold my-component              # Class + template only
+pnpm run scaffold my-component --styles     # Add styles.pcss
+pnpm run scaffold my-component --block      # Add block.json
+pnpm run scaffold my-component --all        # All optional files
 ```
 
 Options: `--styles`, `--scripts`, `--block`, `--all`
@@ -33,10 +33,10 @@ Description
 
 ```bash
 # For blocks (has ACF fields)
-npm run scaffold component-name --styles --block
+pnpm run scaffold component-name --styles --block
 
 # For partials (no ACF, data from context)
-npm run scaffold component-name --styles
+pnpm run scaffold component-name --styles
 ```
 
 ### 3. Create ACF Field Group
@@ -78,7 +78,7 @@ After creating/modifying:
 ```bash
 APP_URL=$(grep '^APP_URL' .env | cut -d= -f2)
 : > ../../debug.log
-npm run build   # if styles/scripts changed
+pnpm run build   # if styles/scripts changed
 ```
 
 1. **Navigate** to a page using the component (or `$APP_URL/_dev/` for the preview suite):
@@ -96,7 +96,7 @@ npm run build   # if styles/scripts changed
 : > ../../debug.log
 
 # Build assets
-npm run build
+pnpm run build
 
 # Load page with component
 curl -sL $APP_URL -o /dev/null

@@ -140,7 +140,7 @@ function generateBlockJson(name, className) {
  */
 function regenerateImports() {
     try {
-        execSync('npm run build -- --mode development 2>/dev/null || true', {
+        execSync('pnpm run build --mode development 2>/dev/null || true', {
             cwd: path.join(__dirname, '..'),
             stdio: 'ignore'
         });

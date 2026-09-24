@@ -28,7 +28,8 @@ composer.json
 composer.lock
 gulpfile.js
 LICENCE
-package-lock.json
+pnpm-lock.yaml
+pnpm-workspace.yaml
 package.json
 pint.json
 postcss.config.js

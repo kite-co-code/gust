@@ -5,34 +5,32 @@
     "private": true,
     "author": "Jerome Toole",
     "license": "MIT",
+    "packageManager": "pnpm@11.24.0",
     "scripts": {
         "dev": "vite",
         "build": "vite build",
         "preview": "vite preview",
-        "setup": "npm install && composer install && npm run build",
+        "setup": "pnpm install && composer install && pnpm run build",
         "site-setup": "bash dev-scripts/site-setup.sh",
-        "build:production": "npm install && composer install --no-dev && npm run build",
-        "deploy:staging": "npm run build:production && bash dev-scripts/deploy.sh staging",
-        "deploy:staging:dry": "npm run build:production && bash dev-scripts/deploy.sh staging --dry-run",
-        "deploy:production": "npm run build:production && bash dev-scripts/deploy.sh production",
-        "deploy:production:dry": "npm run build:production && bash dev-scripts/deploy.sh production --dry-run",
+        "build:production": "pnpm install && composer install --no-dev && pnpm run build",
+        "deploy:staging": "pnpm run build:production && bash dev-scripts/deploy.sh staging",
+        "deploy:staging:dry": "pnpm run build:production && bash dev-scripts/deploy.sh staging --dry-run",
+        "deploy:production": "pnpm run build:production && bash dev-scripts/deploy.sh production",
+        "deploy:production:dry": "pnpm run build:production && bash dev-scripts/deploy.sh production --dry-run",
         "pot": "node dev-scripts/generate-pot.js",
         "scaffold": "node dev-scripts/scaffold-component.js",
         "init-colors": "node dev-scripts/init-color-scheme.js",
         "lint": "biome check .",
         "lint:fix": "biome check --write .",
         "format": "biome format --write .",
-        "fix": "npm run lint:fix && npm run fix:php",
+        "fix": "pnpm run lint:fix && pnpm run fix:php",
         "fix:php": "./vendor/bin/pint"
     },
     "type": "module",
     "engines": {
         "node": ">=20.0.0",
-        "npm": ">=10.0.0"
+        "pnpm": ">=10.0.0"
     },
-    "workspaces": [
-        "components/*"
-    ],
     "devDependencies": {
         "@babel/core": "^7.17.9",
         "@babel/preset-env": "^7.11.5",
