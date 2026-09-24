@@ -117,13 +117,15 @@ function generateBlockJson(name, className) {
     return JSON.stringify({
         $schema: 'https://schemas.wp.org/trunk/block.json',
         apiVersion: 3,
-        name: `acf/${name}`,
+        name: `theme/${name}`,
         title,
         description: '',
         category: 'theme-blocks',
         icon: 'admin-generic',
         acf: {
+            blockVersion: 3,
             mode: 'auto',
+            autoInlineEditing: true,
             renderCallback: `Gust\\Components\\${className}::renderBlock`,
         },
         supports: {

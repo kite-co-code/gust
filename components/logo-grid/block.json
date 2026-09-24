@@ -1,14 +1,17 @@
 {
     "$schema": "https://schemas.wp.org/trunk/block.json",
     "apiVersion": 3,
-    "name": "acf/logo-grid",
+    "name": "theme/logo-grid",
     "title": "Logo Grid",
     "description": "A logo grid block",
     "category": "theme-blocks",
     "icon": "image-flip-horizontal",
     "align": "wide",
     "acf": {
+        "blockVersion": 3,
         "mode": "auto",
+        "autoInlineEditing": true,
+        "hideFieldsInSidebar": true,
         "renderCallback": "Gust\\Components\\LogoGrid::renderBlock"
     },
     "supports": {

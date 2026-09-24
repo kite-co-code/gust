@@ -96,6 +96,7 @@ protected static function transform(array $args): array
 ```
 
 In template:
+
 ```php
 <?php if (!empty($this->heading)): ?>
     <?= Heading::make(...$this->heading); ?>
@@ -125,6 +126,7 @@ use Gust\Helpers;
 ### Field Output
 
 **Text (escaped):**
+
 ```php
 <?php if ($this->heading): ?>
     <h2 class="component__heading"><?= esc_html($this->heading); ?></h2>
@@ -132,6 +134,7 @@ use Gust\Helpers;
 ```
 
 **WYSIWYG (unescaped HTML):**
+
 ```php
 <?php if ($this->body): ?>
     <div class="component__body"><?= $this->body; ?></div>
@@ -139,6 +142,7 @@ use Gust\Helpers;
 ```
 
 **Image:**
+
 ```php
 <?php if ($this->image): ?>
     <img src="<?= esc_url($this->image['url']); ?>"
@@ -149,6 +153,7 @@ use Gust\Helpers;
 ```
 
 **Link:**
+
 ```php
 <?php if ($this->link): ?>
     <a href="<?= esc_url($this->link['url']); ?>"
@@ -159,6 +164,7 @@ use Gust\Helpers;
 ```
 
 **Repeater:**
+
 ```php
 <?php if ($this->items): ?>
     <?php foreach ($this->items as $item): ?>
@@ -170,6 +176,7 @@ use Gust\Helpers;
 ```
 
 **Relationship (posts):**
+
 ```php
 <?php if ($this->related_posts): ?>
     <?php foreach ($this->related_posts as $post): ?>
@@ -182,22 +189,23 @@ use Gust\Helpers;
 
 Map spec fields to ACF types:
 
-| Spec Type | ACF Type | Notes |
-|-----------|----------|-------|
-| `text` | `text` | |
-| `textarea` | `textarea` | |
-| `wysiwyg` | `wysiwyg` | |
-| `image` | `image` | return_format: `array` |
-| `link` | `link` | |
-| `true_false` | `true_false` | |
-| `select` | `select` | |
-| `repeater` | `repeater` | |
-| `relationship` | `relationship` | |
-| `post_object` | `post_object` | |
+| Spec Type      | ACF Type       | Notes                  |
+| -------------- | -------------- | ---------------------- |
+| `text`         | `text`         |                        |
+| `textarea`     | `textarea`     |                        |
+| `wysiwyg`      | `wysiwyg`      |                        |
+| `image`        | `image`        | return_format: `array` |
+| `link`         | `link`         |                        |
+| `true_false`   | `true_false`   |                        |
+| `select`       | `select`       |                        |
+| `repeater`     | `repeater`     |                        |
+| `relationship` | `relationship` |                        |
+| `post_object`  | `post_object`  |                        |
 
 ### Field JSON Templates
 
 **Basic field:**
+
 ```json
 {
     "key": "field_component_name_fieldname",
@@ -209,6 +217,7 @@ Map spec fields to ACF types:
 ```
 
 **Image field:**
+
 ```json
 {
     "key": "field_component_name_image",
@@ -221,6 +230,7 @@ Map spec fields to ACF types:
 ```
 
 **Repeater field:**
+
 ```json
 {
     "key": "field_component_name_items",
@@ -241,11 +251,15 @@ Map spec fields to ACF types:
     "key": "group_component_component_name",
     "title": "Component Name",
     "fields": [],
-    "location": [[{
-        "param": "block",
-        "operator": "==",
-        "value": "acf/component-name"
-    }]]
+    "location": [
+        [
+            {
+                "param": "block",
+                "operator": "==",
+                "value": "theme/component-name"
+            }
+        ]
+    ]
 }
 ```
 
@@ -257,7 +271,7 @@ Map spec fields to ACF types:
 {
     "$schema": "https://schemas.wp.org/trunk/block.json",
     "apiVersion": 3,
-    "name": "acf/my-component",
+    "name": "theme/my-component",
     "title": "My Component",
     "description": "",
     "category": "theme-blocks",
@@ -355,6 +369,7 @@ $sample_image = !empty($attachments) ? acf_get_attachment($attachments[0]->ID) :
 ```
 
 **Example data by field type:**
+
 - Text: `heading: 'Example Heading',`
 - WYSIWYG: `body: '<p>Paragraph with <a href="#">link</a>.</p>',`
 - Image: `image: $sample_image,`

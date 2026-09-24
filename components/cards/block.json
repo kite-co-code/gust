@@ -1,13 +1,15 @@
 {
     "$schema": "https://schemas.wp.org/trunk/block.json",
     "apiVersion": 3,
-    "name": "acf/cards",
+    "name": "theme/cards",
     "title": "Cards",
     "description": "A cards block",
     "category": "theme-blocks",
     "icon": "schedule",
     "acf": {
+        "blockVersion": 3,
         "mode": "auto",
+        "autoInlineEditing": true,
         "renderCallback": "Gust\\Components\\Cards::renderBlock"
     },
     "supports": {

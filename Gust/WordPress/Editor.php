@@ -72,9 +72,11 @@ class Editor
         $editor = \Gust\Config::get('editor', []);
         $allowed = $editor['allowed_blocks'] ?? [];
 
-        // Add all registered ACF blocks.
-        if (function_exists('acf_get_block_types')) {
-            $allowed = array_merge($allowed, array_keys(\acf_get_block_types()));
+        // Add all registered theme blocks (ACF + native).
+        foreach (\WP_Block_Type_Registry::get_instance()->get_all_registered() as $name => $block) {
+            if (str_starts_with($name, 'theme/')) {
+                $allowed[] = $name;
+            }
         }
 
         return $allowed;

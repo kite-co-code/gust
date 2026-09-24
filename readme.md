@@ -2,7 +2,7 @@
 
 A WordPress theme framework for custom development. Build portable components and editor blocks with co-located CSS, JS and templating. Auto-loading modules keep features self-contained. A cohesive CSS system of design tokens, layout utilities and contextual color, built on top of Tailwind v4. A routing system links editable block content to dynamic pages (archives, search, 404) and also supports custom static routes.
 
-*Personal, opinionated framework – not a polished product.*
+_Personal, opinionated framework – not a polished product._
 
 - **Components** - Co-located template, logic, styles, and scripts in portable directories
 - **Modules** - Self-contained features that auto-load (e.g., ACF integration, post types)
@@ -20,6 +20,7 @@ A WordPress theme framework for custom development. Build portable components an
 ## Key Features
 
 ### Component System
+
 Typed PHP component classes with IDE autocomplete, validation, and transformation hooks.
 
 ```php
@@ -37,6 +38,7 @@ echo Card::make(object: $post, show_read_more: false);
 ```
 
 Each component lives in `components/` with co-located files:
+
 ```
 components/accordion/
 ├── Accordion.php      # Typed class with ::make() factory
@@ -48,11 +50,11 @@ components/accordion/
 ```
 
 Components support:
+
 - `validate()` - return false to skip rendering
 - `transform()` - modify args before render
 - `getDefaults()` - default values
 - WordPress filters via `gust/component/{name}`
-
 
 ### Router System
 
@@ -85,43 +87,46 @@ Router::route('/tools/demo', fn() => DemoController::index())
 - **Template Resolution** - Follows WordPress hierarchy (`archive-{type}.php`, etc.)
 
 **Route Types:**
+
 - `post_type:{name}` - CPT archive (also matches blog home)
 - `taxonomy:{name}` - Taxonomy archive
 - `search` - Search results
 - `404` - Not found
-
 
 ### Powerful CSS Framework w/ Tailwind v4 base
 
 Tailwind v4 with theme-specific custom utilities for layout, spacing, and animation.
 
 **Layout:**
+
 - `content-grid` - 12-column grid with full/wide/prose alignment
 - `grid-simple` / `grid-auto` - Flexible CSS grid utilities
 - `flex-grid` - Gap-based flex layouts
 - `stack-*` - Vertical rhythm spacing (e.g., `stack-24`)
 
 **Spacing:**
+
 - `--gap`, `--col-gap`, `--row-gap` CSS properties
 - `--cols` for grid column control
 - Fluid spacing utilities
 
 **Color:**
+
 - `color-context-{name}` - Sets background, foreground, link, and focus colors based on theme config
 - `has-{name}-background-color` - WordPress block editor alias for color contexts
 - `foreground-from-{name}` - Sets just the foreground/text color
 
 Browse all utilities with live examples at `/_dev/utilities` (development only).
 
-
 ### ACF Blocks
+
 Components become Gutenberg blocks by adding `block.json`:
 
 ```json
 {
     "$schema": "https://schemas.wp.org/trunk/block.json",
     "apiVersion": 3,
-    "name": "acf/accordion",
+    "name": "theme/accordion",
     "title": "Accordion",
     "description": "An accordion block",
     "category": "theme-blocks",
@@ -152,10 +157,12 @@ Components become Gutenberg blocks by adding `block.json`:
 ## Getting Started
 
 ### Requirements
+
 - PHP >=8.0
 - Node 20 (see `.nvmrc`)
 
 ### Setup
+
 ```bash
 cp .env.example .env    # Update with your APP_URL
 npm run setup           # Install deps + build (add ACF Pro key to auth.json before running)
@@ -167,18 +174,19 @@ Access WordPress at your normal URL (.env `APP_URL`). Don't use localhost:5173 d
 
 ### Commands
 
-| Command | Description |
-|---------|-------------|
-| `npm run dev` | Vite dev server with HMR |
-| `npm run build` | Production build |
-| `npm run deploy:production` | Build + deploy to production |
-| `npm run deploy:staging` | Build + deploy to staging |
-| `npm run scaffold <name>` | Scaffold new component |
-| `npm run pot` | Generate translation files |
-| `npm run lint` | Check code (Biome) |
-| `npm run fix` | Fix all code (Biome + PHP Pint) |
+| Command                     | Description                     |
+| --------------------------- | ------------------------------- |
+| `npm run dev`               | Vite dev server with HMR        |
+| `npm run build`             | Production build                |
+| `npm run deploy:production` | Build + deploy to production    |
+| `npm run deploy:staging`    | Build + deploy to staging       |
+| `npm run scaffold <name>`   | Scaffold new component          |
+| `npm run pot`               | Generate translation files      |
+| `npm run lint`              | Check code (Biome)              |
+| `npm run fix`               | Fix all code (Biome + PHP Pint) |
 
 ### Site Setup Script
+
 `dev-scripts/site-setup.sh` configures a fresh WordPress install for development. Requires WP-CLI.
 
 Enables debugging, sets UK locale, disables comments/pings, creates homepage, removes default content/plugins/themes, sets pretty permalinks, and activates all composer-installed plugins.
@@ -201,6 +209,7 @@ The production build runs `npm install && composer install --no-dev && vite buil
 ## Architecture
 
 ### Directory Structure
+
 ```
 Gust/                  # Core framework
   WordPress/           # WP integrations (Admin, Cleanup, Enqueue, Gutenberg, etc.)
@@ -237,19 +246,24 @@ public/build/          # Compiled assets
 ```
 
 ### Module System
+
 Modules in `Theme/Modules/*/module.php` auto-load via `Gust\Module::init()`. Each has a `Module` class with `init()` method. Disable via `gust/modules/disabled` filter.
 
 ### Theme Configuration
+
 `assets/theme-config.json` defines design tokens used across:
+
 - CSS variables (`--color-accent`)
 - Tailwind classes (`text-accent`)
 - Block editor color palette
 
 ### Color System
+
 The theme includes a robust color system with color contexts, foreground calculation, and CSS variables/utilities.
 Color configuration is in `assets/theme-config.json`.
 
 **Generated CSS Variables** (per color):
+
 ```css
 --color-{name}              /* hex value */
 --color-{name}--hsl         /* HSL: "210 50% 40%" */
@@ -258,15 +272,17 @@ Color configuration is in `assets/theme-config.json`.
 ```
 
 **Generated Utilities**:
+
 - `color-context-{name}` - Sets background, foreground, focus, and link colors (and other custom properties)
 - `has-{name}-background-color` - WordPress block editor alias
 - `foreground-from-{name}` - Sets only foreground/text color
 
 **Usage:**
+
 ```html
 <!-- Full color context (bg + text + links) -->
 <section class="color-context-accent">
-  <p>White text on accent color, links inherit</p>
+    <p>White text on accent color, links inherit</p>
 </section>
 
 <!-- Just foreground color -->
@@ -274,26 +290,28 @@ Color configuration is in `assets/theme-config.json`.
 ```
 
 **Config structure** (`assets/theme-config.json`):
+
 ```json
 {
-  "colors": {
-    "base": {
-      "blue": {
-        "color": "#0707a3",
-        "name": "Blue",
-        "block_editor": true,
-        "foreground": "var(--color-white)",
-        "properties": {
-          "--link--color": "var(--color-white)"
+    "colors": {
+        "base": {
+            "blue": {
+                "color": "#0707a3",
+                "name": "Blue",
+                "block_editor": true,
+                "foreground": "var(--color-white)",
+                "properties": {
+                    "--link--color": "var(--color-white)"
+                }
+            },
+            "accent": { "namedColor": "blue" }
         }
-      },
-      "accent": { "namedColor": "blue" }
     }
-  }
 }
 ```
 
 ### Configuration Files
+
 - `config.json` - Framework settings (comments, images, jQuery, etc.)
 - `theme.json` - WordPress FSE/block settings
 - `vite.config.js` - Vite build configuration
@@ -303,6 +321,7 @@ Color configuration is in `assets/theme-config.json`.
 - `pint.json` - Laravel Pint PHP style
 
 ### Build System
+
 - **Vite 7** for bundling with HMR
 - **Tailwind CSS v4** via PostCSS
 - **Biome** for JS/CSS linting
@@ -314,11 +333,13 @@ Color configuration is in `assets/theme-config.json`.
 ## Component Development
 
 ### Generate Component
+
 ```bash
 npm run scaffold my-component
 ```
 
 ### Component Class Structure
+
 ```php
 namespace Gust\Components;
 
@@ -354,6 +375,7 @@ class MyComponent extends ComponentBase
 ```
 
 ### Template Access
+
 ```php
 // my-component/template.php
 <div class="<?= classes('my-component', $this->classes) ?>">
@@ -405,14 +427,14 @@ Browser-based reference environment for component testing and QA. **Only availab
 
 ### Routes
 
-| URL | Description |
-|-----|-------------|
-| `/_dev` | Dev Kit index |
-| `/_dev/components` | List all components with examples |
-| `/_dev/components/{name}` | View specific component examples |
-| `/_dev/globals` | Theme colours, design tokens |
-| `/_dev/utilities` | CSS utility and pattern class reference |
-| `/_dev/content-flow` | WP block spacing and alignment behaviour |
+| URL                       | Description                              |
+| ------------------------- | ---------------------------------------- |
+| `/_dev`                   | Dev Kit index                            |
+| `/_dev/components`        | List all components with examples        |
+| `/_dev/components/{name}` | View specific component examples         |
+| `/_dev/globals`           | Theme colours, design tokens             |
+| `/_dev/utilities`         | CSS utility and pattern class reference  |
+| `/_dev/content-flow`      | WP block spacing and alignment behaviour |
 
 ### Component Examples
 
@@ -453,21 +475,23 @@ The theme includes Claude Code skills in `.claude/skills/` for AI-assisted devel
 
 ### Available Skills
 
-| Skill | Description |
-|-------|-------------|
-| `gust-dev` | Component development workflows (scaffold, test, debug, setup) |
-| `website-spec` | Fill in the website specification |
+| Skill          | Description                                                    |
+| -------------- | -------------------------------------------------------------- |
+| `gust-dev`     | Component development workflows (scaffold, test, debug, setup) |
+| `website-spec` | Fill in the website specification                              |
 
 Skills can be invoked naturally in conversation (e.g. "scaffold a card component from the spec") or explicitly with `/gust-dev`.
 
 ### gust-dev Workflows
 
 **Scaffold** - Create components from spec:
+
 ```
 scaffold component from spec → reads .docs/_WEBSITE-SPEC.md → generates files
 ```
 
 **Testing** - Verify changes work:
+
 ```bash
 # Quick test
 : > ../../debug.log && curl -sL $APP_URL -o /dev/null && cat ../../debug.log
@@ -488,18 +512,18 @@ navigate → snapshot DOM → check console → check debug.log
 
 ### Structure
 
-| Section | Description |
-|---------|-------------|
-| **Overview** | Project title, URLs, PHP version |
-| **Required Plugins** | Composer-managed plugins for the project |
-| **Content Types** | Custom post types with URL, fields, archive routing |
-| **Taxonomies** | Taxonomy definitions with archive routing |
-| **Standalone Routes** | Pages and routes not tied to a content type |
-| **Site Settings** | Global ACF options page fields |
-| **Menus** | Registered nav menu locations |
-| **Components** | Block/partial definitions with ACF field groups |
-| **Integrations** | Third-party services and API keys |
-| **Other Functionality** | Cron jobs, CLI commands, custom behaviors |
+| Section                 | Description                                         |
+| ----------------------- | --------------------------------------------------- |
+| **Overview**            | Project title, URLs, PHP version                    |
+| **Required Plugins**    | Composer-managed plugins for the project            |
+| **Content Types**       | Custom post types with URL, fields, archive routing |
+| **Taxonomies**          | Taxonomy definitions with archive routing           |
+| **Standalone Routes**   | Pages and routes not tied to a content type         |
+| **Site Settings**       | Global ACF options page fields                      |
+| **Menus**               | Registered nav menu locations                       |
+| **Components**          | Block/partial definitions with ACF field groups     |
+| **Integrations**        | Third-party services and API keys                   |
+| **Other Functionality** | Cron jobs, CLI commands, custom behaviors           |
 
 ### Usage
 

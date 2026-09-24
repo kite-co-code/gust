@@ -100,7 +100,7 @@ class Slot
             return $allowed;
         }
 
-        $routerBlocks = ['acf/template-content'];
+        $routerBlocks = ['theme/template-content'];
 
         // If not a router page, remove router blocks
         if (! RouterPage::isRouterPage($post->ID)) {

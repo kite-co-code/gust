@@ -46,7 +46,11 @@ class Admin
      */
     public static function addMenusTopLevelItem(): void
     {
+        global $menu;
+
         \add_menu_page('Menus', 'Menus', 'manage_options', 'nav-menus.php', '', 'dashicons-welcome-widgets-menus');
+
+        $menu[] = ['', 'read', 'separator-options', '', 'wp-menu-separator'];
     }
 
     /**
@@ -58,32 +62,41 @@ class Admin
      */
     public static function reorderAdminMenu(array $menu_order): array
     {
-        $separators = ['separator1', 'separator2', 'separator-last'];
+        $separators = ['separator1', 'separator2', 'separator-options', 'separator-last'];
 
-        // Zone 1: all public post types ordered by menu_position (excludes admin-only types like ACF).
+        // Helper: keep only items present in the current menu.
+        $filter = fn (array $slugs) => array_values(array_filter(
+            $slugs,
+            fn ($slug) => in_array($slug, $menu_order, true)
+        ));
+
+        $site_guide_enabled = \Gust\Config::get('site_guide', true);
+
+        // Zone 1: Site Guide + all public post types ordered by menu_position.
         $post_type_zone = self::getPostTypeSlugs();
 
-        // Zone 2: content utilities — only include items actually registered in this install.
-        $utility_zone = array_values(array_filter(
-            ['gf_edit_forms', 'upload.php', 'nav-menus.php'],
-            fn ($slug) => in_array($slug, $menu_order, true)
-        ));
+        // Zone 2: content utilities.
+        $utility_zone = $filter(['gf_edit_forms', 'upload.php', 'nav-menus.php']);
 
-        // Zone 3: core WP admin items — only include if present.
-        $admin_zone = array_values(array_filter(
-            ['themes.php', 'plugins.php', 'users.php', 'tools.php', 'options-general.php'],
-            fn ($slug) => in_array($slug, $menu_order, true)
-        ));
+        // Zone 3: ACF Options in its own group.
+        $options_zone = $filter(['acf-options', 'acf-options-general']);
 
-        // Anything not explicitly placed (e.g. new plugins) goes at the end of zone 3.
-        $placed = array_merge(['index.php'], $post_type_zone, $utility_zone, $admin_zone, $separators);
+        // Zone 4: core WP admin items.
+        $admin_zone = $filter(['themes.php', 'plugins.php', 'users.php', 'tools.php', 'options-general.php']);
+
+        // Anything not explicitly placed (e.g. new plugins) goes at the end.
+        $dashboard_zone = $site_guide_enabled ? ['index.php', 'site-guide'] : ['index.php'];
+        $placed = array_merge($dashboard_zone, $post_type_zone, $utility_zone, $options_zone, $admin_zone, $separators);
         $unknown = array_values(array_diff($menu_order, $placed));
 
         return array_merge(
-            ['index.php', 'separator1'],
+            $dashboard_zone,
+            ['separator1'],
             $post_type_zone,
             ['separator2'],
             $utility_zone,
+            ['separator-options'],
+            $options_zone,
             ['separator-last'],
             $admin_zone,
             $unknown,
@@ -124,6 +137,10 @@ class Admin
      */
     public static function disallowFileEdit()
     {
+        if (defined('DISALLOW_FILE_EDIT') && DISALLOW_FILE_EDIT) {
+            return;
+        }
+
         define('DISALLOW_FILE_EDIT', true);
     }
 

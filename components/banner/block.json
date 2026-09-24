@@ -1,14 +1,16 @@
 {
     "$schema": "https://schemas.wp.org/trunk/block.json",
     "apiVersion": 3,
-    "name": "acf/banner",
+    "name": "theme/banner",
     "title": "Banner",
     "category": "theme-blocks",
     "icon": "align-center",
     "keywords": ["callout"],
     "align": "full",
     "acf": {
+        "blockVersion": 3,
         "mode": "auto",
+        "autoInlineEditing": true,
         "renderCallback": "Gust\\Components\\Banner::renderBlock"
     },
     "supports": {

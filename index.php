@@ -9,7 +9,7 @@ site_main_open(object: $object);
 $routerPage = \Gust\Router::getPage();
 
 if ($routerPage) {
-    if (! has_block('acf/page-header', $routerPage->ID)) {
+    if (! has_block('theme/page-header', $routerPage->ID)) {
         echo \Gust\Components\PageHeader::make(object: $object);
     }
 
@@ -21,7 +21,7 @@ if ($routerPage) {
         $items[]['object'] = get_post();
     }
 
-    if (! has_block('acf/page-header')) {
+    if (! has_block('theme/page-header')) {
         echo \Gust\Components\PageHeader::make(object: $object);
     }
 

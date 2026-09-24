@@ -250,7 +250,7 @@ class Component
             return;
         }
 
-        $blockName = str_replace('acf/', '', $group['location'][0][0]['value']);
+        $blockName = preg_replace('#^(acf|theme)/#', '', $group['location'][0][0]['value']);
         $blockFieldGroupJSONDirPaths = glob(\get_theme_file_path("components/$blockName"));
 
         if (! is_array($blockFieldGroupJSONDirPaths)) {

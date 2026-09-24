@@ -124,7 +124,7 @@
             {
                 "param": "block",
                 "operator": "==",
-                "value": "acf\/page-header"
+                "value": "theme\/page-header"
             }
         ]
     ],

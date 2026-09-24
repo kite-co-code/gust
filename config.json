@@ -46,6 +46,8 @@
         "remove_wp_global_styles": true,
         "remove_wp_block_library_styles": true,
 
+        "site_guide": false,
+
         "ajax_required": false,
 
         "jquery_required": false,
@@ -53,6 +55,10 @@
         "remove_jquery_migrate": true,
 
         "enable_webmanifest": false,
+
+        "auto_update_core": true,
+        "auto_update_themes": true,
+        "auto_update_plugins": true,
 
         "image_sizes": {
             "gust_super": [2500, 2500, false],

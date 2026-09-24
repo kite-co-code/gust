@@ -1,14 +1,16 @@
 {
     "$schema": "https://schemas.wp.org/trunk/block.json",
     "apiVersion": 3,
-    "name": "acf/media-content",
+    "name": "theme/media-content",
     "title": "Media & Content",
     "description": "Content with Image or Video",
     "category": "theme-blocks",
     "icon": "id",
     "align": "full",
     "acf": {
+        "blockVersion": 3,
         "mode": "auto",
+        "autoInlineEditing": true,
         "renderCallback": "Gust\\Components\\MediaContent::renderBlock"
     },
     "supports": {

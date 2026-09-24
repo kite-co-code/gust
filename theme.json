@@ -1,6 +1,18 @@
 {
     "$schema": "https://schemas.wp.org/trunk/theme.json",
-    "version": 2,
+    "version": 3,
+    "styles": {
+        "color": {
+            "background": "var(--background-color)"
+        },
+        "elements": {
+            "link": {
+                "typography": {
+                    "textDecoration": "false"
+                }
+            }
+        }
+    },
     "settings": {
         "appearanceTools": false,
         "blocks": {
@@ -71,6 +83,7 @@
             "customFontSize": false,
             "lineHeight": false,
             "dropCap": false,
+            "defaultFontSizes": false,
             "fontFamilies": [],
             "fontSizes": [],
             "fontStyle": false,
