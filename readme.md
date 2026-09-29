@@ -164,11 +164,15 @@ Components become Gutenberg blocks by adding `block.json`:
 ### Setup
 
 ```bash
-cp .env.example .env    # Update with your APP_URL
-pnpm run setup          # Install deps + build (add ACF Pro key to auth.json before running)
-pnpm run site-setup     # Configure WP site for dev (optional, see dev-scripts/site-setup.sh)
-pnpm run dev            # Start Vite dev server
+cp .env.example .env              # Update with your APP_URL
+cp auth.json.example auth.json    # Add your ACF Pro key and site URL
+
+pnpm run setup                    # Install deps + build
+pnpm run site-setup               # Configure WP site for dev (optional, see dev-scripts/site-setup.sh)
+pnpm run dev                      # Start Vite dev server
 ```
+
+`auth.json` gives Composer access to the ACF Pro package. Set `username` to your ACF Pro licence key and `password` to the site URL the licence is activated for (e.g. `https://example.test`). It's gitignored.
 
 Access WordPress at your normal URL (.env `APP_URL`). Don't use localhost:5173 directly.
 
@@ -189,7 +193,7 @@ Access WordPress at your normal URL (.env `APP_URL`). Don't use localhost:5173 d
 
 `dev-scripts/site-setup.sh` configures a fresh WordPress install for development. Requires WP-CLI.
 
-Enables debugging, sets UK locale, disables comments/pings, creates homepage, removes default content/plugins/themes, sets pretty permalinks, and activates all composer-installed plugins.
+Enables debugging, adds the ACF Pro licence key from `auth.json` to `wp-config.php` (`ACF_PRO_LICENSE`), sets UK locale, disables comments/pings, creates homepage, removes default content/plugins/themes, sets pretty permalinks, and activates all composer-installed plugins.
 
 ### Deployment
 
@@ -427,7 +431,7 @@ Browser-based reference environment for component testing and QA. **Only availab
 ### Routes
 
 | URL                       | Description                              |
-| ----------------------------- | ---------------------------------------- |
+| ------------------------- | ---------------------------------------- |
 | `/_dev`                   | Dev Kit index                            |
 | `/_dev/components`        | List all components with examples        |
 | `/_dev/components/{name}` | View specific component examples         |
@@ -475,7 +479,7 @@ The theme includes Claude Code skills in `.claude/skills/` for AI-assisted devel
 ### Available Skills
 
 | Skill          | Description                                                    |
-| ----------------------------- | -------------------------------------------------------------- |
+| -------------- | -------------------------------------------------------------- |
 | `gust-dev`     | Component development workflows (scaffold, test, debug, setup) |
 | `website-spec` | Fill in the website specification                              |
 
@@ -512,7 +516,7 @@ navigate → snapshot DOM → check console → check debug.log
 ### Structure
 
 | Section                 | Description                                         |
-| ----------------------------- | --------------------------------------------------- |
+| ----------------------- | --------------------------------------------------- |
 | **Overview**            | Project title, URLs, PHP version                    |
 | **Required Plugins**    | Composer-managed plugins for the project            |
 | **Content Types**       | Custom post types with URL, fields, archive routing |

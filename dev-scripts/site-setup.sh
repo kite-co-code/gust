@@ -23,7 +23,7 @@ echo "| Gust Site Setup      |"
 echo "+----------------------+"
 echo -e "${NC}"
 
-echo -e "${BLUE}This script will configure your WordPress site for development by enabling debugging, removing default content, setting up language and permalinks, disabling comments, and activating plugins and the current theme.${NC}"
+echo -e "${BLUE}This script will configure your WordPress site for development by enabling debugging, adding the ACF Pro licence key, removing default content, setting up language and permalinks, disabling comments, and activating plugins and the current theme.${NC}"
 echo
 
 read -r -p $'\e[34mRun setup? (Y/n) \e[0m' run
@@ -41,6 +41,16 @@ wp config set WP_DEBUG_LOG true --raw
 wp config set WP_DEBUG_DISPLAY false --raw
 wp config set WP_ENVIRONMENT_TYPE "development"
 echo -e "${GREEN}Done!${NC}"
+
+printf '\n'
+echo "Adding ACF Pro licence key..."
+ACF_PRO_KEY=$(php -r '$a = json_decode((string) @file_get_contents("auth.json"), true); echo $a["http-basic"]["connect.advancedcustomfields.com"]["username"] ?? "";')
+if [ -n "$ACF_PRO_KEY" ] && [ "$ACF_PRO_KEY" != "ACF_PRO_KEY" ]; then
+    wp config set ACF_PRO_LICENSE "$ACF_PRO_KEY" --quiet
+    echo -e "${GREEN}Done!${NC}"
+else
+    echo "No ACF Pro key found in auth.json — skipping."
+fi
 
 printf '\n'
 echo "Deleting default plugins, content and older themes..."
