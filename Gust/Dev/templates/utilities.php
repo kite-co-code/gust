@@ -340,7 +340,7 @@
         <h3 data-dev-ui>Color Context</h3>
         <small><code class="dev-kit__code">.color-context-{color}</code> <code class="dev-kit__code">.has-{color}-background-color</code></small>
         <p style="margin: 0.5rem 0;">Sets background color, foreground color, focus color, and link colors based on the color's configuration.</p>
-        <div class="dev-kit__demo" style="padding: 0; overflow: hidden; border-radius: var(--radius--lg);">
+        <div class="dev-kit__demo" style="padding: 0; overflow: hidden; border-radius: var(--radius-lg);">
             <div class="color-context-accent" style="padding: 1.5rem;">
                 <strong>.color-context-accent</strong>
                 <p style="margin: 0.5rem 0 0;">Text with <a href="#">a link</a> inherits correct colors.</p>

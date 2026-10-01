@@ -30,9 +30,6 @@ importers:
       postcss-functions:
         specifier: ^4.0.2
         version: 4.0.2(postcss@8.5.8)
-      postcss-simple-vars:
-        specifier: ^7.0.1
-        version: 7.0.1(postcss@8.5.8)
       tailwindcss:
         specifier: ^4.1.18
         version: 4.2.1
@@ -768,12 +765,6 @@ packages:
     peerDependencies:
       postcss: ^8.0.0
 
-  postcss-simple-vars@7.0.1:
-    resolution: {integrity: sha512-5GLLXaS8qmzHMOjVxqkk1TZPf1jMqesiI7qLhnlyERalG0sMbHIbJqrcnrpmZdKCLglHnRHoEBB61RtGTsj++A==}
-    engines: {node: '>=14.0'}
-    peerDependencies:
-      postcss: ^8.2.1
-
   postcss-value-parser@4.2.0:
     resolution: {integrity: sha512-1NNCs6uurfkVbeXG4S8JFT9t19m45ICnif8zWLd5oPSZ50QnwMfK+H3jv408d4jw/7Bttv5axS5IiHoLaVNHeQ==}
 
@@ -1405,10 +1396,6 @@ snapshots:
     dependencies:
       postcss: 8.5.8
       postcss-value-parser: 4.2.0
-
-  postcss-simple-vars@7.0.1(postcss@8.5.8):
-    dependencies:
-      postcss: 8.5.8
 
   postcss-value-parser@4.2.0: {}
 

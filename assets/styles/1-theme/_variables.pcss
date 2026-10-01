@@ -35,7 +35,13 @@
         /* --------------------------------------------------- */
         /* Base */
         /* --------------------------------------------------- */
-        --site--scroll-padding-top: var(--site-header--bottom);
+        --site--scroll-padding-top: calc(var(--site-header--top, 0px) + var(--site-header--height, 0px));
+
+        /* --------------------------------------------------- */
+        /* Transitions - used by the transition() function */
+        /* --------------------------------------------------- */
+        --transition--duration: 200ms;
+        --transition--ease: var(--ease-out-quad);
 
         /* --------------------------------------------------- */
         /* Border */
@@ -80,7 +86,7 @@
         /* --------------------------------------------------- */
         /* Rounded corners - default rounding on blocks */
         /* --------------------------------------------------- */
-        --rounded-border-radius: var(--radius--lg);
+        --rounded-border-radius: var(--radius-lg);
         --rounded-overflow: hidden;
 
         /* --------------------------------------------------- */

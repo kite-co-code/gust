@@ -69,17 +69,15 @@ function hexToHSL(hex) {
 /**
  * Resolve named color references
  */
-function resolveColor(colorName, theme = 'base') {
-	const themeColors = colors[theme];
-	if (!themeColors || !themeColors[colorName]) {
+function resolveColor(colorName) {
+	const colorMap = colors.base[colorName];
+	if (!colorMap) {
 		return null;
 	}
 
-	const colorMap = themeColors[colorName];
-
 	// If it references another color, resolve recursively
 	if (colorMap.namedColor) {
-		return resolveColor(colorMap.namedColor, 'base');
+		return resolveColor(colorMap.namedColor);
 	}
 
 	return colorMap.color;
@@ -88,16 +86,14 @@ function resolveColor(colorName, theme = 'base') {
 /**
  * Resolve full color config (follows namedColor references)
  */
-function resolveColorConfig(colorName, theme = 'base') {
-	const themeColors = colors[theme];
-	if (!themeColors || !themeColors[colorName]) {
+function resolveColorConfig(colorName) {
+	const colorMap = colors.base[colorName];
+	if (!colorMap) {
 		return null;
 	}
 
-	const colorMap = themeColors[colorName];
-
 	if (colorMap.namedColor) {
-		return resolveColorConfig(colorMap.namedColor, 'base');
+		return resolveColorConfig(colorMap.namedColor);
 	}
 
 	return colorMap;
@@ -165,77 +161,70 @@ export default function postcssColorSystem() {
 				});
 			});
 
-			// Generate color variables for each theme
-			Object.entries(colors).forEach(([themeName, themeColors]) => {
-				const selector = themeName === 'base' ? ':root' : `:root.theme--${themeName}`;
-
-				// Find existing :root rule or create new one
-				let targetRule = null;
-				if (themeName === 'base') {
-					root.walkRules(':root', (rule) => {
-						if (!targetRule) targetRule = rule;
-					});
-				}
-
-				if (!targetRule) {
-					targetRule = newRule({ selector });
-				}
-
-				// Generate custom properties for each color
-				Object.entries(themeColors).forEach(([colorName, colorMap]) => {
-					const propName = `--color-${colorName}`;
-
-					// Resolve the actual color value
-					const colorValue = resolveColor(colorName, themeName);
-
-					if (colorValue) {
-						// Add main color property
-						targetRule.append(
-							newDecl({
-								prop: propName,
-								value: colorValue,
-							}),
-						);
-
-						// Add HSL variant
-						const hslValue = hexToHSL(colorValue);
-						targetRule.append(
-							newDecl({
-								prop: `${propName}--hsl`,
-								value: hslValue,
-							}),
-						);
-
-						// Add individual H, S, L components
-						const [h, s, l] = hslValue.split(' ');
-						targetRule.append(newDecl({ prop: `${propName}--h`, value: h }));
-						targetRule.append(newDecl({ prop: `${propName}--s`, value: s }));
-						targetRule.append(newDecl({ prop: `${propName}--l`, value: l }));
-					}
-
-					// Add foreground color if specified
-					if (colorMap.foreground) {
-						targetRule.append(
-							newDecl({
-								prop: `${propName}--foreground`,
-								value: colorMap.foreground,
-							}),
-						);
-					}
-
-					// Add additional properties if specified
-					// if (colorMap.properties) {
-					// 	Object.entries(colorMap.properties).forEach(([prop, value]) => {
-					// 		targetRule.append(newDecl({ prop, value }));
-					// 	});
-					// }
-				});
-
-				// Append the rule if it was newly created
-				if (!targetRule.parent) {
-					root.append(targetRule);
-				}
+			// Generate color variables on the existing :root rule (or a new one)
+			let targetRule = null;
+			root.walkRules(':root', (rule) => {
+				if (!targetRule) targetRule = rule;
 			});
+
+			if (!targetRule) {
+				targetRule = newRule({ selector: ':root' });
+			}
+
+			// Generate custom properties for each color
+			Object.entries(colors.base).forEach(([colorName, colorMap]) => {
+				const propName = `--color-${colorName}`;
+
+				// Resolve the actual color value
+				const colorValue = resolveColor(colorName);
+
+				if (colorValue) {
+					// Add main color property
+					targetRule.append(
+						newDecl({
+							prop: propName,
+							value: colorValue,
+						}),
+					);
+
+					// Add HSL variant
+					const hslValue = hexToHSL(colorValue);
+					targetRule.append(
+						newDecl({
+							prop: `${propName}--hsl`,
+							value: hslValue,
+						}),
+					);
+
+					// Add individual H, S, L components
+					const [h, s, l] = hslValue.split(' ');
+					targetRule.append(newDecl({ prop: `${propName}--h`, value: h }));
+					targetRule.append(newDecl({ prop: `${propName}--s`, value: s }));
+					targetRule.append(newDecl({ prop: `${propName}--l`, value: l }));
+				}
+
+				// Add foreground color if specified
+				if (colorMap.foreground) {
+					targetRule.append(
+						newDecl({
+							prop: `${propName}--foreground`,
+							value: colorMap.foreground,
+						}),
+					);
+				}
+
+				// Add additional properties if specified
+				// if (colorMap.properties) {
+				// 	Object.entries(colorMap.properties).forEach(([prop, value]) => {
+				// 		targetRule.append(newDecl({ prop, value }));
+				// 	});
+				// }
+			});
+
+			// Append the rule if it was newly created
+			if (!targetRule.parent) {
+				root.append(targetRule);
+			}
 
 			// Generate utility classes using @utility syntax for Tailwind v4
 			const baseColors = colors.base;
@@ -298,7 +287,7 @@ export default function postcssColorSystem() {
 
 			Object.entries(baseColors).forEach(([colorName, colorMap]) => {
 				// Resolve the actual color data (handles namedColor references)
-				const resolvedColor = resolveColor(colorName, 'base');
+				const resolvedColor = resolveColor(colorName);
 				const actualColorMap = colorMap.namedColor ? colors.base[colorMap.namedColor] : colorMap;
 
 				// Skip if we can't resolve the color

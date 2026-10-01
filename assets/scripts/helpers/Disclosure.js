@@ -421,7 +421,6 @@ export default class Disclosure {
         if (this.options.focusWithinOnExpand === true) {
             window.setTimeout(() => {
                 // If the parent element was display:none, focus must be set after the parent element displays.
-                console.log('attempting focus within disclosure', this.focusableItems);
                 this.focusableItems.firstFocusable.focus();
             }, 100);
         }
@@ -462,8 +461,6 @@ export default class Disclosure {
         }
 
         if (this.options.disclosureGroup) {
-            console.log(event.target.dataset.disclosureGroup);
-
             if (event.target.dataset.disclosureGroup === this.options.disclosureGroup) {
                 shouldClose = true;
             }
@@ -481,17 +478,7 @@ export default class Disclosure {
     }
 
     getReducedMotion() {
-        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-            return true;
-        }
-
-        const stored = localStorage.getItem('accessibilitySettingsV1');
-
-        if (stored) {
-            const settings = JSON.parse(stored);
-
-            return settings.reducedMotion;
-        }
+        return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     }
 
     /**

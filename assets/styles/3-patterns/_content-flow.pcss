@@ -1,6 +1,6 @@
 @layer base {
     /* Restore layout-size gap when prose follows a major/layout block */
-    :where(.alignwide, .alignfull, .section) + :where(.wp-block-heading, .wp-block-paragraph, .wp-block-list) {
+    :where(.alignwide, .alignfull) + :where(.wp-block-heading, .wp-block-paragraph, .wp-block-list) {
         --flow-space: var(--space-layout);
     }
 }

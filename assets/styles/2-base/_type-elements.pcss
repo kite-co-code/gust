@@ -19,7 +19,7 @@ a {
     }
 
     /* Restore layout-size gap when prose follows a major/layout block */
-    :where(.alignwide, .alignfull, .section) + & {
+    :where(.alignwide, .alignfull) + & {
         --flow-space: var(--space-layout);
     }
 }
@@ -53,7 +53,7 @@ p {
 
     text-wrap: pretty;
 
-    :where(.alignwide, .alignfull, .section) + & {
+    :where(.alignwide, .alignfull) + & {
         --flow-space: var(--space-layout);
     }
 }

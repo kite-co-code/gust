@@ -3,8 +3,6 @@ const { createHigherOrderComponent } = wp.compose;
 // Remove the row, stack, and grid variations from core/group. Use the columns block, which provides the right amount of layout control for most use cases.
 wp.hooks.addFilter('blocks.registerBlockType', 'gust/remove-group-variations', (settings, name) => {
     if (name === 'core/group') {
-        console.log(settings.variations);
-
         settings.variations = settings.variations?.filter(
             (v) => !['group-row', 'group-stack', 'group-grid'].includes(v.name)
         );
