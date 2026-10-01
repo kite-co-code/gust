@@ -17,6 +17,7 @@
         </hgroup>
         <div class="dev-kit__type-styles content-flow">
             <h2 class="is-style-type-hero">Typestyle: hero</h2>
+            <p class="is-style-type-label">Typestyle: label</p>
             <p class="is-style-type-meta">Typestyle: meta</p>
         </div>
     </section>

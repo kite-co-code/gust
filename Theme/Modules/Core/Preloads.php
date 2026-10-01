@@ -12,12 +12,16 @@ class Preloads
     public static function addPreloads(array $preloads): array
     {
         $preloads = array_merge($preloads, [
-            // [
-            //     'href' => \Gust\Asset::URL('static/WebFont-Regular.woff2'),
-            //     'fetchpriority' => 'low',
-            //     'type' => 'font/woff2',
-            //     'as' => 'font',
-            // ],
+            [
+                'href' => \Gust\Helpers::staticUrl('fonts/ibm-plex-serif-medium.woff2'),
+                'type' => 'font/woff2',
+                'as' => 'font',
+            ],
+            [
+                'href' => \Gust\Helpers::staticUrl('fonts/ibm-plex-sans.woff2'),
+                'type' => 'font/woff2',
+                'as' => 'font',
+            ],
         ]);
 
         return $preloads;

@@ -137,7 +137,7 @@ svg {
 hr {
     height: var(--hr--thickness);
     border: 0;
-    background-color: var(--hr--color);
+    background-color: var(--hr--color, color-mix(in oklab, var(--color-foreground) 50%, transparent));
 }
 
 ::selection {

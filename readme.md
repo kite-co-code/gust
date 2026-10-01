@@ -399,8 +399,8 @@ classes('banner', 'wp-block', 'alignfull')
 // → "banner wp-block alignfull"
 
 // Mix of strings and arrays — append $this->classes last so callers can extend
-classes('card', 'animate-element', $this->classes)
-// → "card animate-element caller-class"
+classes('card', 'animate__item', $this->classes)
+// → "card animate__item caller-class"
 
 // Conditional — empty strings are filtered out
 classes('menu-item', $isActive ? 'is-active' : '', $this->classes)

@@ -78,10 +78,10 @@
     --color-stone: initial;
 
     /* Animations */
-    --animate-fade-in: fade-in var(--animate-duration, 300ms) var(--animate-delay, 50ms) forwards
-        var(--animate-easing, ease-out);
-    --animate-fade-in-translate: fade-in-translate var(--animate-duration, 300ms) var(--animate-delay, 50ms) forwards
-        var(--animate-easing, ease-out);
+    --animate-fade-in: fade-in var(--animate--animation-duration, 300ms)
+        var(--animate--animation-timing-function, ease-out) both;
+    --animate-fade-in-translate: fade-in-translate var(--animate--animation-duration, 300ms)
+        var(--animate--animation-timing-function, ease-out) both;
 
     /* Z-index */
     --z-index-backdrop: 100;
@@ -90,28 +90,62 @@
     --z-index-modal: 800;
     --z-index-screen-reader: 1000;
 
-    /* Typography */
-    --font-serif: Georgia, serif;
-    --font-sans: system-ui, sans-serif;
+    /* Typography — Kite Co.'s IBM Plex family (@font-face rules in 2-base/_fonts.pcss) */
+    --font-sans: "IBM Plex Sans", system-ui, sans-serif;
+    --font-serif: "IBM Plex Serif", Georgia, serif;
+    --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+
+    /* Type scale, from Kite Co.'s Figma text styles. Each size carries its
+       line height and letter spacing; type-* utilities add family and weight. */
+    --text-hero: rfs(36, 56);
+    --text-hero--line-height: 1.1;
+    --text-hero--letter-spacing: -0.01em;
+    --text-h1: rfs(32, 42);
+    --text-h1--line-height: 1.2;
+    --text-h1--letter-spacing: -0.01em;
+    --text-h2: rfs(28, 32);
+    --text-h2--line-height: 1.3;
+    --text-h2--letter-spacing: 0em;
+    --text-h3: rfs(24, 28);
+    --text-h3--line-height: 1.25;
+    --text-h3--letter-spacing: -0.01em;
+    --text-h4: rfs(20, 24);
+    --text-h4--line-height: 1.35;
+    --text-h4--letter-spacing: -0.01em;
+    --text-h5: rfs(18, 20);
+    --text-h5--line-height: 1.4;
+    --text-h5--letter-spacing: 0em;
+    --text-h6: rem(16);
+    --text-h6--line-height: 1.4;
+    --text-h6--letter-spacing: 0em;
+    --text-base: rem(17);
+    --text-base--line-height: 1.4;
+    --text-base--letter-spacing: -0.01em;
+    --text-label: rem(16);
+    --text-label--line-height: 1.2;
+    --text-label--letter-spacing: 0em;
+    --text-label-sm: rem(14);
+    --text-label-sm--line-height: 1.3;
+    --text-label-sm--letter-spacing: 0em;
+    --text-meta: rem(14);
+    --text-meta--line-height: 1.4;
+    --text-meta--letter-spacing: 0em;
+    --text-code: rem(13);
+    --text-code--line-height: 1.6;
+    --text-code--letter-spacing: 0em;
 }
 
+/* Only a start state: they animate to the element's own opacity and translate.
+   Used by components/animate (named through a variable) and the animate-* utilities. */
 @keyframes fade-in {
     from {
         opacity: 0;
-    }
-    to {
-        opacity: 1;
     }
 }
 
 @keyframes fade-in-translate {
     from {
         opacity: 0;
-        transform: translate(var(--animate-translateX, 0), var(--animate-translateY, 0));
-    }
-
-    to {
-        opacity: 1;
-        transform: translate(0);
+        translate: var(--animate--translate, 0 space(16));
     }
 }

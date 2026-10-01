@@ -44,6 +44,6 @@
         "wp-pot": "^2.0.0"
     },
     "dependencies": {
-        "lodash.debounce": "^4.0.8"
+        "@oddbird/popover-polyfill": "^0.7.2"
     }
 }

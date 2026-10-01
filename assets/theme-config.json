@@ -1,105 +1,85 @@
 {
     "colors": {
         "base": {
+            "white": {
+                "color": "#ffffff",
+                "name": "White",
+                "block_editor": true,
+                "foreground": "var(--color-blue)",
+                "properties": {
+                    "--color-accent": "var(--color-blue)",
+                    "--color-accent--foreground": "var(--color-white)"
+                }
+            },
+            "neutral": {
+                "color": "#eee8e3",
+                "name": "Neutral",
+                "block_editor": true,
+                "foreground": "var(--color-blue)",
+                "properties": {
+                    "--color-accent": "var(--color-blue)",
+                    "--color-accent--foreground": "var(--color-white)"
+                }
+            },
+            "neutral-600": {
+                "color": "#e2dad2",
+                "name": "Neutral 600",
+                "block_editor": true,
+                "foreground": "var(--color-blue)",
+                "properties": {
+                    "--color-accent": "var(--color-blue)",
+                    "--color-accent--foreground": "var(--color-white)"
+                }
+            },
+            "lilac": {
+                "color": "#e8e5f6",
+                "name": "Lilac",
+                "block_editor": true,
+                "foreground": "var(--color-blue)",
+                "properties": {
+                    "--color-accent": "var(--color-blue)",
+                    "--color-accent--foreground": "var(--color-white)"
+                }
+            },
             "blue": {
-                "color": "#0707a3",
+                "color": "#0e26ac",
                 "name": "Blue",
                 "block_editor": true,
                 "foreground": "var(--color-white)",
                 "properties": {
-                    "--link--color": "var(--color-white)",
-                    "--link--color-hover": "var(--color-white)"
-                }
-            },
-            "blue-100": {
-                "color": "#ebebf8",
-                "name": "Light Blue",
-                "block_editor": true,
-                "foreground": "var(--color-charcoal)",
-                "properties": {
-                    "--link--color": "var(--color-accent)",
-                    "--link--color-hover": "var(--color-accent)"
-                }
-            },
-            "charcoal": {
-                "color": "#1a1a2a",
-                "name": "Charcoal",
-                "block_editor": true,
-                "foreground": "var(--color-white)",
-                "properties": {
-                    "--link--color": "var(--color-blue-100)",
-                    "--link--color-hover": "var(--color-white)"
-                }
-            },
-            "slate": {
-                "color": "#4a4a5c",
-                "name": "Slate",
-                "block_editor": true,
-                "foreground": "var(--color-white)",
-                "properties": {
-                    "--link--color": "var(--color-blue-100)",
-                    "--link--color-hover": "var(--color-white)"
-                }
-            },
-            "grey": {
-                "color": "#6b6b7b",
-                "name": "Grey",
-                "foreground": "var(--color-white)",
-                "properties": {
-                    "--link--color": "var(--color-white)",
-                    "--link--color-hover": "var(--color-white)"
-                }
-            },
-            "silver": {
-                "color": "#d0d0da",
-                "name": "Silver",
-                "foreground": "var(--color-charcoal)"
-            },
-            "light": {
-                "color": "#f2f2f7",
-                "name": "Light",
-                "block_editor": true,
-                "foreground": "var(--color-charcoal)",
-                "properties": {
-                    "--link--color": "var(--color-accent)",
-                    "--link--color-hover": "var(--color-charcoal)"
-                }
-            },
-            "white": {
-                "color": "#ffffff",
-                "foreground": "var(--color-charcoal)",
-                "properties": {
-                    "--link--color": "var(--color-accent)",
-                    "--link--color-hover": "var(--color-charcoal)"
-                }
-            },
-            "black": {
-                "color": "#111118",
-                "foreground": "var(--color-white)",
-                "properties": {
-                    "--link--color": "var(--color-blue-100)",
-                    "--link--color-hover": "var(--color-white)"
+                    "--color-accent": "var(--color-white)",
+                    "--color-accent--foreground": "var(--color-blue)"
                 }
             },
             "red": {
-                "color": "#c0392b",
+                "color": "#b3261e",
+                "name": "Red",
                 "foreground": "var(--color-white)",
                 "properties": {
-                    "--link--color": "var(--color-white)",
-                    "--link--color-hover": "var(--color-white)"
+                    "--color-accent": "var(--color-white)",
+                    "--color-accent--foreground": "var(--color-red)"
+                }
+            },
+            "black": {
+                "color": "#000000",
+                "name": "Black",
+                "foreground": "var(--color-white)",
+                "properties": {
+                    "--color-accent": "var(--color-white)",
+                    "--color-accent--foreground": "var(--color-black)"
                 }
             },
             "accent": {
                 "namedColor": "blue"
             },
             "brand-2": {
-                "namedColor": "blue-100"
+                "namedColor": "lilac"
             },
             "foreground": {
-                "namedColor": "charcoal"
+                "namedColor": "blue"
             },
             "background": {
-                "namedColor": "white"
+                "namedColor": "neutral"
             },
             "error": {
                 "namedColor": "red"

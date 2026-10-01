@@ -30,24 +30,32 @@ class DevRoutes
         echo <<<'HTML'
             <style>
                 /* ============================================
-                   Gust Dev Tools — hardcoded design tokens
+                   Gust Dev Tools — Kite Co. design tokens, hardcoded
                    (intentionally isolated from project styles)
+                   Blue on neutral, IBM Plex, hairline keylines.
+                   The Plex fonts come from the theme's main CSS.
                    ============================================ */
                 *, *::before, *::after { box-sizing: border-box; }
 
                 :root {
-                    --dev-mono:      ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, Monaco, Consolas, monospace;
-                    --dev-sans:      system-ui, -apple-system, sans-serif;
-                    --dev-text:      #1a1a2a;
-                    --dev-muted:     #6b6b7b;
-                    --dev-border:    #d0d0da;
-                    --dev-bg:        #f2f2f7;
+                    --dev-serif:     'IBM Plex Serif', Georgia, serif;
+                    --dev-mono:      'IBM Plex Mono', ui-monospace, Menlo, Monaco, Consolas, monospace;
+                    --dev-sans:      'IBM Plex Sans', system-ui, -apple-system, sans-serif;
+                    --dev-blue:      #0e26ac;
+                    --dev-neutral:   #eee8e3;
+                    --dev-lilac:     #e8e5f6;
+                    --dev-text:      var(--dev-blue);
+                    --dev-muted:     color-mix(in oklab, var(--dev-blue) 72%, var(--dev-neutral));
+                    --dev-rule:      color-mix(in oklab, var(--dev-blue) 50%, transparent);
+                    --dev-border:    color-mix(in oklab, var(--dev-blue) 22%, transparent);
+                    --dev-bg:        var(--dev-neutral);
                     --dev-surface:   #ffffff;
-                    --dev-accent:    #0707a3;
-                    --dev-accent-bg: #ebebf8;
-                    --dev-accent-hover: #0505cc;
-                    --dev-ink:       #111118;
-                    --dev-ink-fg:    #ebebf8;
+                    --dev-accent:    var(--dev-blue);
+                    --dev-accent-bg: var(--dev-lilac);
+                    --dev-accent-hover: color-mix(in oklab, var(--dev-blue) 80%, var(--dev-neutral));
+                    --dev-ink:       var(--dev-blue);
+                    --dev-ink-fg:    #ffffff;
+                    --dev-radius:    6px;
                 }
 
                 body {
@@ -63,68 +71,76 @@ class DevRoutes
                 .dev-topbar {
                     display: flex;
                     align-items: center;
+                    gap: 1rem;
                     padding: 0 2rem;
-                    height: 2.75rem;
-                    background: var(--dev-accent);
-                    border-bottom: 1px solid rgba(0,0,0,0.12);
+                    min-height: 3rem;
+                    background: var(--dev-blue);
+                    border-bottom: 1px solid color-mix(in oklab, #fff 25%, transparent);
                     position: sticky;
                     top: var(--wp-admin--admin-bar--height, 0px);
                     z-index: 100;
+                    font-family: var(--dev-mono);
+                    font-weight: 600;
                 }
 
                 .dev-breadcrumb {
                     display: inline-flex;
                     align-items: center;
-                    gap: 0.375rem;
+                    gap: 0.5rem;
                     font-size: 0.8125rem;
-                    font-weight: 500;
-                    color: rgba(255,255,255,0.6);
+                    color: color-mix(in oklab, #fff 65%, transparent);
                 }
 
                 .dev-breadcrumb a {
-                    color: rgba(255,255,255,0.85);
+                    color: color-mix(in oklab, #fff 85%, transparent);
                     text-decoration: none;
                     transition: color 0.15s;
                 }
 
                 .dev-breadcrumb a:hover {
                     color: #fff;
-                    text-decoration: none;
+                    text-decoration: underline;
+                    text-decoration-thickness: 1px;
+                    text-underline-offset: 0.2em;
                 }
 
                 .dev-breadcrumb__sep {
-                    opacity: 0.85;
+                    opacity: 0.6;
                     font-size: 0.75rem;
                 }
 
                 .dev-breadcrumb__current {
-                    color: rgba(255,255,255,0.95);
+                    color: #fff;
                 }
 
                 .dev-topbar__nav {
                     display: flex;
                     align-items: center;
-                    gap: 0.125rem;
+                    gap: 0.25rem;
                     margin-left: auto;
                 }
 
                 .dev-topbar__nav a {
                     display: inline-flex;
                     align-items: center;
-                    padding: 0.25rem 0.625rem;
+                    padding: 0.3rem 0.6rem;
                     font-size: 0.8125rem;
-                    font-weight: 500;
-                    color: rgba(255,255,255,0.75);
-                    text-decoration: none;
-                    border-radius: 4px;
-                    transition: background 0.15s, color 0.15s;
-                }
-
-                .dev-topbar__nav a:hover,
-                .dev-topbar__nav a[aria-current] {
-                    background: rgba(255,255,255,0.15);
                     color: #fff;
                     text-decoration: none;
+                    border: 1px solid transparent;
+                    border-radius: var(--dev-radius);
+                    transition: background 0.15s, border-color 0.15s;
+                }
+
+                .dev-topbar__nav a:hover {
+                    border-color: color-mix(in oklab, #fff 50%, transparent);
+                    text-decoration: none;
+                }
+
+                .dev-topbar__nav a[aria-current] {
+                    background: #fff;
+                    border-color: #fff;
+                    color: var(--dev-blue);
                 }
 
                 /* ---- Main content — hardcoded content grid (intentionally isolated from project content-grid) ---- */
@@ -165,7 +181,7 @@ class DevRoutes
                 h4[data-dev-ui],
                 h5[data-dev-ui],
                 h6[data-dev-ui] {
-                    font-family: var(--dev-sans) !important;
+                    font-family: var(--dev-mono) !important;
                     font-weight: 600 !important;
                     line-height: 1.3 !important;
                     letter-spacing: 0 !important;
@@ -186,19 +202,21 @@ class DevRoutes
                     flex-direction: column;
                     gap: 0.375rem;
                     padding-bottom: 1rem;
-                    border-bottom: 2px solid var(--dev-text);
+                    border-bottom: 1px solid var(--dev-rule);
                 }
 
                 /* ---- Page title ---- */
-                .dev-page-title {
-                    font-family: var(--dev-sans) !important;
-                    font-size: 32px;
-                    font-weight: 600 !important;
-                    text-transform: uppercase !important;
-                    letter-spacing: 0.08em !important;
-                    color: var(--dev-muted) !important;
+                /* Doubled class: outranks the h1–h6[data-dev-ui] resets */
+                .dev-page-title.dev-page-title,
+                .dev-component-example__title.dev-component-example__title {
+                    font-family: var(--dev-serif) !important;
+                    font-size: clamp(2rem, 1.5rem + 2vw, 2.625rem) !important;
+                    font-weight: 500 !important;
+                    text-transform: none !important;
+                    letter-spacing: -0.01em !important;
+                    color: var(--dev-text) !important;
                     margin: 0 !important;
-                    line-height: 1.3 !important;
+                    line-height: 1.2 !important;
                 }
 
                 /* ---- Back links ---- */
@@ -206,14 +224,16 @@ class DevRoutes
                     display: inline-flex;
                     align-items: center;
                     gap: 0.3rem;
+                    font-family: var(--dev-mono);
                     font-size: 0.8125rem;
+                    font-weight: 600;
                     color: var(--dev-muted);
                     text-decoration: none;
                 }
 
                 .dev-back:hover {
                     color: var(--dev-accent);
-                    text-decoration: none;
+                    text-decoration: underline;
                 }
 
                 /* ---- Index nav cards ---- */
@@ -234,65 +254,60 @@ class DevRoutes
                     background: var(--dev-surface);
                     color: var(--dev-accent);
                     text-decoration: none;
-                    border-radius: 6px;
+                    border-radius: var(--dev-radius);
+                    font-family: var(--dev-mono);
                     font-size: 0.875rem;
                     font-weight: 600;
-                    border: 1px solid var(--dev-border);
-                    border-left: 3px solid var(--dev-accent);
-                    transition: border-color 0.15s, box-shadow 0.15s, transform 0.1s;
+                    border: 1px solid var(--dev-rule);
+                    transition: background 0.15s, color 0.15s;
                 }
 
                 .dev-index__links a:hover {
-                    border-color: var(--dev-accent-hover);
-                    box-shadow: 0 2px 8px rgba(7,7,163,0.12);
-                    transform: translateY(-1px);
-                    color: var(--dev-accent-hover);
+                    background: var(--dev-accent);
+                    color: #fff;
                     text-decoration: none;
                 }
 
-                /* ---- Component list ---- */
+                /* ---- Link list — Kite Co. tags ---- */
                 .dev-link-list {
                     list-style: none;
                     padding: 0;
                     display: flex;
                     flex-wrap: wrap;
-                    gap: 0.4rem;
+                    gap: 0.625rem;
                 }
 
                 .dev-link-list a {
-                    display: inline-block;
-                    padding: 0.375rem 0.875rem;
-                    background: var(--dev-surface);
+                    display: inline-flex;
+                    align-items: center;
+                    padding: 0.29em 0.57em;
+                    background: transparent;
                     color: var(--dev-accent);
                     text-decoration: none;
-                    border-radius: 4px;
-                    font-size: 0.8125rem;
-                    border: 1px solid var(--dev-accent-bg);
-                    transition: background 0.15s, border-color 0.15s;
+                    border-radius: var(--dev-radius);
+                    font-family: var(--dev-mono);
+                    font-size: 0.875rem;
+                    font-weight: 600;
+                    line-height: 1.3;
+                    border: 1px solid currentColor;
+                    white-space: nowrap;
+                    transition: background 0.15s;
                 }
 
                 .dev-link-list a:hover {
-                    background: var(--dev-accent-bg);
-                    border-color: var(--dev-accent);
+                    background: color-mix(in oklab, currentColor 12%, transparent);
                     text-decoration: none;
                 }
 
                 /* ---- Component example ---- */
-                .dev-component-example__title {
-                    font-size: 1rem !important;
-                    font-weight: 600 !important;
-                    margin: 0 !important;
-                }
-
                 .component-example-section__title {
-                    font-size: 0.6875rem;
+                    font-family: var(--dev-mono);
+                    font-size: 0.875rem;
                     font-weight: 600;
-                    text-transform: uppercase;
-                    letter-spacing: 0.08em;
-                    color: var(--dev-muted);
+                    color: var(--dev-text);
                     margin-bottom: 0.5rem;
                     padding-bottom: 0.375rem;
-                    border-bottom: 1px solid var(--dev-border);
+                    border-bottom: 1px solid var(--dev-rule);
                 }
 
                 .component-example-section__description {
@@ -304,14 +319,8 @@ class DevRoutes
                 .component-example-section__preview {
                     padding: 1.5rem;
                     background: var(--dev-bg);
-                    border: 1px solid var(--dev-border);
-                    border-radius: 6px;
-                }
-
-                @layer base {
-                    .dev-kit__section {
-                        /* --flow-space: 32px; */
-                    }
+                    border: 1px solid var(--dev-rule);
+                    border-radius: var(--dev-radius);
                 }
 
                 /* ---- Dev Kit section/subsection layout ---- */
@@ -341,31 +350,22 @@ class DevRoutes
                 }
 
                 .dev-kit__section + .dev-kit__section {
-                    border-top: 1px solid var(--dev-border);
+                    border-top: 1px solid var(--dev-rule);
                     margin-top: 0;
                 }
 
+                /* Section headings: Kite Co. surtitles */
                 h2[data-dev-ui] {
-                    font-family: var(--dev-sans) !important;
-                    font-size: 12px !important;
-                    font-weight: 600 !important;
-                    text-transform: uppercase !important;
-                    letter-spacing: 0.08em !important;
-                    color: var(--dev-muted) !important;
-                    /* margin-bottom: 1.5rem !important; */
+                    font-size: 1rem !important;
+                    color: var(--dev-text) !important;
                     padding-bottom: 0.5rem;
-                    border-bottom: 2px solid var(--dev-border);
+                    border-bottom: 1px solid var(--dev-rule);
                 }
 
                 h3[data-dev-ui] {
-                    font-family: var(--dev-sans) !important;
-                    font-size: 0.75rem !important;
-                    font-weight: 600 !important;
-                    text-transform: uppercase !important;
-                    letter-spacing: 0.06em !important;
+                    font-size: 0.875rem !important;
                     color: var(--dev-text) !important;
                     margin-top: 1.25rem !important;
-                    /* margin-bottom: 0.4rem !important; */
                 }
 
                 .dev-kit__subsection {
@@ -382,10 +382,10 @@ class DevRoutes
 
                 .dev-kit__demo {
                     padding: 1rem;
-                    border: 1px dashed var(--dev-border);
-                    border-radius: 6px;
+                    border: 1px solid var(--dev-rule);
+                    border-radius: var(--dev-radius);
                     margin-top: 0.5rem;
-                    background: #ffffff;
+                    background: var(--color-background, var(--dev-surface));
                 }
 
                 .dev-kit__demo--dark {
@@ -393,12 +393,35 @@ class DevRoutes
                     color: var(--color-background);
                 }
 
+                /* ---- Colour swatches ---- */
+                .dev-kit__swatches {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+                    gap: 1rem;
+                }
+
+                .dev-kit__swatch {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 0.25rem;
+                    font-family: var(--dev-mono);
+                    font-weight: 600;
+                }
+
+                .dev-kit__swatch-chip {
+                    aspect-ratio: 4 / 3;
+                    border: 1px solid var(--dev-rule);
+                    border-radius: var(--dev-radius);
+                    margin-bottom: 0.25rem;
+                }
+
+                /* Follows the text colour, so it reads on any colour context */
                 .dev-kit__code {
                     display: inline-block;
                     padding: 0.15em 0.4em;
                     border-radius: 3px;
-                    background: var(--dev-accent-bg);
-                    color: var(--dev-accent);
+                    background: color-mix(in oklab, currentColor 10%, transparent);
+                    color: inherit;
                     font-family: var(--dev-mono);
                     font-size: 0.8125em;
                     font-weight: 400;
@@ -410,8 +433,12 @@ class DevRoutes
                     justify-content: center;
                     min-height: 60px;
                     padding: 0.5rem;
-                    border: 1px solid var(--dev-border);
-                    background: var(--dev-accent-bg);
+                    border: 1px dashed var(--dev-rule);
+                    border-radius: var(--dev-radius);
+                    background: color-mix(in oklab, var(--dev-blue) 8%, var(--dev-neutral));
+                    font-family: var(--dev-mono);
+                    font-size: 0.875rem;
+                    font-weight: 600;
                     text-align: center;
                 }
 
@@ -424,15 +451,15 @@ class DevRoutes
                     width: 100%;
                     height: 100%;
                     min-height: 80px;
-                    background: linear-gradient(135deg, var(--dev-accent-bg) 25%, var(--dev-accent) 100%);
+                    background: linear-gradient(135deg, var(--dev-lilac) 25%, var(--dev-blue) 100%);
                 }
 
                 /* ---- Inline code ---- */
                 code {
                     font-family: var(--dev-mono) !important;
                     font-size: 0.8125em;
-                    background: var(--dev-accent-bg);
-                    color: var(--dev-accent);
+                    background: color-mix(in oklab, currentColor 10%, transparent);
+                    color: inherit;
                     padding: 0.15em 0.4em;
                     border-radius: 3px;
                     font-weight: 400;
@@ -444,10 +471,10 @@ class DevRoutes
                     background: var(--dev-ink);
                     color: var(--dev-ink-fg);
                     padding: 1.25rem 1.5rem;
-                    border-radius: 6px;
+                    border-radius: var(--dev-radius);
                     overflow-x: auto;
-                    font-size: 0.875rem;
-                    line-height: 1.7;
+                    font-size: 0.8125rem;
+                    line-height: 1.6;
                     tab-size: 2;
                     border: none;
                     margin: 0;

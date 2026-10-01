@@ -84,6 +84,18 @@ function resolveColor(colorName) {
 }
 
 /**
+ * Resolve the base color name (follows namedColor references)
+ */
+function resolveColorName(colorName) {
+	const colorMap = colors.base[colorName];
+	if (colorMap?.namedColor) {
+		return resolveColorName(colorMap.namedColor);
+	}
+
+	return colorName;
+}
+
+/**
  * Resolve full color config (follows namedColor references)
  */
 function resolveColorConfig(colorName) {
@@ -203,12 +215,13 @@ export default function postcssColorSystem() {
 					targetRule.append(newDecl({ prop: `${propName}--l`, value: l }));
 				}
 
-				// Add foreground color if specified
-				if (colorMap.foreground) {
+				// Add foreground color if specified (aliases take their target's)
+				const foreground = resolveColorConfig(colorName)?.foreground;
+				if (foreground) {
 					targetRule.append(
 						newDecl({
 							prop: `${propName}--foreground`,
-							value: colorMap.foreground,
+							value: foreground,
 						}),
 					);
 				}
@@ -236,12 +249,13 @@ export default function postcssColorSystem() {
 					params: className
 				});
 
-				// Set background color via custom property
+				// Set background color via custom property. Aliases point at their base
+				// color, since a context's properties may redefine role colors like --color-accent.
 				if (colorName !== 'background') {
 					utilityRule.append(
 						newDecl({
 							prop: '--color-background',
-							value: `var(--color-${colorName})`,
+							value: `var(--color-${resolveColorName(colorName)})`,
 						}),
 					);
 				}

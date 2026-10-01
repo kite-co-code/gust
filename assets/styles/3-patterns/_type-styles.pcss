@@ -1,66 +1,117 @@
 /* --------------------------------------------------- */
-/* Type Style Mixins */
+/* Type Style Mixins
+ *
+ * Kite Co. type. Sizes are theme tokens (--text-h1 …, see 1-theme/_tailwind-theme.pcss),
+ * each carrying its line height and letter spacing.
+ *
+ *   type-hero, type-h1 … type-h6   IBM Plex Serif Medium
+ *   type-base                      IBM Plex Sans, the body default
+ *   type-label, type-label-sm      IBM Plex Mono SemiBold: surtitles, nav, tags
+ *   type-meta                      IBM Plex Serif Medium, small: captions, credits, dates
+ *   type-code                      IBM Plex Mono, small: code blocks
+ */
 /* --------------------------------------------------- */
 
 @utility heading-attributes {
     font-family: var(--font-serif);
-    font-weight: var(--font-weight-normal);
-    line-height: 1.3;
+    font-weight: var(--font-weight-medium);
+    text-wrap: balance;
 }
 
 @utility type-base {
     font-family: var(--font-sans);
     font-size: var(--text-base);
     font-weight: var(--font-weight-normal);
-    line-height: var(--leading-normal);
+    letter-spacing: var(--text-base--letter-spacing);
+    line-height: var(--text-base--line-height);
+}
+
+@utility type-label {
+    font-family: var(--font-mono);
+    font-size: var(--text-label);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: var(--text-label--letter-spacing);
+    line-height: var(--text-label--line-height);
+}
+
+@utility type-label-sm {
+    font-family: var(--font-mono);
+    font-size: var(--text-label-sm);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: var(--text-label-sm--letter-spacing);
+    line-height: var(--text-label-sm--line-height);
 }
 
 @utility type-meta {
-    font-size: var(--text-base);
-    line-height: 1.2;
+    font-family: var(--font-serif);
+    font-size: var(--text-meta);
+    font-weight: var(--font-weight-medium);
+    letter-spacing: var(--text-meta--letter-spacing);
+    line-height: var(--text-meta--line-height);
+}
+
+@utility type-code {
+    font-family: var(--font-mono);
+    font-size: var(--text-code);
+    font-weight: var(--font-weight-normal);
+    letter-spacing: var(--text-code--letter-spacing);
+    line-height: var(--text-code--line-height);
 }
 
 @utility type-hero {
     @apply heading-attributes;
 
-    font-size: rfs(36, 40);
-    line-height: 1.2;
+    font-size: var(--text-hero);
+    letter-spacing: var(--text-hero--letter-spacing);
+    line-height: var(--text-hero--line-height);
 }
 
 @utility type-h1 {
     @apply heading-attributes;
 
-    font-size: rfs(28, 36);
+    font-size: var(--text-h1);
+    letter-spacing: var(--text-h1--letter-spacing);
+    line-height: var(--text-h1--line-height);
 }
 
 @utility type-h2 {
     @apply heading-attributes;
 
-    font-size: rfs(26, 32);
+    font-size: var(--text-h2);
+    letter-spacing: var(--text-h2--letter-spacing);
+    line-height: var(--text-h2--line-height);
 }
 
 @utility type-h3 {
     @apply heading-attributes;
 
-    font-size: rfs(23, 28);
+    font-size: var(--text-h3);
+    letter-spacing: var(--text-h3--letter-spacing);
+    line-height: var(--text-h3--line-height);
 }
 
 @utility type-h4 {
     @apply heading-attributes;
 
-    font-size: rfs(20, 24);
+    font-size: var(--text-h4);
+    letter-spacing: var(--text-h4--letter-spacing);
+    line-height: var(--text-h4--line-height);
 }
 
 @utility type-h5 {
     @apply heading-attributes;
 
-    font-size: rfs(18, 22);
+    font-size: var(--text-h5);
+    letter-spacing: var(--text-h5--letter-spacing);
+    line-height: var(--text-h5--line-height);
 }
 
 @utility type-h6 {
     @apply heading-attributes;
 
-    font-size: var(--text-base);
+    font-size: var(--text-h6);
+    letter-spacing: var(--text-h6--letter-spacing);
+    line-height: var(--text-h6--line-height);
 }
 
 /* WordPress Block Style Classes */
@@ -94,4 +145,8 @@
 
 .is-style-type-meta {
     @apply type-meta;
+}
+
+.is-style-type-label {
+    @apply type-label;
 }

@@ -1,4 +1,4 @@
-<article class="<?= classes('g-card', 'animate-element', $this->classes) ?>" <?= attributes($this->attributes) ?>>
+<article class="<?= classes('g-card', 'animate__item', $this->classes) ?>" <?= attributes($this->attributes) ?>>
     <div class="g-card__inner">
         <?php if (! empty($this->content['heading']) || ! empty($this->content['text'])) { ?>
             <div class="g-card__header">

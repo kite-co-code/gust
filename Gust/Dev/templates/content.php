@@ -34,14 +34,14 @@ $short = 'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum 
 </div>
 
 <!-- alignwide -->
-<div class="wp-block-group alignwide" style="padding: var(--space-layout); background: var(--color-brand-2, #e8e8f0); text-align: center;">
+<div class="wp-block-group alignwide" style="padding: var(--space-layout); background: var(--color-brand-2); text-align: center;">
     <p><strong><code data-dev-ui>alignwide</code> block</strong></p>
 </div>
 
 <p><?= $short ?></p>
 
 <!-- alignfull (no background) -->
-<div class="wp-block-group alignfull" style="padding: var(--space-layout); text-align: center; border: 1px solid #000;">
+<div class="wp-block-group alignfull" style="padding: var(--space-layout); text-align: center; border: 1px solid var(--dev-rule);">
     <p><strong><code data-dev-ui>alignfull</code> — no <code data-dev-ui>has-background</code></strong></p>
 </div>
 

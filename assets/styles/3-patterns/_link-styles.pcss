@@ -1,17 +1,39 @@
+/* Link
+ *
+ * Applied to every <a> in 2-base/_type-elements.pcss.
+ *
+ * Colour knobs are never declared on :root, so a colour context or parent can set them:
+ *   --link--color         falls back to --color-accent
+ *   --link--color-hover   falls back to --link--color mixed toward the foreground
+ *
+ * The underline thickens on hover, so there's feedback even where the accent
+ * and the foreground are the same colour (Kite Co.'s blue on neutral).
+ */
+
 @utility link {
-    color: var(--link--color);
+    color: var(--link--color, var(--color-accent));
     text-decoration: var(--link--text-decoration);
+    text-decoration-thickness: var(--link--text-decoration-thickness, 1px);
+    transition: transition(color, text-decoration-color, text-decoration-thickness);
 
     @media (hover: hover) {
         &:hover {
-            color: var(--link--color-hover);
+            color: var(
+                --link--color-hover,
+                color-mix(in oklab, var(--link--color, var(--color-accent)) 75%, var(--color-foreground))
+            );
             text-decoration: var(--link--text-decoration--hover);
+            text-decoration-thickness: var(--link--text-decoration-thickness--hover, 2px);
         }
     }
     @media (hover: none) {
         &:active {
-            color: var(--link--color-hover);
+            color: var(
+                --link--color-hover,
+                color-mix(in oklab, var(--link--color, var(--color-accent)) 75%, var(--color-foreground))
+            );
             text-decoration: var(--link--text-decoration--hover);
+            text-decoration-thickness: var(--link--text-decoration-thickness--hover, 2px);
         }
     }
 }

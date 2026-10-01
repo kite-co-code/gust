@@ -24,9 +24,7 @@
         justify-content: center;
     }
 
-    :where(.taxonomy-filters__item) {
-        &:where(.taxonomy-filters__item--current) {
-            @apply btn--theme-2;
-        }
+    :where(.taxonomy-filters__item):not(.taxonomy-filters__item--current) {
+        @apply btn--theme-2;
     }
 }

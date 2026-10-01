@@ -46,7 +46,7 @@
         /* --------------------------------------------------- */
         /* Border */
         /* --------------------------------------------------- */
-        --base--border: 2px solid var(--color-accent);
+        --base--border: 1px solid var(--color-accent);
 
         /* --------------------------------------------------- */
         /* Focus */
@@ -78,10 +78,10 @@
         }
 
         /* --------------------------------------------------- */
-        /* Horizontal rule */
+        /* Horizontal rule — a Kite Co. hairline keyline */
         /* --------------------------------------------------- */
-        --hr--color: var(--color-accent);
-        --hr--thickness: 2px;
+        /* --hr--color: not declared, so it follows the colour context (see _base.pcss) */
+        --hr--thickness: 1px;
 
         /* --------------------------------------------------- */
         /* Rounded corners - default rounding on blocks */
@@ -112,13 +112,12 @@
         /* --------------------------------------------------- */
         /* General */
         /* --------------------------------------------------- */
-        --underline-offset: 10%;
+        --underline-offset: 0.2em;
 
         /* --------------------------------------------------- */
         /* Links */
         /* --------------------------------------------------- */
-        --link--color: var(--color-accent);
-        --link--color-hover: var(--color-accent);
+        /* --link--color, --link--color-hover: not declared, so they follow the colour context (see _link-styles.pcss) */
         --link--text-decoration: underline;
         --link--text-decoration--hover: underline;
 

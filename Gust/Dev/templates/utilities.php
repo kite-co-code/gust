@@ -13,15 +13,26 @@
     <!-- Buttons -->
     <div class="dev-kit__subsection">
         <h3 data-dev-ui>Buttons</h3>
-        <small><code class="dev-kit__code">.btn</code> and variants</small>
+        <small><code class="dev-kit__code">.btn</code> and variants. Colours follow the colour context.</small>
         <div class="dev-kit__demo">
             <div class="flex-list">
                 <button class="btn">.btn</button>
+                <button class="btn btn--theme-2">.btn--theme-2</button>
+                <button class="btn btn--ghost">.btn--ghost</button>
                 <button class="btn btn--small">.btn--small</button>
                 <button class="btn btn--label">.btn--label</button>
                 <button class="btn btn--arrow">.btn--arrow</button>
                 <button class="btn btn--square">1</button>
+                <button class="btn" disabled>disabled</button>
+            </div>
+        </div>
+        <div class="dev-kit__demo color-context-blue">
+            <div class="flex-list">
+                <button class="btn">.btn</button>
                 <button class="btn btn--theme-2">.btn--theme-2</button>
+                <button class="btn btn--ghost">.btn--ghost</button>
+                <button class="btn btn--square">1</button>
+                <a href="#">A link</a>
             </div>
         </div>
     </div>
@@ -53,7 +64,7 @@
                 <!-- .btn--icon-before: icon-only button via ::before -->
                 <button class="btn btn--square btn--icon-before demo-btn-icon-before" aria-label="Close"></button>
             </div>
-            <div style="margin-top: 0.75rem; font-size: 0.8125rem; color: var(--dev-muted, #6b6b7b); display: flex; flex-direction: column; gap: 0.35rem;">
+            <div style="margin-top: 0.75rem; font-size: 0.8125rem; color: var(--dev-muted); display: flex; flex-direction: column; gap: 0.35rem;">
                 <div><code class="dev-kit__code">.btn__icon</code> — inline <code class="dev-kit__code">&lt;span&gt;</code> inside <code class="dev-kit__code">.btn</code>; icon set via <code class="dev-kit__code">--btn--icon</code> CSS var on the button.</div>
                 <div><code class="dev-kit__code">.btn--icon</code> — icon-only; hides text via <code class="dev-kit__code">text-indent</code>, renders icon via <code class="dev-kit__code">::after</code>. Always add <code class="dev-kit__code">aria-label</code>.</div>
                 <div><code class="dev-kit__code">.btn--icon-before</code> — same as above using <code class="dev-kit__code">::before</code> (frees <code class="dev-kit__code">::after</code> for other use).</div>
@@ -100,7 +111,10 @@
             <div class="type-h5">.type-h5</div>
             <div class="type-h6">.type-h6</div>
             <div class="type-base">.type-base</div>
+            <div class="type-label">.type-label</div>
+            <div class="type-label-sm">.type-label-sm</div>
             <div class="type-meta">.type-meta</div>
+            <div class="type-code">.type-code</div>
         </div>
     </div>
 
@@ -290,9 +304,9 @@
                 <span class="mask-icon demo-mask-icon" style="color: var(--color-accent);"></span>
                 <span class="mask-icon demo-mask-icon" style="color: var(--color-brand-2);"></span>
             </div>
-            <p style="margin-top: 0.75rem; font-size: 0.8125rem; color: var(--dev-muted, #6b6b7b);">Icon color is driven by <code class="dev-kit__code">currentColor</code> — set <code class="dev-kit__code">color</code> on the element to recolor it.</p>
+            <p style="margin-top: 0.75rem; font-size: 0.8125rem; color: var(--dev-muted);">Icon color is driven by <code class="dev-kit__code">currentColor</code> — set <code class="dev-kit__code">color</code> on the element to recolor it.</p>
         </div>
-        <div class="dev-kit__demo" style="background: var(--dev-accent-bg, #ebebf8); padding: 0.75rem 1rem; margin-top: 0.25rem;">
+        <div class="dev-kit__demo" style="background: var(--dev-accent-bg); padding: 0.75rem 1rem; margin-top: 0.25rem;">
             <pre>.my-icon::after {
     @apply mask-icon;               /* bg: currentColor, mask-position/repeat/size */
     display: block;
@@ -340,15 +354,14 @@
         <h3 data-dev-ui>Color Context</h3>
         <small><code class="dev-kit__code">.color-context-{color}</code> <code class="dev-kit__code">.has-{color}-background-color</code></small>
         <p style="margin: 0.5rem 0;">Sets background color, foreground color, focus color, and link colors based on the color's configuration.</p>
-        <div class="dev-kit__demo" style="padding: 0; overflow: hidden; border-radius: var(--radius-lg);">
-            <div class="color-context-accent" style="padding: 1.5rem;">
-                <strong>.color-context-accent</strong>
-                <p style="margin: 0.5rem 0 0;">Text with <a href="#">a link</a> inherits correct colors.</p>
-            </div>
-            <div class="color-context-brand-2" style="padding: 1.5rem;">
-                <strong>.color-context-brand-2</strong>
-                <p style="margin: 0.5rem 0 0;">Text with <a href="#">a link</a> inherits correct colors.</p>
-            </div>
+        <div class="dev-kit__demo" style="padding: 0; overflow: hidden;">
+            <?php foreach (['accent', 'brand-2', 'background', 'white'] as $context) : ?>
+                <div class="color-context-<?= $context ?>" style="padding: 1.5rem;">
+                    <strong>.color-context-<?= $context ?></strong>
+                    <p style="margin: 0.5rem 0;">Text with <a href="#">a link</a> inherits correct colors.</p>
+                    <button class="btn btn--small">.btn</button>
+                </div>
+            <?php endforeach; ?>
         </div>
     </div>
 
@@ -359,7 +372,7 @@
         <p style="margin: 0.5rem 0;">Sets only the foreground color (text, links, focus) without changing background.</p>
         <div class="dev-kit__demo">
             <div style="display: flex; gap: 2rem; flex-wrap: wrap;">
-                <div class="foreground-from-accent bg-accent">
+                <div class="foreground-from-accent bg-blue">
                     <strong>.foreground-from-accent</strong>
                     <p style="margin: 0;">With <a href="#">a link</a></p>
                 </div>

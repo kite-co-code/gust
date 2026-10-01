@@ -76,7 +76,19 @@ b {
 }
 
 pre {
+    @apply type-code;
+
     white-space: pre-wrap;
+}
+
+/* Monospace looks large beside proportional text at the same size */
+:where(code, kbd, samp) {
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+}
+
+:where(pre) :where(code, kbd, samp) {
+    font-size: inherit;
 }
 
 ol,
