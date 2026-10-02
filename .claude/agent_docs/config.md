@@ -19,10 +19,7 @@ Enable the Site Guide admin page and dashboard widget. When disabled, the menu i
 ## Editor
 
 **`editor.allowed_blocks`** — string[], default see config.json
-Explicit allowlist of block names shown in the block inserter.
-
-**`editor.disabled_blocks`** — string[], default see config.json
-Blocks to unregister. Use `"..."` as a placeholder sentinel (ignored).
+Explicit allowlist of block names shown in the block inserter. Registered `theme/*` blocks are added automatically; modules add their own (e.g. GravityForms adds `gravityforms/form`).
 
 ---
 

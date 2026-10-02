@@ -36,6 +36,18 @@ class GravityFormsModule
 
         /* Change Gravity Forms' Ajax Spinner into a transparent image */
         add_filter('gform_ajax_spinner_url', [__CLASS__, 'spinnerUrl'], 10);
+
+        // Allow the form block (the editor allow list only adds theme/* blocks automatically)
+        \add_filter('allowed_block_types_all', [__CLASS__, 'allowFormBlock'], 20);
+    }
+
+    public static function allowFormBlock(bool|array $allowedBlocks): bool|array
+    {
+        if (is_array($allowedBlocks)) {
+            $allowedBlocks[] = 'gravityforms/form';
+        }
+
+        return $allowedBlocks;
     }
 
     public static function moveScriptsToFooter(): void
