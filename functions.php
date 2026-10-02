@@ -32,6 +32,7 @@ require __DIR__.'/Gust/functions.php';
 \Gust\WordPress\Head::init();
 \Gust\WordPress\Images::init();
 \Gust\WordPress\PostsPT::init();
+\Gust\WordPress\Roles::init();
 \Gust\WordPress\Security::init();
 \Gust\WordPress\ThemeSetup::init();
 \Gust\Router::init();

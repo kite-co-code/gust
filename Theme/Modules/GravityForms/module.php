@@ -39,6 +39,25 @@ class GravityFormsModule
 
         // Allow the form block (the editor allow list only adds theme/* blocks automatically)
         \add_filter('allowed_block_types_all', [__CLASS__, 'allowFormBlock'], 20);
+
+        // Entries and form editing for Site Managers (no delete, settings, add-ons or uninstall).
+        // Feed add-ons (e.g. gravityforms_brevo) are granted per project.
+        \add_filter('gust/roles/site_manager/capabilities', [__CLASS__, 'siteManagerCapabilities']);
+    }
+
+    public static function siteManagerCapabilities(array $caps): array
+    {
+        return array_merge($caps, [
+            'gravityforms_view_entries',
+            'gravityforms_edit_entries',
+            'gravityforms_delete_entries',
+            'gravityforms_export_entries',
+            'gravityforms_view_entry_notes',
+            'gravityforms_edit_entry_notes',
+            'gravityforms_edit_forms',
+            'gravityforms_create_form',
+            'gravityforms_preview_forms',
+        ]);
     }
 
     public static function allowFormBlock(bool|array $allowedBlocks): bool|array

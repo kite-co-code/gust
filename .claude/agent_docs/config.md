@@ -14,6 +14,9 @@ add_filter('gust/config/site_guide', fn() => true);
 **`site_guide`** — bool, default `false`
 Enable the Site Guide admin page and dashboard widget. When disabled, the menu item is also excluded from the admin menu order.
 
+**`site_manager_role`** — bool, default `true`
+Register the `site_manager` client role (`Gust\WordPress\Roles`): Editor content caps minus `unfiltered_html`, Menus, and user management limited to roles with no more access than their own. No settings, plugins, themes or updates. Modules add plugin caps via the `gust/roles/site_manager/capabilities` filter (GravityForms and Yoast do). The role re-syncs whenever the filtered list changes. When disabled, the role is removed.
+
 ---
 
 ## Editor

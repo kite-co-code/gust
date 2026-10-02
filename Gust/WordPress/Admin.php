@@ -43,12 +43,15 @@ class Admin
 
     /**
      * Add a top-level "Menus" item linking directly to nav-menus.php.
+     *
+     * Uses edit_theme_options so roles without Appearance (e.g. Site Manager) can reach it.
+     * A second item with the same slug would get both removed for users who fail either check.
      */
     public static function addMenusTopLevelItem(): void
     {
         global $menu;
 
-        \add_menu_page('Menus', 'Menus', 'manage_options', 'nav-menus.php', '', 'dashicons-welcome-widgets-menus');
+        \add_menu_page('Menus', 'Menus', 'edit_theme_options', 'nav-menus.php', '', 'dashicons-welcome-widgets-menus');
 
         $menu[] = ['', 'read', 'separator-options', '', 'wp-menu-separator'];
     }
