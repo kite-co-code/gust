@@ -22,7 +22,7 @@
         height: var(--loading-spinner--size, 1em);
         border-width: 0.2em;
         border-style: solid;
-        border-color: currentColor var(--color-beige) var(--color-beige);
+        border-color: currentColor transparent transparent;
         border-radius: 50%;
         animation: 1s linear infinite rotate;
     }
@@ -99,7 +99,7 @@
 .gfield_description:not(.gfield_validation_message) {
     @apply type-meta;
 
-    margin: var(--space--xxxs) 0 var(--space--xxxs) 0;
+    margin: space(4) 0 space(4) 0;
 }
 
 .hidden_label {
@@ -176,7 +176,7 @@
         @apply type-meta;
 
         display: block;
-        margin-top: var(--space--xxxs);
+        margin-top: space(4);
     }
 }
 
@@ -206,7 +206,7 @@
     .ginput_left,
     .ginput_right {
         @media (min-width: theme('screens.md')) {
-            flex: 1 0 calc(50% - var(--grid--row-gap));
+            flex: 1 0 calc(50% - var(--row-gap));
         }
     }
 

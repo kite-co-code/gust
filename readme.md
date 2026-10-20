@@ -255,7 +255,7 @@ Modules in `Theme/Modules/*/module.php` auto-load via `Gust\Module::init()`. Eac
 
 ### Theme Configuration
 
-`assets/theme-config.json` defines design tokens used across:
+`theme-config.json` defines design tokens used across:
 
 - CSS variables (`--color-accent`)
 - Tailwind classes (`text-accent`)
@@ -264,7 +264,7 @@ Modules in `Theme/Modules/*/module.php` auto-load via `Gust\Module::init()`. Eac
 ### Color System
 
 The theme includes a robust color system with color contexts, foreground calculation, and CSS variables/utilities.
-Color configuration is in `assets/theme-config.json`.
+Color configuration is in `theme-config.json`.
 
 **Generated CSS Variables** (per color):
 
@@ -293,7 +293,7 @@ Color configuration is in `assets/theme-config.json`.
 <span class="foreground-from-accent">Colored text</span>
 ```
 
-**Config structure** (`assets/theme-config.json`):
+**Config structure** (`theme-config.json`):
 
 ```json
 {

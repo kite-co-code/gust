@@ -7,7 +7,7 @@ Tailwind + BEM hybrid. Use BEM with custom patterns in per-component `styles.pcs
 
 ### Styling Rules
 
-**Colors**: Defined in `assets/theme-config.json`, processed at build time into CSS custom properties. Each color generates:
+**Colors**: Defined in `theme-config.json`, processed at build time into CSS custom properties. Each color generates:
 - `--color-{name}` — raw hex
 - `--color-{name}--foreground` — contrasting text color
 - `color-context-{name}` utility — sets background AND `--color-background`, `--color-foreground`, link/focus colors together
@@ -50,7 +50,7 @@ Component styles live in `components/{name}/styles.pcss` and are auto-bundled.
 
 ## Color System
 
-Colors defined in `assets/theme-config.json`, processed by `build-scripts/postcss-color-system.js` at build time.
+Colors defined in `theme-config.json`, processed by `dev-scripts/postcss-color-system.js` at build time.
 
 ### What's generated per color
 
@@ -100,7 +100,7 @@ Colors defined in `assets/theme-config.json`, processed by `build-scripts/postcs
 
 ### Available colors
 
-Colors are defined per project in [`assets/theme-config.json`](../../assets/theme-config.json). Check that file for the current color names before using any `color-context-{name}`, `--color-{name}`, or `foreground-from-{name}` utilities.
+Colors are defined per project in [`theme-config.json`](../../theme-config.json). Check that file for the current color names before using any `color-context-{name}`, `--color-{name}`, or `foreground-from-{name}` utilities.
 
 ---
 

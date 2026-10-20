@@ -17,7 +17,7 @@ Use both **Tailwind** and **BEM**:
 
 ## Colors
 
-Colors defined per project in `assets/theme-config.json` — check that file for available color names before using any color utilities.
+Colors defined per project in `theme-config.json` — check that file for available color names before using any color utilities.
 
 **Generated per color:**
 - `--color-{name}` - hex

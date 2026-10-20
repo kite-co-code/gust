@@ -45,27 +45,27 @@
     }
 
     :where(.logo-grid__items) {
-        --grid--columns: 2;
+        --cols: 2;
 
         @apply flex-grid;
 
         width: 100%;
 
         @media (min-width: theme('screens.md')) {
-            --grid--columns: 3;
-            --grid--column-gap: spaceFluid(4, 8);
-            --grid--row-gap: spaceFluid(4, 8);
+            --cols: 3;
+            --col-gap: spaceFluid(4, 8);
+            --row-gap: spaceFluid(4, 8);
 
             max-width: var(--width-fluid-lg);
             justify-content: center;
         }
 
         @media (min-width: theme('screens.lg')) {
-            --grid--columns: 4;
+            --cols: 4;
         }
 
         @media (min-width: theme('screens.xl')) {
-            --grid--columns: 5;
+            --cols: 5;
         }
     }
 

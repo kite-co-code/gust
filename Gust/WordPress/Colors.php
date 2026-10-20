@@ -18,9 +18,16 @@ class Colors
     public static function getConfig(): array
     {
         if (self::$config === null) {
-            $path = \get_theme_file_path('assets/theme-config.json');
-            $json = file_get_contents($path);
-            self::$config = json_decode($json, true) ?? [];
+            // Theme root, not assets/: it's read at runtime and assets/ isn't deployed
+            $path = \get_theme_file_path('theme-config.json');
+
+            if (! is_readable($path)) {
+                \wp_trigger_error(__METHOD__, "Missing {$path}, so the color palette is empty.");
+
+                return self::$config = [];
+            }
+
+            self::$config = json_decode(file_get_contents($path), true) ?? [];
         }
 
         return self::$config;

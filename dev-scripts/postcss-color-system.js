@@ -8,7 +8,7 @@ import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const CONFIG_PATH = resolve(__dirname, '../assets/theme-config.json');
+const CONFIG_PATH = resolve(__dirname, '../theme-config.json');
 
 function loadColors() {
 	return JSON.parse(readFileSync(CONFIG_PATH, 'utf-8')).colors;

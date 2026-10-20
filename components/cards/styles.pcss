@@ -1,6 +1,6 @@
 .cards {
-    --grid--column-gap: spaceFluid(12, 16);
-    --grid--row-gap: var(--grid--column-gap);
+    --col-gap: spaceFluid(12, 16);
+    --row-gap: var(--col-gap);
     --cards--min-width: 14.375rem; /* 230px */
 
     :where(.cards__header) {
@@ -63,31 +63,25 @@
         }
     }
 
-    &[class*='cards--columns-'] {
-        .cards__items {
-            grid-template-columns: repeat(var(--grid--columns), minmax(0, 1fr));
-        }
-    }
-
     &:where(.cards--columns-4) {
         @media (min-width: theme('screens.md')) {
-            --grid--columns: 2;
+            --cols: 2;
         }
 
         @media (min-width: theme('screens.xl')) {
-            --grid--columns: 4;
+            --cols: 4;
         }
     }
 
     &:where(.cards--columns-3) {
         @media (min-width: theme('screens.md')) {
-            --grid--columns: 3;
+            --cols: 3;
         }
     }
 
     &:where(.cards--columns-2) {
         @media (min-width: theme('screens.md')) {
-            --grid--columns: 2;
+            --cols: 2;
         }
 
         .cards__inner {
@@ -96,7 +90,7 @@
     }
 
     &:where(.cards--columns-1) {
-        --grid--columns: 1;
+        --cols: 1;
 
         .cards__inner {
             @apply content-width-md;
@@ -138,7 +132,7 @@
                 min-height: 100%;
                 flex: 0 0 80%;
                 margin-top: 0;
-                margin-right: var(--grid--column-gap);
+                margin-right: var(--col-gap);
                 scroll-snap-align: center;
 
                 @media (min-width: theme('screens.sm')) {
@@ -154,7 +148,7 @@
 
     &:where(.cards--type--icons) {
         @media (min-width: theme('screens.lg')) {
-            --grid--column-gap: spaceFluid(16, 24);
+            --col-gap: spaceFluid(16, 24);
         }
     }
 }

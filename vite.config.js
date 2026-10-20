@@ -42,7 +42,7 @@ standaloneStyles.forEach((file) => {
 
 // Watches theme-config.json and forces CSS re-processing when it changes
 function themeConfigWatcherPlugin() {
-    const configPath = resolve(__dirname, 'assets/theme-config.json');
+    const configPath = resolve(__dirname, 'theme-config.json');
     return {
         name: 'theme-config-watcher',
         configureServer(server) {
