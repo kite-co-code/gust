@@ -12,10 +12,8 @@ class Asset
      */
     public static function extract(string $asset): string
     {
-        $viteManifestPath = \Gust\Asset::path('build/manifest.json');
-
-        if (! file_exists($viteManifestPath)) {
-            \Gust\Helpers::errorLog('Vite manifest not found: '.$viteManifestPath);
+        if (empty(\Gust\Vite::manifest())) {
+            \Gust\Helpers::errorLog('Vite manifest not found or invalid: '.\Gust\Paths::assetPath('build/manifest.json'));
 
             return '';
         }
@@ -33,11 +31,7 @@ class Asset
      */
     private static function extractFromViteManifest(string $asset): string
     {
-        $manifest = \Gust\Asset::decodedContent('build/manifest.json');
-
-        if (empty($manifest)) {
-            return '';
-        }
+        $manifest = \Gust\Vite::manifest();
 
         // Search through manifest entries to find matching output file
         foreach ($manifest as $entry) {
@@ -116,7 +110,7 @@ class Asset
      * Retrieves the json_decoded content of the asset at the given path.
      *
      * @param  string  $asset  A file path to an asset, relative to the theme root.
-     * @return string The asset's content as an associative array, or an empty array on failure.
+     * @return array The asset's content as an associative array, or an empty array on failure.
      */
     public static function decodedContent(string $asset): array
     {
@@ -126,7 +120,9 @@ class Asset
             return [];
         }
 
-        return json_decode($content, true);
+        $decoded = json_decode($content, true);
+
+        return is_array($decoded) ? $decoded : [];
     }
 
     /**
