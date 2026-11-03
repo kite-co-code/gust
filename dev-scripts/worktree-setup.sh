@@ -14,6 +14,7 @@
 #   checkout, because PHP realpaths __DIR__)
 # - copies .env and auth.json, and builds assets into this worktree's public/
 # - symlinks the worktree switch mu-plugin into WordPress if it's missing
+# - warns if wp-config.php doesn't set WP_ENVIRONMENT_TYPE to development
 #
 # Safe to re-run. See .claude/agent_docs/worktrees.md.
 # -----------------------------------------------------------------------------
@@ -71,6 +72,12 @@ elif [ ! -e "$mu_dir/gust-worktree-switch.php" ]; then
     mkdir -p "$mu_dir"
     ln -s "$main/dev-scripts/mu-plugins/gust-worktree-switch.php" "$mu_dir/gust-worktree-switch.php"
     echo "Linked worktree switch mu-plugin into $mu_dir"
+fi
+
+# The switch only runs when wp-config.php says development. .env alone isn't enough.
+env_type="$(cd "$main" && wp config get WP_ENVIRONMENT_TYPE 2>/dev/null || true)"
+if [ "$env_type" != "development" ]; then
+    echo "Warning: wp-config.php sets WP_ENVIRONMENT_TYPE to '${env_type:-nothing}', so the worktree switch is off. Run pnpm env:setup in the main checkout."
 fi
 
 app_url="$(grep '^APP_URL' "$here/.env" | cut -d= -f2)"

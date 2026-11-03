@@ -12,6 +12,7 @@
         "preview": "vite preview",
         "setup": "pnpm install && composer install && pnpm run build",
         "site-setup": "bash dev-scripts/site-setup.sh",
+        "env:setup": "bash dev-scripts/env-setup.sh",
         "worktree:setup": "bash dev-scripts/worktree-setup.sh",
         "build:production": "pnpm install && composer install --no-dev && pnpm run build",
         "deploy:staging": "pnpm run build:production && bash dev-scripts/deploy.sh staging",
