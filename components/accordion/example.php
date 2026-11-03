@@ -7,9 +7,6 @@
  * - $faker: Faker\Generator instance for generating mock data
  * - $component: The current component name
  */
-
-use Gust\Component;
-
 ?>
 
 <!-- Example: Basic Accordion -->

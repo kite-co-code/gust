@@ -3,89 +3,19 @@
 namespace Gust;
 
 /**
- * Component rendering and template resolution.
+ * Framework-level component setup.
  *
  * This class handles:
- * - Template rendering via __toString()
- * - Component stack for nested components
- * - ACF block registration
- * - Asset enqueueing
+ * - ACF block registration from components' block.json files
+ * - Loading/saving ACF block field group JSON in component directories
+ * - Common class/attribute args via the `gust/component/after_filters` filter
  *
- * For creating components, use typed classes extending ComponentBase.
+ * For creating and rendering components, use typed classes extending ComponentBase.
  *
  * @see \Gust\ComponentBase
  */
 class Component
 {
-    /**
-     * The Component's file path, relative to the theme root directory.
-     */
-    public string $path;
-
-    /**
-     * The Component's name.
-     */
-    public string $name;
-
-    /**
-     * The Component's data and settings.
-     */
-    public ?array $args = [];
-
-    /**
-     * The current stack of components. Used to track nested/descendant components' ancestors.
-     */
-    protected static array $componentStack = [];
-
-    /**
-     * The Component's parent, if one exists.
-     */
-    public ?Component $parent;
-
-    /**
-     * Magic getter - access $args as properties.
-     */
-    public function __get(string $name): mixed
-    {
-        return $this->args[$name] ?? null;
-    }
-
-    /**
-     * Magic isset - check if arg exists.
-     */
-    public function __isset(string $name): bool
-    {
-        return isset($this->args[$name]);
-    }
-
-    /**
-     * Constructor.
-     *
-     * @deprecated Use typed component classes with ::make() instead.
-     *
-     * @param  string  $name  The component's name.
-     * @param  array  $args  The arguments to pass to the component.
-     */
-    public function __construct(string $name, $args = [])
-    {
-        $this->name = $name;
-        $this->path = "components/$name";
-        $this->parent = static::getCurrentComponent();
-
-        // Push the current Component onto the stack.
-        static::pushComponent($this);
-
-        // Filter the `$args` data being used by the component for output.
-        $args = \apply_filters('gust/component/before_filters', $args);
-        $args = \apply_filters("gust/component/$name", $args);
-        $args = \apply_filters('gust/component/after_filters', $args);
-
-        $this->args = $args;
-
-        // Pop the current component off the stack.
-        static::popComponent();
-    }
-
     /**
      * Initialise class to set up hooks and filters for all Components.
      */
@@ -114,66 +44,7 @@ class Component
         // ACF block registration.
         \add_action('init', [__CLASS__, 'addBlocks'], 5);
         \add_filter('acf/settings/load_json', [__CLASS__, 'loadBlockFieldGroupJSON']);
-        \add_action('acf/update_field_group', [__CLASS__, 'saveBlockFieldGroupJSON'], 1);
-
-        // Asset enqueueing.
-        \add_action('gust/component/before', [__CLASS__, 'enqueueScripts'], 10, 3);
-        \add_action('gust/component/before', [__CLASS__, 'enqueueStyles'], 10, 3);
-    }
-
-    /**
-     * Returns the component's template output.
-     */
-    public function __toString(): string
-    {
-        $args = $this->args;
-
-        // Bail early - args have been nulled, don't output component.
-        if ($args === null) {
-            return '';
-        }
-
-        if (empty($this->parent)) {
-            $this->parent = static::getCurrentComponent();
-        }
-
-        // Push the current Component onto the stack.
-        static::pushComponent($this);
-
-        ob_start();
-
-        \do_action('gust/component/before', $this->path, $args, $this);
-
-        require \Gust\Paths::resolve($this->path); // Render the component.
-
-        \do_action('gust/component/after', $this->path, $args, $this);
-
-        // Pop the current component off the stack.
-        static::popComponent();
-
-        return ob_get_clean();
-    }
-
-    /**
-     * Retrieve the current Component.
-     */
-    public static function getCurrentComponent(): ?Component
-    {
-        if (empty(static::$componentStack)) {
-            return null;
-        }
-
-        return static::$componentStack[array_key_last(static::$componentStack)];
-    }
-
-    protected static function pushComponent($component): void
-    {
-        static::$componentStack[] = $component;
-    }
-
-    protected static function popComponent(): ?Component
-    {
-        return array_pop(static::$componentStack);
+        \add_filter('acf/json/save_paths', [__CLASS__, 'saveBlockFieldGroupJSON'], 10, 2);
     }
 
     public static function addBlocks(): void
@@ -181,53 +52,6 @@ class Component
         foreach (glob(\get_theme_file_path('components/*/block.json')) as $blockJson) {
             \register_block_type(\dirname($blockJson));
         }
-    }
-
-    public static function enqueueScripts(string $path, array $args, object $component): void
-    {
-        if (empty($component->name)) {
-            return;
-        }
-
-        $jsPath = \Gust\Asset::extract("components/$component->name/$component->name.js");
-
-        if (empty($jsPath)) {
-            return;
-        }
-
-        if (! file_exists(\Gust\Paths::assetPath($jsPath))) {
-            return;
-        }
-
-        \wp_enqueue_script(
-            "$component->name-scripts",
-            \Gust\Asset::URL($jsPath),
-            \apply_filters("gust/component/$component->name/enqueue_script_dependencies", []),
-            \apply_filters("gust/component/$component->name/enqueue_script_in_footer", false),
-        );
-    }
-
-    public static function enqueueStyles(string $path, array $args, object $component): void
-    {
-        if (empty($component->name)) {
-            return;
-        }
-
-        $cssPath = \Gust\Asset::extract("components/$component->name/$component->name.css");
-
-        if (empty($cssPath)) {
-            return;
-        }
-
-        if (! file_exists(\Gust\Paths::assetPath($cssPath))) {
-            return;
-        }
-
-        \wp_enqueue_style(
-            "$component->name-styles",
-            \Gust\Asset::URL($cssPath),
-            \apply_filters("gust/component/$component->name/enqueue_style_dependencies", []),
-        );
     }
 
     /**
@@ -242,73 +66,25 @@ class Component
     }
 
     /**
-     * Save each ACF block's field group JSON file into their related components' directory.
+     * Save each ACF block's field group JSON file into its component's directory.
+     *
+     * Uses `acf/json/save_paths`, which receives the item being saved, so only
+     * block field groups are redirected and other field groups keep ACF's paths.
      */
-    public static function saveBlockFieldGroupJSON($group): void
+    public static function saveBlockFieldGroupJSON(array $paths, array $post = []): array
     {
-        if (empty($group['location'][0][0]['param']) || $group['location'][0][0]['param'] !== 'block') {
-            return;
+        if (($post['location'][0][0]['param'] ?? null) !== 'block') {
+            return $paths;
         }
 
-        $blockName = preg_replace('#^(acf|theme)/#', '', $group['location'][0][0]['value']);
-        $blockFieldGroupJSONDirPaths = glob(\get_theme_file_path("components/$blockName"));
+        $blockName = preg_replace('#^(acf|theme)/#', '', (string) ($post['location'][0][0]['value'] ?? ''));
+        $path = \get_theme_file_path("components/$blockName");
 
-        if (! is_array($blockFieldGroupJSONDirPaths)) {
-            return;
+        if ($blockName === '' || ! is_dir($path)) {
+            return $paths;
         }
 
-        foreach ($blockFieldGroupJSONDirPaths as $path) {
-            if (! is_dir($path)) {
-                continue;
-            }
-
-            add_action('acf/settings/save_json', function () use ($path) {
-                return $path;
-            }, 9999);
-        }
-    }
-
-    /**
-     * Generate args for a Component from block attributes and ACF fields.
-     */
-    public static function generateArgsFromBlock(array $block, $acf_fields, $content = null, $is_preview = false, $post_id = null): array
-    {
-        $args = is_array($acf_fields) ? $acf_fields : [];
-
-        $args['is_preview'] = $is_preview;
-        $args['post_id'] = $post_id;
-
-        if (! empty($block['anchor'])) {
-            $args['anchor'] = $block['anchor'];
-        }
-
-        if (! empty($block['className'])) {
-            $args['classes'] = [
-                $block['className'],
-            ];
-        }
-
-        if (! empty($args['anchor']) && empty($args['attributes']['id'])) {
-            $args['attributes']['id'] = $args['anchor'];
-        }
-
-        if (! empty($block['align'])) {
-            $args['align'] = $block['align'];
-        }
-
-        if (! empty($block['name'])) {
-            $args['editor_block_name'] = $block['name'];
-        }
-
-        if (! empty($block['backgroundColor'])) {
-            $args['background_color'] = $block['backgroundColor'];
-        }
-
-        if (! empty($block['theme_background_color'])) {
-            $args['background_color'] = $block['theme_background_color'];
-        }
-
-        return $args;
+        return [$path];
     }
 
     /**

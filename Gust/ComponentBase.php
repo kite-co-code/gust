@@ -191,19 +191,68 @@ abstract class ComponentBase
         bool $is_preview = false,
         ?int $post_id = null
     ): ?static {
-        $args = Component::generateArgsFromBlock($block, $acf_fields, $content, $is_preview, $post_id);
-
-        // Merge ACF fields into args
-        if (is_array($acf_fields)) {
-            $args = array_merge($acf_fields, $args);
-        }
+        $args = static::generateArgsFromBlock($block, $acf_fields, $content, $is_preview, $post_id);
 
         return static::makeFromArgs($args);
     }
 
     /**
+     * Generate component args from ACF block attributes and field values.
+     *
+     * @param  array  $block  The ACF block array.
+     * @param  mixed  $acf_fields  The ACF field values.
+     * @param  string|null  $content  Inner block content.
+     * @param  bool  $is_preview  Whether this is a preview render.
+     * @param  int|null  $post_id  The current post ID.
+     */
+    protected static function generateArgsFromBlock(
+        array $block,
+        mixed $acf_fields = null,
+        ?string $content = null,
+        bool $is_preview = false,
+        ?int $post_id = null
+    ): array {
+        $args = is_array($acf_fields) ? $acf_fields : [];
+
+        $args['is_preview'] = $is_preview;
+        $args['post_id'] = $post_id;
+
+        if (! empty($block['anchor'])) {
+            $args['anchor'] = $block['anchor'];
+        }
+
+        if (! empty($block['className'])) {
+            $args['classes'] = [
+                $block['className'],
+            ];
+        }
+
+        if (! empty($args['anchor']) && empty($args['attributes']['id'])) {
+            $args['attributes']['id'] = $args['anchor'];
+        }
+
+        if (! empty($block['align'])) {
+            $args['align'] = $block['align'];
+        }
+
+        if (! empty($block['name'])) {
+            $args['editor_block_name'] = $block['name'];
+        }
+
+        if (! empty($block['backgroundColor'])) {
+            $args['background_color'] = $block['backgroundColor'];
+        }
+
+        if (! empty($block['theme_background_color'])) {
+            $args['background_color'] = $block['theme_background_color'];
+        }
+
+        return $args;
+    }
+
+    /**
      * Factory method for creating components from an args array.
-     * Used by Component::get() for backwards compatibility and by fromBlock().
+     * Used by fromBlock().
      *
      * @param  array  $args  The arguments to process.
      */
@@ -231,18 +280,28 @@ abstract class ComponentBase
         // Push the current Component onto the stack.
         static::pushComponent($this);
 
+        $bufferLevel = ob_get_level();
         ob_start();
 
-        \do_action('gust/component/before', $this->path, $args, $this);
+        try {
+            \do_action('gust/component/before', $this->path, $args, $this);
 
-        require \Gust\Paths::resolve($this->path); // Render the component.
+            require \Gust\Paths::resolve($this->path); // Render the component.
 
-        \do_action('gust/component/after', $this->path, $args, $this);
+            \do_action('gust/component/after', $this->path, $args, $this);
 
-        // Pop the current component off the stack.
-        static::popComponent();
+            return ob_get_clean();
+        } catch (\Throwable $e) {
+            // Discard partial output, including any buffers the template opened.
+            while (ob_get_level() > $bufferLevel) {
+                ob_end_clean();
+            }
 
-        return ob_get_clean();
+            throw $e;
+        } finally {
+            // Pop the current component off the stack.
+            static::popComponent();
+        }
     }
 
     /**

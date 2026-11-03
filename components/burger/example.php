@@ -13,7 +13,7 @@ use Gust\Components\Burger;
     <p class="component-example-section__description">Hamburger menu icon wrapped in a button.</p>
     <div class="component-example-section__preview">
         <button type="button" class="btn" aria-label="Toggle menu" aria-controls="main-menu" aria-expanded="false">
-            <?= Burger::make(); ?>
+            <?= Burger::make(attributes: ['aria-hidden' => 'true']); ?>
         </button>
     </div>
 </section>
@@ -23,7 +23,7 @@ use Gust\Components\Burger;
     <p class="component-example-section__description">Burger with additional styling class.</p>
     <div class="component-example-section__preview">
         <button type="button" class="btn" aria-label="Open navigation">
-            <?= Burger::make(classes: ['burger--large']); ?>
+            <?= Burger::make(classes: ['burger--large'], attributes: ['aria-hidden' => 'true']); ?>
         </button>
     </div>
 </section>

@@ -10,6 +10,18 @@ namespace Gust;
 class Vite
 {
     /**
+     * The decoded Vite manifest, cached for the request. Null until first read.
+     */
+    private static ?array $manifest = null;
+
+    /**
+     * Script handles that are output with type="module".
+     *
+     * @var array<string, true>
+     */
+    private static array $moduleHandles = [];
+
+    /**
      * Check if Vite dev server is running by looking for hot file.
      */
     public static function isRunning(): bool
@@ -42,139 +54,23 @@ class Vite
     }
 
     /**
-     * Generate Vite asset tags for given entry points.
+     * Get the decoded Vite manifest (public/build/manifest.json).
      *
-     * @param  array  $entryPoints  Entry point paths (e.g., ['assets/main.js', 'assets/main.pcss'])
-     * @return string HTML tags for scripts and styles
+     * Read and decoded once per request.
+     *
+     * @return array The manifest, or an empty array if it's missing or invalid.
      */
-    public static function assets(array $entryPoints): string
+    public static function manifest(): array
     {
-        $html = '';
-
-        if (self::isRunning()) {
-            $html .= self::makeDevServerTags($entryPoints);
-        } else {
-            $html .= self::makeProductionTags($entryPoints);
+        if (self::$manifest !== null) {
+            return self::$manifest;
         }
 
-        return $html;
-    }
-
-    /**
-     * Generate tags for dev server (HMR).
-     */
-    private static function makeDevServerTags(array $entryPoints): string
-    {
-        $devServerUrl = self::getDevServerUrl();
-        $html = '';
-
-        // Inject Vite client for HMR
-        $html .= sprintf(
-            '<script type="module" src="%s/@vite/client"></script>'."\n",
-            esc_url($devServerUrl)
-        );
-
-        // Add entry points
-        foreach ($entryPoints as $entry) {
-            $url = $devServerUrl.'/'.$entry;
-
-            if (self::isCssPath($entry)) {
-                $html .= sprintf(
-                    '<link rel="stylesheet" href="%s" />'."\n",
-                    esc_url($url)
-                );
-            } else {
-                $html .= sprintf(
-                    '<script type="module" src="%s"></script>'."\n",
-                    esc_url($url)
-                );
-            }
-        }
-
-        return $html;
-    }
-
-    /**
-     * Generate tags for production (built assets).
-     */
-    private static function makeProductionTags(array $entryPoints): string
-    {
-        $manifest = self::getManifest();
-        if (! $manifest) {
-            return '';
-        }
-
-        $html = '';
-        $preloads = [];
-
-        foreach ($entryPoints as $entry) {
-            if (! isset($manifest[$entry])) {
-                continue;
-            }
-
-            $manifestEntry = $manifest[$entry];
-            $url = \Gust\Paths::assetURL('build/'.$manifestEntry['file']);
-
-            if (self::isCssPath($entry)) {
-                $html .= sprintf(
-                    '<link rel="stylesheet" href="%s" />'."\n",
-                    esc_url($url)
-                );
-            } else {
-                $html .= sprintf(
-                    '<script type="module" src="%s"></script>'."\n",
-                    esc_url($url)
-                );
-
-                // Preload imports
-                if (isset($manifestEntry['imports'])) {
-                    foreach ($manifestEntry['imports'] as $import) {
-                        if (isset($manifest[$import])) {
-                            $importUrl = \Gust\Paths::assetURL('build/'.$manifest[$import]['file']);
-                            $preloads[] = sprintf(
-                                '<link rel="modulepreload" href="%s" />',
-                                esc_url($importUrl)
-                            );
-                        }
-                    }
-                }
-
-                // Preload CSS
-                if (isset($manifestEntry['css'])) {
-                    foreach ($manifestEntry['css'] as $css) {
-                        $cssUrl = \Gust\Paths::assetURL('build/'.$css);
-                        $html .= sprintf(
-                            '<link rel="stylesheet" href="%s" />'."\n",
-                            esc_url($cssUrl)
-                        );
-                    }
-                }
-            }
-        }
-
-        // Add preloads at the beginning
-        if (! empty($preloads)) {
-            $html = implode("\n", $preloads)."\n".$html;
-        }
-
-        return $html;
-    }
-
-    /**
-     * Get the Vite manifest.
-     */
-    private static function getManifest(): ?array
-    {
         $manifestPath = \Gust\Paths::assetPath('build/manifest.json');
+        $content = is_readable($manifestPath) ? file_get_contents($manifestPath) : false;
+        $manifest = $content ? json_decode($content, true) : null;
 
-        if (! file_exists($manifestPath)) {
-            return null;
-        }
-
-        $content = file_get_contents($manifestPath);
-        $manifest = json_decode($content, true);
-
-        return $manifest ?: null;
+        return self::$manifest = is_array($manifest) ? $manifest : [];
     }
 
     /**
@@ -204,14 +100,6 @@ class Vite
     }
 
     /**
-     * Check if path is a CSS file.
-     */
-    private static function isCssPath(string $path): bool
-    {
-        return str_ends_with($path, '.css') || str_ends_with($path, '.pcss');
-    }
-
-    /**
      * Get asset URL for a given entry point or static asset.
      *
      * @param  string  $entry  Entry point path (e.g., 'assets/main.js') or static asset path (e.g., 'images/logo.svg')
@@ -229,8 +117,8 @@ class Vite
         }
 
         // Compiled assets are in the manifest
-        $manifest = self::getManifest();
-        if ($manifest && isset($manifest[$entry])) {
+        $manifest = self::manifest();
+        if (isset($manifest[$entry])) {
             return \Gust\Paths::assetURL('build/'.$manifest[$entry]['file']);
         }
 
@@ -251,8 +139,8 @@ class Vite
             $url = self::getDevServerUrl().'/'.$entry;
             \wp_enqueue_style($handle, $url, $deps, null);
         } else {
-            $manifest = self::getManifest();
-            if (! $manifest || ! isset($manifest[$entry])) {
+            $manifest = self::manifest();
+            if (! isset($manifest[$entry])) {
                 return;
             }
 
@@ -263,7 +151,9 @@ class Vite
     }
 
     /**
-     * Enqueue a script from Vite.
+     * Enqueue a script from Vite as an ES module.
+     *
+     * Module scripts are deferred by the browser, so no loading strategy is set.
      *
      * @param  string  $handle  WP script handle
      * @param  string  $entry  Entry point path (e.g., 'assets/main.js')
@@ -274,51 +164,68 @@ class Vite
         if (self::isRunning()) {
             self::enqueueViteClient();
             $url = self::getDevServerUrl().'/'.$entry;
-            \wp_enqueue_script($handle, $url, $deps, null, ['in_footer' => true, 'strategy' => 'defer']);
-            \add_filter('script_loader_tag', function ($tag, $tagHandle) use ($handle) {
-                if ($tagHandle === $handle) {
-                    return str_replace(' src=', ' type="module" src=', $tag);
-                }
+            \wp_enqueue_script($handle, $url, $deps, null, ['in_footer' => true]);
+            self::addModuleHandle($handle);
 
-                return $tag;
-            }, 10, 2);
-        } else {
-            $manifest = self::getManifest();
-            if (! $manifest || ! isset($manifest[$entry])) {
-                return;
-            }
+            return;
+        }
 
-            $manifestEntry = $manifest[$entry];
-            $url = \Gust\Paths::assetURL('build/'.$manifestEntry['file']);
-            \wp_enqueue_script($handle, $url, $deps, null, ['in_footer' => true, 'strategy' => 'defer']);
-            \add_filter('script_loader_tag', function ($tag, $tagHandle) use ($handle) {
-                if ($tagHandle === $handle) {
-                    return str_replace(' src=', ' type="module" src=', $tag);
-                }
+        $manifest = self::manifest();
+        if (! isset($manifest[$entry])) {
+            return;
+        }
 
-                return $tag;
-            }, 10, 2);
+        $manifestEntry = $manifest[$entry];
+        $url = \Gust\Paths::assetURL('build/'.$manifestEntry['file']);
+        \wp_enqueue_script($handle, $url, $deps, null, ['in_footer' => true]);
+        self::addModuleHandle($handle);
 
-            // Preload imports
-            if (isset($manifestEntry['imports'])) {
-                foreach ($manifestEntry['imports'] as $import) {
-                    if (isset($manifest[$import])) {
-                        $importUrl = \Gust\Paths::assetURL('build/'.$manifest[$import]['file']);
-                        \add_action('wp_head', function () use ($importUrl) {
-                            printf('<link rel="modulepreload" href="%s" />'."\n", esc_url($importUrl));
-                        }, 2);
-                    }
-                }
-            }
-
-            // Enqueue CSS bundled with JS entry
-            if (isset($manifestEntry['css'])) {
-                foreach ($manifestEntry['css'] as $index => $css) {
-                    $cssUrl = \Gust\Paths::assetURL('build/'.$css);
-                    \wp_enqueue_style($handle.'-css-'.$index, $cssUrl, [], null);
+        // Preload imports
+        if (isset($manifestEntry['imports'])) {
+            foreach ($manifestEntry['imports'] as $import) {
+                if (isset($manifest[$import])) {
+                    $importUrl = \Gust\Paths::assetURL('build/'.$manifest[$import]['file']);
+                    \add_action('wp_head', function () use ($importUrl) {
+                        printf('<link rel="modulepreload" href="%s" />'."\n", esc_url($importUrl));
+                    }, 2);
                 }
             }
         }
+
+        // Enqueue CSS bundled with JS entry
+        if (isset($manifestEntry['css'])) {
+            foreach ($manifestEntry['css'] as $index => $css) {
+                $cssUrl = \Gust\Paths::assetURL('build/'.$css);
+                \wp_enqueue_style($handle.'-css-'.$index, $cssUrl, [], null);
+            }
+        }
+    }
+
+    /**
+     * Add type="module" to the script tags of tracked module handles.
+     *
+     * @param  string  $tag  The script tag HTML.
+     * @param  string  $handle  The script's registered handle.
+     */
+    public static function addModuleType(string $tag, string $handle): string
+    {
+        if (! isset(self::$moduleHandles[$handle])) {
+            return $tag;
+        }
+
+        return str_replace(' src=', ' type="module" src=', $tag);
+    }
+
+    /**
+     * Track a script handle as an ES module. Registers the tag filter once.
+     */
+    private static function addModuleHandle(string $handle): void
+    {
+        if (empty(self::$moduleHandles)) {
+            \add_filter('script_loader_tag', [__CLASS__, 'addModuleType'], 10, 2);
+        }
+
+        self::$moduleHandles[$handle] = true;
     }
 
     /**
@@ -334,12 +241,6 @@ class Vite
 
         $devServerUrl = self::getDevServerUrl();
         \wp_enqueue_script('vite-client', $devServerUrl.'/@vite/client', [], null, false);
-        \add_filter('script_loader_tag', function ($tag, $handle) {
-            if ($handle === 'vite-client') {
-                return str_replace(' src=', ' type="module" src=', $tag);
-            }
-
-            return $tag;
-        }, 10, 2);
+        self::addModuleHandle('vite-client');
     }
 }

@@ -2,7 +2,6 @@
 
 namespace Gust\Components\Menu;
 
-use Gust\Component;
 use Gust\ComponentBase;
 
 /**

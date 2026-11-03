@@ -2,7 +2,6 @@
 
 namespace Gust\Components;
 
-use Gust\Component;
 use Gust\ComponentBase;
 
 /**
