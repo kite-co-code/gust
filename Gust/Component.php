@@ -44,7 +44,7 @@ class Component
         // ACF block registration.
         \add_action('init', [__CLASS__, 'addBlocks'], 5);
         \add_filter('acf/settings/load_json', [__CLASS__, 'loadBlockFieldGroupJSON']);
-        \add_action('acf/update_field_group', [__CLASS__, 'saveBlockFieldGroupJSON'], 1);
+        \add_filter('acf/json/save_paths', [__CLASS__, 'saveBlockFieldGroupJSON'], 10, 2);
     }
 
     public static function addBlocks(): void
@@ -66,30 +66,25 @@ class Component
     }
 
     /**
-     * Save each ACF block's field group JSON file into their related components' directory.
+     * Save each ACF block's field group JSON file into its component's directory.
+     *
+     * Uses `acf/json/save_paths`, which receives the item being saved, so only
+     * block field groups are redirected and other field groups keep ACF's paths.
      */
-    public static function saveBlockFieldGroupJSON($group): void
+    public static function saveBlockFieldGroupJSON(array $paths, array $post = []): array
     {
-        if (empty($group['location'][0][0]['param']) || $group['location'][0][0]['param'] !== 'block') {
-            return;
+        if (($post['location'][0][0]['param'] ?? null) !== 'block') {
+            return $paths;
         }
 
-        $blockName = preg_replace('#^(acf|theme)/#', '', $group['location'][0][0]['value']);
-        $blockFieldGroupJSONDirPaths = glob(\get_theme_file_path("components/$blockName"));
+        $blockName = preg_replace('#^(acf|theme)/#', '', (string) ($post['location'][0][0]['value'] ?? ''));
+        $path = \get_theme_file_path("components/$blockName");
 
-        if (! is_array($blockFieldGroupJSONDirPaths)) {
-            return;
+        if ($blockName === '' || ! is_dir($path)) {
+            return $paths;
         }
 
-        foreach ($blockFieldGroupJSONDirPaths as $path) {
-            if (! is_dir($path)) {
-                continue;
-            }
-
-            add_action('acf/settings/save_json', function () use ($path) {
-                return $path;
-            }, 9999);
-        }
+        return [$path];
     }
 
     /**
