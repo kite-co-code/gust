@@ -9,9 +9,10 @@
         "ignoreUnknown": true,
         "includes": [
             "assets/**",
-            "*.js",
-            "*.css",
-            "*.pcss",
+            "**/*.js",
+            "**/*.css",
+            "**/*.pcss",
+            "!!.claude/worktrees",
             "!!**/.vscode",
             "!!**/node_modules",
             "!!**/vendor",
