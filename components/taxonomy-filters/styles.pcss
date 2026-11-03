@@ -1,6 +1,4 @@
 .taxonomy-filters {
-    --section--margin-bottom: calc(var(--section--margin-bottom) / 2);
-
     display: grid;
     align-items: center;
     justify-content: center;
@@ -10,6 +8,7 @@
         grid-auto-flow: column;
     }
 
+    /* Half the usual space before the filtered content. */
     + * {
         margin-block-start: calc(var(--flow-space, var(--space-layout)) / 2);
     }

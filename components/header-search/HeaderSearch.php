@@ -32,6 +32,7 @@ class HeaderSearch extends ComponentBase
         array $classes = [],
         ?string $background_color = null,
         array $attributes = [],
+        ?string $label = null,
         ...$others
     ): ?static {
         return static::createFromArgs(static::mergeArgs(get_defined_vars()));
@@ -56,9 +57,9 @@ class HeaderSearch extends ComponentBase
         $args['attributes'] = array_merge([
             'autocomplete' => 'off',
             'method' => 'get',
-            'placeholder' => 'Search...',
             'action' => esc_url(home_url('/')),
             'role' => 'search',
+            'aria-label' => $args['label'] ?? \__('Search', 'gust'),
         ], $args['attributes']);
 
         return $args;

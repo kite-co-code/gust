@@ -80,6 +80,77 @@
             }
         }
 
+        /* Sub-menu toggle (Disclosure, see components/menu/menu-item) */
+        :where(.sub-menu-toggler) {
+            @apply btn--unstyled;
+
+            display: inline-flex;
+            width: 2.75rem; /* 44px */
+            height: 2.75rem;
+            flex: 0 0 auto;
+            align-items: center;
+            justify-content: center;
+            color: var(--link--color, currentColor);
+
+            @media (min-width: theme('screens.site-header')) {
+                width: 1.5rem;
+                height: 1.5rem;
+            }
+
+            &::before {
+                width: var(--menu-item--arrow-size);
+                height: var(--menu-item--arrow-size);
+                background-color: currentColor;
+                content: '';
+                mask-image: url('/images/icons/chevron-down.svg');
+                mask-position: center;
+                mask-repeat: no-repeat;
+                mask-size: contain;
+                transition: transition(transform);
+            }
+
+            &[aria-expanded='true']::before {
+                transform: rotate(180deg);
+            }
+        }
+
+        :where(.sub-menu) {
+            padding-inline-start: space(16);
+
+            .menu-list {
+                gap: space(12);
+                padding-block: space(12);
+            }
+
+            a {
+                @media (width < theme('screens.site-header')) {
+                    @apply type-h4;
+                }
+            }
+        }
+
+        /* Desktop: top-level sub-menus drop down below their item */
+        @media (min-width: theme('screens.site-header')) {
+            :where(.sub-menu--depth-0) {
+                position: absolute;
+                z-index: 1;
+                top: 100%;
+                left: 0;
+                min-width: 14rem;
+                padding: space(4) space(16);
+                border: var(--base--border);
+                border-radius: var(--radius-sm);
+                background-color: var(--color-background);
+                box-shadow: var(--base--shadow);
+                text-align: left;
+
+                .menu-list {
+                    grid-auto-flow: row;
+                    text-align: left;
+                }
+            }
+        }
+
         /* The active menu item */
         &:where(.menu-item--current) {
             > .menu-item__wrap a {

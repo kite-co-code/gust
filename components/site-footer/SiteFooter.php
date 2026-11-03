@@ -45,32 +45,33 @@ class SiteFooter extends ComponentBase
         if (have_rows('footer_images', 'option')) {
             $args['content']['images'] = [];
 
-            while (have_rows('footer_images', 'options')) {
+            while (have_rows('footer_images', 'option')) {
                 the_row();
 
-                if (! empty(get_sub_field('image'))) {
-                    $image = get_sub_field('image');
-                    $image['size'] = 'medium';
+                $image = get_sub_field('image');
+
+                // Skip rows without an image.
+                if (empty($image)) {
+                    continue;
                 }
 
-                if (! empty($image)) {
-                    $link = get_sub_field('link');
-                    $image_data = [
-                        'image' => $image ?? null,
-                        'link' => $link,
-                    ];
+                $image['size'] = 'medium';
+                $link = get_sub_field('link');
+                $image_data = [
+                    'image' => $image,
+                    'link' => $link,
+                ];
 
-                    // Pre-create link args for images with links
-                    if (! empty($link)) {
-                        $image_data['link_args'] = array_merge($link, [
-                            'classes' => ['site-footer__image', 'img-fit'],
-                            'content' => \Gust\Components\Image::make(...$image),
-                            'content_filter' => false,
-                        ]);
-                    }
-
-                    $args['content']['images'][] = $image_data;
+                // Pre-create link args for images with links
+                if (! empty($link)) {
+                    $image_data['link_args'] = array_merge($link, [
+                        'classes' => ['site-footer__image', 'img-fit'],
+                        'content' => \Gust\Components\Image::make(...$image),
+                        'content_filter' => false,
+                    ]);
                 }
+
+                $args['content']['images'][] = $image_data;
             }
         }
 

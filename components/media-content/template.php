@@ -30,7 +30,9 @@
         <?php if (! empty($this->media) || ! empty($this->image)) { ?>
             <div class="media-content__media img-fit">
                 <?php if ($this->media_type === 'video' && ! empty($this->video)) {
-                    echo \Gust\Components\VideoItem::make(...$this->video);
+                    // VideoItem doesn't render without a valid embed; show the image instead.
+                    $video = \Gust\Components\VideoItem::make(...$this->video);
+                    echo $video ?? (! empty($this->image) ? \Gust\Components\Image::make(...$this->image) : '');
                 } elseif ($this->media_type === 'image' && ! empty($this->image)) {
                     echo \Gust\Components\Image::make(...$this->image);
                 } ?>

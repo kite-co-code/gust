@@ -24,7 +24,6 @@ class Accordion extends ComponentBase
      */
     public static function make(
         array $classes = [],
-        string $content = '',
         ...$others
     ): ?static {
         return static::createFromArgs(static::mergeArgs(get_defined_vars()));
@@ -46,23 +45,19 @@ class Accordion extends ComponentBase
                 $item['panel_id'] = wp_unique_id('accordion-panel-');
                 $item['button_id'] = wp_unique_id('accordion-button-');
 
-                $item['button'] = [
+                // The heading wraps the button (APG accordion pattern).
+                $item['button_attributes'] = [
                     'id' => $item['button_id'],
-                    'classes' => ['accordion__item__header'],
-                    'attributes' => [
-                        'aria-expanded' => 'false',
-                        'aria-controls' => $item['panel_id'],
-                    ],
-                    'content' => Heading::make(
-                        el: 'h3',
-                        heading: $item['title'],
-                        classes: ['accordion__item__heading'],
-                    ),
+                    'class' => 'accordion__item__header',
+                    'type' => 'button',
+                    'aria-expanded' => 'false',
+                    'aria-controls' => $item['panel_id'],
                 ];
 
                 $item['panel_attributes'] = [
                     'id' => $item['panel_id'],
                     'class' => 'accordion__item__panel',
+                    'role' => 'region',
                     'hidden' => true,
                     'aria-hidden' => 'true',
                     'aria-labelledby' => $item['button_id'],

@@ -86,6 +86,13 @@ class MenuItem extends ComponentBase
                 // Initially hide sub-menus.
                 'hidden' => true,
                 'aria-hidden' => 'true',
+
+                // Toggled by the sub-menu toggler (assets/scripts/helpers/Disclosure.js).
+                // Opening a sub-menu closes its open siblings.
+                'data-disclosure' => true,
+                'data-disclosure-group' => 'sub-menu-'.$item->menu_item_parent,
+                'data-disclosure-collapse-on-focusout' => 'true',
+                'data-expand-on-hash' => 'false',
             ];
 
             $args['button'] = [

@@ -58,7 +58,7 @@
                 </button>
 
                 <div class="site-header__search-desktop" id="site-header-search-desktop" hidden aria-hidden="true">
-                    <?= \Gust\Components\HeaderSearch::make(); ?>
+                    <?= \Gust\Components\HeaderSearch::make(label: __('Site search', 'gust')); ?>
                 </div>
             </div>
 
@@ -69,6 +69,6 @@
     </div>
 
     <div class="site-header__panel site-header__search-panel" id="site-header-search-panel" popover data-scroll-lock>
-        <?= \Gust\Components\HeaderSearch::make(); ?>
+        <?= \Gust\Components\HeaderSearch::make(label: __('Mobile site search', 'gust')); ?>
     </div>
 </header>

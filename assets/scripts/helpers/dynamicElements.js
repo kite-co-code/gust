@@ -118,7 +118,13 @@ const dynamicElements = {
         if (initializedSelectors.has(selector)) return;
 
         initializedSelectors.add(selector);
-        callback(el);
+
+        // One element failing to initialise shouldn't stop the rest.
+        try {
+            callback(el);
+        } catch (error) {
+            console.error(`dynamicElements: failed to initialise "${selector}"`, el, error);
+        }
     },
 };
 

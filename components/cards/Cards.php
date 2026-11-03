@@ -58,7 +58,7 @@ class Cards extends ComponentBase
                     $query = [
                         'post_type' => $args['post_type'],
                         'posts_per_page' => $args['limit'],
-                        'exclude' => get_the_ID(),
+                        'post__not_in' => array_filter([get_the_ID()]),
                         'no_found_rows' => true,
                         'ignore_sticky_posts' => true,
                     ];

@@ -1,8 +1,11 @@
 <?php if (! empty($this->items)) { ?>
-    <div class="<?= classes('taxonomy-filters', 'wp-block', $this->classes) ?>" <?= attributes($this->attributes) ?>>
+    <nav
+        class="<?= classes('taxonomy-filters', 'wp-block', $this->classes) ?>"
+        <?php if (! empty($this->label)) { ?>aria-labelledby="<?= esc_attr($this->label_id) ?>"<?php } ?>
+        <?= attributes($this->attributes) ?>>
         <?php if (! empty($this->label)) { ?>
             <div class="taxonomy-filters__label">
-                <span><?= wp_kses_post($this->label) ?></span>
+                <span id="<?= esc_attr($this->label_id) ?>"><?= wp_kses_post($this->label) ?></span>
             </div>
         <?php } ?>
 
@@ -13,5 +16,5 @@
                 </li>
             <?php }  ?>
         </ul>
-    </div>
+    </nav>
 <?php } ?>

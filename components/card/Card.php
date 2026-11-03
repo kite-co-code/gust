@@ -93,9 +93,11 @@ class Card extends ComponentBase
                     }
                 }
             } elseif ($args['object'] instanceof \WP_Term) {
+                $term_link = get_term_link($object);
+
                 $args['content'] = [
                     'heading' => $object->name,
-                    'url' => get_term_link($object->ID),
+                    'url' => \is_wp_error($term_link) ? '' : $term_link,
                     'text' => $object->description,
                 ];
             }

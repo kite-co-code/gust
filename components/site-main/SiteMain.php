@@ -46,6 +46,9 @@ class SiteMain extends ComponentBase
             $args['inner_el'] = 'article';
         }
 
+        // Only allow sensible wrapper elements.
+        $args['inner_el'] = Element::tag($args['inner_el'], 'div', ['div', 'article', 'section']);
+
         // Default id
         if (empty($args['attributes']['id'])) {
             $args['attributes']['id'] = 'main';
