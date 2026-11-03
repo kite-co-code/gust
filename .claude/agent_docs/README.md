@@ -9,3 +9,4 @@ Reference architecture docs. Read what's relevant to your task.
 | [components.md](components.md) | Component structure, class patterns, templates, ACF fields, blocks |
 | [config.md](config.md) | All config.json settings — admin, editor, scripts, images |
 | [css.md](css.md) | CSS architecture, color system, spacing, type utilities, page grid |
+| [worktrees.md](worktrees.md) | Testing a git worktree on the shared local site, what's shared, cleanup |

@@ -78,6 +78,13 @@ export default defineConfig({
 
     publicDir: 'assets/static',
 
+    // Worktrees run their own builds; don't reload the main checkout when they change
+    server: {
+        watch: {
+            ignored: ['**/.claude/worktrees/**'],
+        },
+    },
+
     build: {
         sourcemap: process.env.NODE_ENV === 'development',
     },

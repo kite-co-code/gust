@@ -27,6 +27,10 @@ Key features include:
 - Get `APP_URL` from `.env`: `APP_URL=$(grep '^APP_URL' .env | cut -d= -f2)`
 - Component previews: `$APP_URL/_dev/`
 
+### Worktrees
+
+In a worktree (`.claude/worktrees/<name>`), run `pnpm worktree:setup` first. Browse with `$APP_URL/?worktree=<name>` (sets a cookie; use your own browser session), and run `wp` from inside the worktree. The database is shared with main and other worktrees: don't change site options or plugins, and name test users `agent-<name>`. Details: [worktrees.md](.claude/agent_docs/worktrees.md).
+
 ### Reference
 
 | Doc                                                   | When to read                                                                  |
@@ -35,6 +39,7 @@ Key features include:
 | [build-system.md](.claude/agent_docs/build-system.md) | Vite setup, entry points, component asset bundling, static assets, versioning |
 | [components.md](.claude/agent_docs/components.md)     | Component structure, class patterns, templates, ACF fields, blocks            |
 | [css.md](.claude/agent_docs/css.md)                   | CSS architecture, color system, spacing, type utilities, page grid            |
+| [worktrees.md](.claude/agent_docs/worktrees.md)       | Testing a git worktree on the shared local site, what's shared, cleanup       |
 
 ## Skills
 

@@ -42,3 +42,6 @@ Thumbs.db
 # Other #
 .docs/FRAMEWORK_TODOS.md
 .claude/settings.local.json
+
+# Git worktrees (served by dev-scripts/mu-plugins/gust-worktree-switch.php)
+.claude/worktrees/
