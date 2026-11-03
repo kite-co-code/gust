@@ -33,6 +33,35 @@ class VideoItem extends ComponentBase
     }
 
     /**
+     * The HTML allowed in the video embed: a single iframe.
+     */
+    public static function allowedEmbedHtml(): array
+    {
+        return [
+            'iframe' => [
+                'src' => true,
+                'data-src' => true,
+                'title' => true,
+                'width' => true,
+                'height' => true,
+                'frameborder' => true,
+                'allow' => true,
+                'allowfullscreen' => true,
+                'referrerpolicy' => true,
+                'loading' => true,
+            ],
+        ];
+    }
+
+    /**
+     * Don't render without an iframe embed, e.g. when the oEmbed lookup failed.
+     */
+    protected static function validate(array $args): bool
+    {
+        return static::getEmbedSrc($args['video'] ?? '') !== null;
+    }
+
+    /**
      * Transform args before rendering.
      */
     protected static function transform(array $args): array
@@ -41,27 +70,48 @@ class VideoItem extends ComponentBase
             $args['image']['size'] = 'large';
         }
 
-        if (! empty($args['video'])) {
-            // Use preg_match to find iframe src.
-            preg_match('/src="(.+?)"/', $args['video'], $matches);
-            $src = $matches[1];
+        $video = \wp_kses($args['video'], static::allowedEmbedHtml());
 
-            // Add extra parameters to src and replace HTML.
-            $params = [
-                'autoplay' => 1,
-                'modestbranding' => 1,
-                'rel' => 0, // Whether to show videos from the same channel upon completion.
-            ];
+        // Add extra parameters to src.
+        $src = \add_query_arg([
+            'autoplay' => 1,
+            'modestbranding' => 1,
+            'rel' => 0, // Whether to show videos from the same channel upon completion.
+        ], static::getEmbedSrc($video));
 
-            $args['video'] = str_replace(
-                $src,
-                add_query_arg($params, $src),
-                $args['video']
-            );
+        // Move the src to data-src, so the video only loads (and autoplays) when opened.
+        $video = preg_replace(
+            '/\ssrc="[^"]*"/',
+            ' data-src="'.\esc_url($src, ['http', 'https']).'"',
+            $video,
+            1
+        );
+
+        // Iframes need an accessible name.
+        if (! preg_match('/<iframe\s[^>]*\btitle="/i', $video)) {
+            $title = $args['heading'] ?: \__('Video', 'gust');
+            $video = preg_replace('/<iframe\b/i', '<iframe title="'.\esc_attr(\wp_strip_all_tags($title)).'"', $video, 1);
         }
 
-        $args['video'] = str_replace(' src=', ' data-src=', $args['video']);
+        $args['video'] = $video;
 
         return $args;
+    }
+
+    /**
+     * Get the iframe src from the embed HTML, or null if there isn't a valid one.
+     */
+    protected static function getEmbedSrc(string $html): ?string
+    {
+        $html = \wp_kses($html, static::allowedEmbedHtml());
+
+        if (! preg_match('/<iframe\s[^>]*\bsrc="([^"]+)"/i', $html, $matches)) {
+            return null;
+        }
+
+        $src = html_entity_decode($matches[1], ENT_QUOTES);
+
+        // Only absolute http(s) or protocol-relative URLs.
+        return preg_match('#^(https?:)?//[^/\s]#i', $src) ? $src : null;
     }
 }
