@@ -20,9 +20,9 @@ let colors = loadColors();
 /**
  * Convert hex to HSL
  */
-function hexToHSL(hex) {
+function hexToHSL(hexColor) {
 	// Remove the hash if present
-	hex = hex.replace('#', '');
+	let hex = hexColor.replace('#', '');
 
 	// Expand shorthand hex (e.g., "fff" → "ffffff")
 	if (hex.length === 3) {
@@ -36,9 +36,9 @@ function hexToHSL(hex) {
 
 	const max = Math.max(r, g, b);
 	const min = Math.min(r, g, b);
-	let h,
-		s,
-		l = (max + min) / 2;
+	let h;
+	let s;
+	let l = (max + min) / 2;
 
 	if (max === min) {
 		h = s = 0; // achromatic (grayscale)
