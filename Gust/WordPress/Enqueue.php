@@ -15,14 +15,8 @@ class Enqueue
         \add_action('init', [__CLASS__, 'dequeueWPGlobalStyles']);
         \add_action('wp_enqueue_scripts', [__CLASS__, 'dequeueWPBlockLibraryStyles']);
 
-        \remove_action('wp_enqueue_scripts', 'wp_enqueue_global_styles');
-        \remove_action('wp_footer', 'wp_enqueue_global_styles', 1);
-
         \add_action('wp_default_scripts', [__CLASS__, 'movejQueryToFooter']);
         \add_filter('wp_default_scripts', [__CLASS__, 'removejQueryMigrate']);
-
-        \add_filter('style_loader_src', [__CLASS__, 'removeAssetVersion'], 10, 2);
-        \add_filter('script_loader_src', [__CLASS__, 'removeAssetVersion'], 10, 2);
 
         \add_filter('gust/scripts/dependencies', [__CLASS__, 'addjQueryDependency']);
         \add_filter('gust/scripts/localization', [__CLASS__, 'addAjaxLocalization']);
@@ -57,21 +51,6 @@ class Enqueue
     }
 
     /**
-     * Remove file version query argument from all enqueued styles and scripts.
-     *
-     * @param  string  $src  The source URL of the enqueued asset.
-     * @return string The filtered URL of the enqueued asset.
-     */
-    public static function removeAssetVersion(string $src): string
-    {
-        if (strpos($src, '?ver=')) {
-            $src = \remove_query_arg('ver', $src);
-        }
-
-        return $src;
-    }
-
-    /**
      * Conditionally enqueue WP comment-reply JS.
      */
     public static function enqueueCommentAssets(): void
@@ -83,6 +62,9 @@ class Enqueue
 
     /**
      * Conditionally dequeue WP's core global styling inline css.
+     *
+     * Runs on `init`, after core adds these actions in default-filters.php and
+     * before `wp_enqueue_scripts`/`wp_footer` fire.
      *
      * Dequeues: global-styles-inline-css
      */
