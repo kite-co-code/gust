@@ -22,10 +22,10 @@ parameters:
 
     excludePaths:
         analyse:
-            - vendor
-            - node_modules
-            - public
-            - .claude
+            - vendor (?)
+            - node_modules (?)
+            - public (?)
+            - .claude (?)
 
     scanFiles:
         - vendor/php-stubs/acf-pro-stubs/acf-pro-stubs.php
