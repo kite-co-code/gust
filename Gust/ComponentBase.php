@@ -280,18 +280,28 @@ abstract class ComponentBase
         // Push the current Component onto the stack.
         static::pushComponent($this);
 
+        $bufferLevel = ob_get_level();
         ob_start();
 
-        \do_action('gust/component/before', $this->path, $args, $this);
+        try {
+            \do_action('gust/component/before', $this->path, $args, $this);
 
-        require \Gust\Paths::resolve($this->path); // Render the component.
+            require \Gust\Paths::resolve($this->path); // Render the component.
 
-        \do_action('gust/component/after', $this->path, $args, $this);
+            \do_action('gust/component/after', $this->path, $args, $this);
 
-        // Pop the current component off the stack.
-        static::popComponent();
+            return ob_get_clean();
+        } catch (\Throwable $e) {
+            // Discard partial output, including any buffers the template opened.
+            while (ob_get_level() > $bufferLevel) {
+                ob_end_clean();
+            }
 
-        return ob_get_clean();
+            throw $e;
+        } finally {
+            // Pop the current component off the stack.
+            static::popComponent();
+        }
     }
 
     /**
