@@ -55,7 +55,6 @@ export default function generateComponentImportsPlugin() {
                     generateImports();
                 }
             });
-
         },
 
         handleHotUpdate({ file, server }) {

@@ -20,8 +20,8 @@
  *                                     hiding or showing, default 8
  */
 
-import debounce from '../../../assets/scripts/helpers/debounce.js';
 import Disclosure from '../../../assets/scripts/helpers/Disclosure.js';
+import debounce from '../../../assets/scripts/helpers/debounce.js';
 
 export default class SiteHeader {
     constructor(element) {
@@ -132,7 +132,7 @@ export default class SiteHeader {
     onPanelFocusout = (event) => {
         const panel = event.currentTarget;
         const next = event.relatedTarget;
-        if (!(next instanceof Node) || !panel.matches(':popover-open')) return;
+        if (!(next instanceof Node && panel.matches(':popover-open'))) return;
         if (panel.contains(next) || this.toggleFor(panel)?.contains(next)) return;
         panel.hidePopover();
     };
