@@ -2,7 +2,6 @@ import { resolve } from 'node:path';
 import fg from 'fast-glob';
 import laravel from 'laravel-vite-plugin';
 import { defineConfig } from 'vite';
-import cssGlobImportPlugin from './dev-scripts/vite-plugin-css-glob-import.js';
 import generateComponentImportsPlugin from './dev-scripts/vite-plugin-generate-component-imports.js';
 import globImportPlugin from './dev-scripts/vite-plugin-glob-import.js';
 
@@ -73,7 +72,6 @@ export default defineConfig({
             refresh: ['**/*.php'],
         }),
         globImportPlugin(),
-        cssGlobImportPlugin(),
     ],
 
     publicDir: 'assets/static',
