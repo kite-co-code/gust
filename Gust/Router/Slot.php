@@ -9,7 +9,8 @@ class Slot
     public static function init(): void
     {
         \add_action('acf/init', [static::class, 'registerBlocks']);
-        \add_filter('allowed_block_types_all', [static::class, 'restrictToRouterPages'], 10, 2);
+        // After Editor::allowedBlockTypes (priority 10) builds the allow-list
+        \add_filter('allowed_block_types_all', [static::class, 'restrictToRouterPages'], 20, 2);
         \add_filter('block_categories_all', [static::class, 'registerBlockCategory'], 10, 2);
     }
 
@@ -100,19 +101,23 @@ class Slot
             return $allowed;
         }
 
-        $routerBlocks = ['theme/template-content'];
+        // ACF prefixes PHP-registered block names with `acf/`
+        $routerBlocks = ['acf/template-content'];
 
-        // If not a router page, remove router blocks
-        if (! RouterPage::isRouterPage($post->ID)) {
-            if (is_array($allowed)) {
-                return array_values(array_diff($allowed, $routerBlocks));
-            }
+        // Router pages get router blocks even when an allow-list leaves them out
+        if (RouterPage::isRouterPage($post->ID)) {
+            return is_array($allowed)
+                ? array_values(array_unique([...$allowed, ...$routerBlocks]))
+                : $allowed;
+        }
 
-            // If $allowed is true (all blocks), we need to return all except router blocks
-            // This requires getting all block types and excluding router blocks
-            if ($allowed === true) {
-                return true; // Can't filter when all are allowed without listing them
-            }
+        // `true` means all blocks are allowed, so list them to exclude router blocks
+        if ($allowed === true) {
+            $allowed = array_keys(\WP_Block_Type_Registry::get_instance()->get_all_registered());
+        }
+
+        if (is_array($allowed)) {
+            return array_values(array_diff($allowed, $routerBlocks));
         }
 
         return $allowed;
