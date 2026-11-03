@@ -4,12 +4,26 @@ namespace Gust\Router;
 
 use Gust\Router;
 
+/**
+ * Router editor blocks.
+ *
+ * The Template Content block is `theme/template-content`, registered from
+ * Gust/Router/blocks/template-content/block.json. Versions before this used
+ * acf_register_block_type(), which named it `acf/template-content`; that name
+ * is still registered (hidden from the inserter) so content saved with it
+ * keeps rendering. To move old content over, replace `wp:acf/template-content`
+ * with `wp:theme/template-content` in post_content.
+ */
 class Slot
 {
+    /** Blocks that only make sense on router pages. */
+    const ROUTER_BLOCKS = ['theme/template-content', 'acf/template-content'];
+
     public static function init(): void
     {
-        \add_action('acf/init', [static::class, 'registerBlocks']);
-        \add_filter('allowed_block_types_all', [static::class, 'restrictToRouterPages'], 10, 2);
+        \add_action('init', [static::class, 'registerBlocks'], 5);
+        // Late, so it runs after allow lists that add every theme/* block (Gust\WordPress\Editor).
+        \add_filter('allowed_block_types_all', [static::class, 'restrictToRouterPages'], 100, 2);
         \add_filter('block_categories_all', [static::class, 'registerBlockCategory'], 10, 2);
     }
 
@@ -41,10 +55,13 @@ class Slot
             return;
         }
 
-        // Template Content block
+        // Template Content block (theme/template-content)
+        \register_block_type(__DIR__.'/blocks/template-content');
+
+        // Legacy name, kept so content saved as acf/template-content still renders.
         \acf_register_block_type([
             'name' => 'template-content',
-            'title' => \__('Template Content', 'gust'),
+            'title' => \__('Template Content (legacy)', 'gust'),
             'description' => \__('Displays dynamic page content.', 'gust'),
             'category' => 'theme',
             'icon' => 'layout',
@@ -52,6 +69,7 @@ class Slot
             'mode' => 'preview',
             'align' => 'full',
             'supports' => [
+                'inserter' => false,
                 'mode' => false,
                 'multiple' => false,
                 'jsx' => false,
@@ -92,27 +110,28 @@ class Slot
         );
     }
 
+    /**
+     * Only offer router blocks in the editor for router pages.
+     *
+     * @param  bool|string[]  $allowed
+     * @return bool|string[]
+     */
     public static function restrictToRouterPages($allowed, $context): mixed
     {
         $post = $context->post ?? null;
 
-        if (! $post) {
+        if (! $post || RouterPage::isRouterPage($post->ID)) {
             return $allowed;
         }
 
-        $routerBlocks = ['theme/template-content'];
+        // true means "all blocks", so list every registered block instead.
+        // Blocks registered only in JavaScript aren't in the registry and drop out.
+        if ($allowed === true) {
+            $allowed = array_keys(\WP_Block_Type_Registry::get_instance()->get_all_registered());
+        }
 
-        // If not a router page, remove router blocks
-        if (! RouterPage::isRouterPage($post->ID)) {
-            if (is_array($allowed)) {
-                return array_values(array_diff($allowed, $routerBlocks));
-            }
-
-            // If $allowed is true (all blocks), we need to return all except router blocks
-            // This requires getting all block types and excluding router blocks
-            if ($allowed === true) {
-                return true; // Can't filter when all are allowed without listing them
-            }
+        if (is_array($allowed)) {
+            return array_values(array_diff($allowed, static::ROUTER_BLOCKS));
         }
 
         return $allowed;

@@ -23,6 +23,14 @@ class Route
 
     protected ?string $name = null;
 
+    /** Handler instance for class-based handlers, created once per request. */
+    protected ?object $instance = null;
+
+    protected bool $prepared = false;
+
+    /** @var array<string, string> Named {param} values captured when an owned route matches. */
+    protected array $params = [];
+
     /** @param string|callable $handler */
     public function __construct(string $type, string $pattern, mixed $handler)
     {
@@ -138,20 +146,66 @@ class Route
         return \locate_template('index.php') ?: null;
     }
 
+    /**
+     * Run middleware and the handler's prepare(). Runs once per request:
+     * later calls do nothing.
+     */
     public function prepare(): void
     {
+        if ($this->prepared) {
+            return;
+        }
+
+        $this->prepared = true;
+
         // Run middleware
         foreach ($this->middleware as $fn) {
             call_user_func($fn, $this);
         }
 
         // Call handler's prepare if class-based
-        if (is_string($this->handler) && class_exists($this->handler)) {
-            $instance = new $this->handler;
-            if (method_exists($instance, 'prepare')) {
-                $instance->prepare();
-            }
+        $instance = $this->getHandlerInstance();
+        if ($instance && method_exists($instance, 'prepare')) {
+            $instance->prepare();
         }
+    }
+
+    /**
+     * The handler object for a class-based handler. It's created on first use
+     * and shared by prepare() and handle(), so state set in prepare() is kept.
+     */
+    public function getHandlerInstance(): ?object
+    {
+        if ($this->instance === null && is_string($this->handler) && class_exists($this->handler)) {
+            $this->instance = new $this->handler;
+        }
+
+        return $this->instance;
+    }
+
+    /**
+     * @param  array<string, string>  $params
+     */
+    public function setParams(array $params): static
+    {
+        $this->params = $params;
+
+        return $this;
+    }
+
+    /**
+     * Named {param} values captured from the request path (owned routes only).
+     *
+     * @return array<string, string>
+     */
+    public function getParams(): array
+    {
+        return $this->params;
+    }
+
+    public function getParam(string $name, mixed $default = null): mixed
+    {
+        return $this->params[$name] ?? $default;
     }
 
     public function getSlot(string $name): ?callable
@@ -180,20 +234,38 @@ class Route
             return \home_url($this->pattern);
         }
 
+        if ($this->pattern === 'search') {
+            return \home_url('?s=');
+        }
+
+        return $this->getPublicUrl() ?? \home_url();
+    }
+
+    /**
+     * The route's own URL, or null when it has no page of its own to send
+     * visitors to: search, 404, taxonomy archives (which need a term) and
+     * owned routes with {param} placeholders.
+     */
+    public function getPublicUrl(): ?string
+    {
+        if ($this->type === 'owned') {
+            return str_contains($this->pattern, '{') ? null : \home_url($this->pattern);
+        }
+
         // Decorated routes - resolve from WP
         $parts = explode(':', $this->pattern);
         $type = $parts[0];
         $name = $parts[1] ?? null;
 
-        return match ($type) {
-            'post_type' => \get_post_type_archive_link($name) ?: \home_url(),
-            'taxonomy' => \home_url(), // Taxonomy archives need term context
+        $url = match ($type) {
+            'post_type' => \get_post_type_archive_link($name),
+            // get_permalink(0) would return the global post's link, so guard it.
             'archive' => $name === 'post'
-                ? (\get_permalink(\get_option('page_for_posts')) ?: \home_url())
-                : (\get_post_type_archive_link($name) ?: \home_url()),
-            'search' => \home_url('?s='),
-            '404' => \home_url(),
-            default => \home_url(),
+                ? ((int) \get_option('page_for_posts') ? \get_permalink((int) \get_option('page_for_posts')) : null)
+                : \get_post_type_archive_link($name),
+            default => null,
         };
+
+        return $url ?: null;
     }
 }

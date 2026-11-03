@@ -7,7 +7,10 @@
  * - Router::route() for owned routes (custom URLs)
  * - Router::decorate() for decorated routes (WordPress archives)
  *
- * @see agents/2026-01-08-application-routing-system-pages.md
+ * Owned route patterns can use {param} placeholders; read the values with
+ * Router::param('name') or Router::params().
+ *
+ * @see Theme/Routes/README.md
  */
 
 use Gust\Router;
