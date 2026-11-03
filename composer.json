@@ -14,7 +14,11 @@
         "php-stubs/wp-cli-stubs": "^2.10",
         "laravel/pint": "^1.17",
         "fakerphp/faker": "^1.24",
-        "wpackagist-plugin/query-monitor": "*"
+        "wpackagist-plugin/query-monitor": "*",
+        "phpstan/phpstan": "^2.1",
+        "szepeviktor/phpstan-wordpress": "^2.0",
+        "phpunit/phpunit": "^11.5",
+        "brain/monkey": "^2.6"
     },
     "autoload": {
         "psr-4": {
@@ -24,6 +28,11 @@
         "classmap": [
             "components/"
         ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Gust\\Tests\\": "tests/"
+        }
     },
     "repositories": {
         "0": {
@@ -54,5 +63,17 @@
         "allow-plugins": {
             "composer/installers": true
         }
+    },
+    "scripts": {
+        "phpstan": "phpstan analyse --memory-limit=1G",
+        "phpstan:baseline": "phpstan analyse --memory-limit=1G --generate-baseline phpstan-baseline.neon",
+        "test": "phpunit",
+        "plugins:update": "@composer update \"wpackagist-plugin/*\" wpengine/advanced-custom-fields-pro --no-interaction"
+    },
+    "scripts-descriptions": {
+        "phpstan": "Run PHPStan static analysis. Errors listed in phpstan-baseline.neon are ignored.",
+        "phpstan:baseline": "Regenerate phpstan-baseline.neon from the current errors.",
+        "test": "Run the PHPUnit unit tests.",
+        "plugins:update": "Install from composer.lock, but update the WordPress plugin packages to their latest versions."
     }
 }

@@ -3,7 +3,8 @@
 /**
  * Component Scaffold
  *
- * Creates new component boilerplate.
+ * Creates new component boilerplate: a class, a template and a Dev Kit
+ * example (example.php, shown at /_dev/components/<name>/).
  *
  * Usage:
  *   node dev-scripts/scaffold-component.js my-component
@@ -16,10 +17,10 @@
  *   --all       Create all optional files
  */
 
-import fs from 'fs';
-import path from 'path';
-import { execSync } from 'child_process';
-import { fileURLToPath } from 'url';
+import { execSync } from 'node:child_process';
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -32,8 +33,15 @@ const COMPONENTS_DIR = path.join(__dirname, '../components');
 function toPascalCase(str) {
     return str
         .split('-')
-        .map(part => part.charAt(0).toUpperCase() + part.slice(1))
+        .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
         .join('');
+}
+
+/**
+ * Convert PascalCase to a title ("HeroBanner" -> "Hero Banner")
+ */
+function toTitle(className) {
+    return className.replace(/([A-Z])/g, ' $1').trim();
 }
 
 /**
@@ -46,21 +54,36 @@ namespace Gust\\Components;
 
 use Gust\\ComponentBase;
 
+/**
+ * ${className} Component
+ *
+ * Usage:
+ *   use Gust\\Components\\${className};
+ *
+ *   echo ${className}::make(heading: 'Hello');
+ */
 class ${className} extends ComponentBase
 {
     protected static string $name = '${name}';
 
+    /**
+     * Create a new ${className} component.
+     *
+     * @return static|null Returns null if component should not render.
+     */
     public static function make(
         array $classes = [],
+        string $heading = '',
         ...$others
     ): ?static {
         return static::createFromArgs(static::mergeArgs(get_defined_vars()));
     }
 
+    /**
+     * Transform args before rendering.
+     */
     protected static function transform(array $args): array
     {
-        $args['classes'] = array_merge(['${name}'], $args['classes'] ?? []);
-
         return $args;
     }
 }
@@ -77,13 +100,39 @@ function generateTemplate(name, className) {
  *
  * @var \\Gust\\Components\\${className} $this
  */
-
-use Gust\\Helpers;
 ?>
 
-<div <?= Helpers::buildAttributes($this->attributes); ?>>
-    <!-- ${className} content -->
+<div class="<?= classes('${name}', $this->classes) ?>" <?= attributes($this->attributes) ?>>
+    <?php if (! empty($this->heading)) { ?>
+        <h2 class="${name}__heading"><?= esc_html($this->heading) ?></h2>
+    <?php } ?>
 </div>
+`;
+}
+
+/**
+ * Generate Dev Kit example content (shown at /_dev/components/<name>/)
+ */
+function generateExample(className) {
+    return `<?php
+
+/**
+ * ${className} Component Examples
+ */
+
+use Gust\\Components\\${className};
+
+?>
+
+<section class="component-example-section">
+    <h2 class="component-example-section__title">${toTitle(className)} - Default</h2>
+    <p class="component-example-section__description">Basic usage.</p>
+    <div class="component-example-section__preview">
+        <?= ${className}::make(
+            heading: 'Example heading',
+        ); ?>
+    </div>
+</section>
 `;
 }
 
@@ -101,9 +150,10 @@ function generateStyles(name) {
  * Generate scripts content
  */
 function generateScripts(name) {
-    return `const elements = document.querySelectorAll('.${name}');
+    return `import dynamicElements from '../../assets/scripts/helpers/dynamicElements.js';
 
-elements?.forEach((el) => {
+// Runs once for each .${name} on the page, including ones added later.
+dynamicElements.define('.${name}', (element) => {
     // Component logic
 });
 `;
@@ -113,12 +163,11 @@ elements?.forEach((el) => {
  * Generate block.json content
  */
 function generateBlockJson(name, className) {
-    const title = className.replace(/([A-Z])/g, ' $1').trim();
-    return JSON.stringify({
+    const block = {
         $schema: 'https://schemas.wp.org/trunk/block.json',
         apiVersion: 3,
         name: `theme/${name}`,
-        title,
+        title: toTitle(className),
         description: '',
         category: 'theme-blocks',
         icon: 'admin-generic',
@@ -132,20 +181,27 @@ function generateBlockJson(name, className) {
             anchor: true,
             align: false,
         },
-    }, null, 4) + '\n';
+    };
+
+    return `${JSON.stringify(block, null, 4)}\n`;
 }
 
 /**
- * Regenerate component imports
+ * Regenerate Composer's classmap so the new component class autoloads.
+ * Component assets need no step here: Vite picks up new styles.pcss and
+ * scripts.js files on the next `pnpm build` or `pnpm dev` start.
+ *
+ * @returns {boolean} Whether the autoloader was regenerated.
  */
-function regenerateImports() {
+function dumpAutoload() {
     try {
-        execSync('pnpm run build --mode development 2>/dev/null || true', {
+        execSync('composer dump-autoload --quiet', {
             cwd: path.join(__dirname, '..'),
-            stdio: 'ignore'
+            stdio: 'ignore',
         });
+        return true;
     } catch {
-        // Silently fail - imports will regenerate on next dev/build
+        return false;
     }
 }
 
@@ -195,60 +251,40 @@ Examples:
     const withScripts = flags.includes('--scripts') || flags.includes('--all');
     const withBlock = flags.includes('--block') || flags.includes('--all');
 
-    // Create directory
+    const files = {
+        [`${className}.php`]: generateClass(name, className),
+        'template.php': generateTemplate(name, className),
+        'example.php': generateExample(className),
+    };
+
+    if (withStyles) files['styles.pcss'] = generateStyles(name);
+    if (withScripts) files['scripts.js'] = generateScripts(name);
+    if (withBlock) files['block.json'] = generateBlockJson(name, className);
+
     fs.mkdirSync(componentDir, { recursive: true });
     console.log(`Created: components/${name}/`);
 
-    // Create class
-    fs.writeFileSync(
-        path.join(componentDir, `${className}.php`),
-        generateClass(name, className)
-    );
-    console.log(`Created: ${className}.php`);
-
-    // Create template
-    fs.writeFileSync(
-        path.join(componentDir, 'template.php'),
-        generateTemplate(name, className)
-    );
-    console.log(`Created: template.php`);
-
-    // Optional: styles
-    if (withStyles) {
-        fs.writeFileSync(
-            path.join(componentDir, 'styles.pcss'),
-            generateStyles(name)
-        );
-        console.log(`Created: styles.pcss`);
-    }
-
-    // Optional: scripts
-    if (withScripts) {
-        fs.writeFileSync(
-            path.join(componentDir, 'scripts.js'),
-            generateScripts(name)
-        );
-        console.log(`Created: scripts.js`);
-    }
-
-    // Optional: ACF block
-    if (withBlock) {
-        fs.writeFileSync(
-            path.join(componentDir, 'block.json'),
-            generateBlockJson(name, className)
-        );
-        console.log(`Created: block.json`);
+    for (const [file, content] of Object.entries(files)) {
+        fs.writeFileSync(path.join(componentDir, file), content);
+        console.log(`Created: ${file}`);
     }
 
     console.log(`\nComponent '${name}' scaffolded successfully.`);
 
+    if (dumpAutoload()) {
+        console.log('Regenerated the Composer autoloader.');
+    } else {
+        console.log('Could not run composer dump-autoload. Run it before using the component.');
+    }
+
     // Usage hint
     console.log(`\nUsage:`);
     console.log(`  use Gust\\Components\\${className};`);
-    console.log(`  echo ${className}::make();`);
+    console.log(`  echo ${className}::make(heading: 'Hello');`);
+    console.log(`\nPreview: /_dev/components/${name}/`);
 
-    if (withStyles) {
-        console.log(`\nStyles will be auto-imported on next dev/build.`);
+    if (withStyles || withScripts) {
+        console.log(`\nRun pnpm build (or restart pnpm dev) to bundle the new styles/scripts.`);
     }
 }
 

@@ -34,9 +34,9 @@ export default class CookieConsent {
             // Google Consent Mode v2 — update immediately for the current session
             if (typeof gtag === 'function') {
                 gtag('consent', 'update', {
-                    analytics_storage:  'granted',
-                    ad_storage:         'granted',
-                    ad_user_data:       'granted',
+                    analytics_storage: 'granted',
+                    ad_storage: 'granted',
+                    ad_user_data: 'granted',
                     ad_personalization: 'granted',
                 });
             }

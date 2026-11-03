@@ -1,0 +1,84 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  assets:
+    name: Lint and build assets
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Uses the version in package.json's "packageManager" field.
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - run: pnpm lint
+
+      - run: pnpm build
+
+  php:
+    name: PHP checks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          tools: composer:v2
+          coverage: none
+
+      - name: Get Composer cache directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/cache@v4
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: composer-${{ runner.os }}-${{ hashFiles('composer.lock') }}
+          restore-keys: composer-${{ runner.os }}-
+
+      # The WordPress plugin packages (wpackagist and ACF Pro) only exist so a
+      # local site installs them. The checks below use stubs instead, so drop
+      # them here. That also means CI needs no ACF Pro credentials. This only
+      # changes the CI copy of composer.json/lock; nothing is committed.
+      - name: Drop WordPress plugin packages
+        run: |
+          pattern='^(wpackagist-plugin|wpengine)/'
+          req=$(jq -r --arg p "$pattern" '.require // {} | keys[] | select(test($p))' composer.json | xargs)
+          dev=$(jq -r --arg p "$pattern" '.["require-dev"] // {} | keys[] | select(test($p))' composer.json | xargs)
+          jq '.repositories |= with_entries(select(.value.url | test("advancedcustomfields") | not))' composer.json > composer.ci.json
+          mv composer.ci.json composer.json
+          if [ -n "$req" ]; then composer remove --no-plugins --no-install --no-interaction $req; fi
+          if [ -n "$dev" ]; then composer remove --dev --no-plugins --no-install --no-interaction $dev; fi
+
+      # --no-plugins stops composer/installers from writing outside vendor/.
+      - run: composer install --no-plugins --no-interaction --no-progress --prefer-dist
+
+      # TODO: remove continue-on-error once existing PHP files pass Pint
+      # (Router/RouterPage.php, Dev templates, WordPress/Updates.php and
+      # Modules/DuplicatePost/module.php fail on main today).
+      - name: Pint
+        run: ./vendor/bin/pint --test
+        continue-on-error: true
+
+      - run: composer phpstan
+
+      - run: composer test

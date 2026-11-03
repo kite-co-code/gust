@@ -84,5 +84,12 @@ ralph
 .biomeignore
 .prettierignore
 
+# Tests and static analysis
+/tests
+phpstan*
+phpunit*
+.phpunit.cache
+.phpunit.result.cache
+
 # Vite dev server marker — if deployed, production loads assets from localhost
 /public/hot
