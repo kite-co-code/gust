@@ -86,6 +86,29 @@ class Router
         return static::$current;
     }
 
+    /**
+     * Named {param} values captured from the URL by the current owned route.
+     * Router::route('/events/{year}/{slug}', ...) on /events/2026/launch gives
+     * ['year' => '2026', 'slug' => 'launch']. Empty for decorated routes.
+     *
+     * The same array is passed as the first argument to callable handlers and
+     * to a class handler's handle() method.
+     *
+     * @return array<string, string>
+     */
+    public static function params(): array
+    {
+        return static::$current?->getParams() ?? [];
+    }
+
+    /**
+     * A single named {param} value from the current owned route.
+     */
+    public static function param(string $name, mixed $default = null): mixed
+    {
+        return static::$current?->getParam($name, $default) ?? $default;
+    }
+
     public static function renderSlot(string $name): string
     {
         if (! static::$current) {
@@ -141,6 +164,11 @@ class Router
 
         if ($route) {
             static::$current = $route;
+
+            // WordPress never runs its own query or headers for owned routes,
+            // so send the status here. A handler can still override it.
+            \status_header(200);
+
             static::dispatch($route);
             exit;
         }
@@ -161,25 +189,29 @@ class Router
             return $template;
         }
 
-        // Handler prepares data
+        // Handler prepares data (Route::prepare() only runs once per request)
         static::$current->prepare();
 
         // Return resolved template path
         return static::$current->getTemplate() ?? $template;
     }
 
+    /**
+     * Run an owned route: prepare(), then the handler with the route params.
+     * Class handlers use one instance for both prepare() and handle().
+     */
     protected static function dispatch(Route $route): void
     {
         $route->prepare();
 
         $handler = $route->getHandler();
+        $params = $route->getParams();
 
         if (is_callable($handler)) {
-            call_user_func($handler);
-        } elseif (is_string($handler) && class_exists($handler)) {
-            $instance = new $handler;
+            call_user_func($handler, $params);
+        } elseif ($instance = $route->getHandlerInstance()) {
             if (method_exists($instance, 'handle')) {
-                $instance->handle();
+                $instance->handle($params);
             }
         }
 

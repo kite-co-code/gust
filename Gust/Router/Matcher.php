@@ -6,12 +6,15 @@ class Matcher
 {
     /**
      * Match owned routes against the current request path.
+     * The matched route gets the captured {param} values (see Route::getParams()).
      */
     public static function matchOwned(RouteCollection $routes, string $path): ?Route
     {
         foreach ($routes->getOwned() as $pattern => $route) {
-            if (static::matchPattern($pattern, $path)) {
-                return $route;
+            $params = static::matchPattern($pattern, $path);
+
+            if ($params !== null) {
+                return $route->setParams($params);
             }
         }
 
@@ -39,22 +42,37 @@ class Matcher
 
     /**
      * Match a URL pattern against a path.
-     * Supports simple patterns with {param} placeholders.
+     * Supports simple patterns with {param} placeholders, each matching one
+     * path segment, e.g. '/events/{year}/{slug}'.
+     *
+     * @return array<string, string>|null Captured params keyed by name (URL-decoded), or null if no match.
      */
-    protected static function matchPattern(string $pattern, string $path): bool
+    public static function matchPattern(string $pattern, string $path): ?array
     {
         if ($pattern === $path) {
-            return true;
+            return [];
         }
 
         $parts = preg_split('/(\{[^}]+\})/', $pattern, -1, PREG_SPLIT_DELIM_CAPTURE);
+        $names = [];
         $regex = '#^';
         foreach ($parts as $part) {
-            $regex .= preg_match('/^\{[^}]+\}$/', $part) ? '([^/]+)' : preg_quote($part, '#');
+            if (preg_match('/^\{([^}]+)\}$/', $part, $placeholder)) {
+                $names[] = trim($placeholder[1]);
+                $regex .= '([^/]+)';
+            } else {
+                $regex .= preg_quote($part, '#');
+            }
         }
         $regex .= '$#';
 
-        return (bool) preg_match($regex, $path);
+        if (! $names || ! preg_match($regex, $path, $matches)) {
+            return null;
+        }
+
+        array_shift($matches);
+
+        return array_combine($names, array_map('rawurldecode', $matches));
     }
 
     /**
