@@ -24,6 +24,12 @@ import Focusable from './Focusable.js';
  * Give all trigger elements:
  * - [aria-controls="TARGET ELEMENT ID"]
  *
+ * Optional data attributes on the target element:
+ * - [data-disclosure-animate]                 animate the height
+ * - [data-disclosure-group="NAME"]            collapse when another disclosure in the group expands
+ * - [data-disclosure-collapse-on-focusout]    collapse when focus or a click moves outside
+ * - [data-expand-on-hash="false"]             don't expand when the URL hash matches the ID
+ *
  */
 export default class Disclosure {
     constructor(element, options = {}) {
@@ -36,7 +42,7 @@ export default class Disclosure {
             animateDuration: 200,
             animateEasing: 'ease',
             collapseOnEscape: true,
-            collapseOnFocusout: false,
+            collapseOnFocusout: this.getBooleanDataAttribute('disclosureCollapseOnFocusout', false),
             collapseAncestorsOnEscape: false,
             collapseOnAncestorCollapse: false,
             focusWithinOnExpand: false,
@@ -267,7 +273,8 @@ export default class Disclosure {
             return false;
         }
 
-        this.triggerElements = document.querySelectorAll(`[aria-controls=${this.el.id}]`);
+        // aria-controls can list several IDs, so match the ID as a whole word.
+        this.triggerElements = document.querySelectorAll(`[aria-controls~="${CSS.escape(this.el.id)}"]`);
 
         // Bail early - invalid trigger element passed.
         if (!this.triggerElements || this.triggerElements.length < 1) {
@@ -327,11 +334,11 @@ export default class Disclosure {
     }
 
     onclick(event) {
-        if (
-            [...this.triggerElements].includes(event.target) ||
-            [...this.triggerElements].some((trigger) => trigger.contains(event.target))
-        ) {
-            this.lastTrigger = event.target;
+        // The trigger itself, not a child of it (e.g. an icon), so focus can return to it.
+        const trigger = [...this.triggerElements].find((element) => element.contains(event.target));
+
+        if (trigger) {
+            this.lastTrigger = trigger;
             this.toggle();
         } else if (
             this.options.collapseOnFocusout === true &&
@@ -362,11 +369,9 @@ export default class Disclosure {
 
         this.collapse();
 
-        // Replace focus for keydown events.
-        if (this.lastTrigger) {
-            this.lastTrigger.focus();
-            this.lastTrigger = null;
-        }
+        // Return focus to the trigger, as the collapsed content is now inert.
+        (this.lastTrigger ?? this.triggerElements[0])?.focus();
+        this.lastTrigger = null;
 
         // Conditionally prevent ancestor elements from collapsing.
         if (this.options.collapseAncestorsOnEscape === false) {
@@ -374,7 +379,12 @@ export default class Disclosure {
         }
     }
 
-    oncollapsebegin() {
+    oncollapsebegin({ target }) {
+        // Ignore events bubbling up from nested disclosures.
+        if (target !== this.el) {
+            return;
+        }
+
         this.el.removeEventListener('collapsebegin', this);
 
         if (this.options.collapseOnFocusout === true) {
@@ -406,11 +416,21 @@ export default class Disclosure {
         }
     }
 
-    onexpandbegin() {
+    onexpandbegin({ target }) {
+        // Ignore events bubbling up from nested disclosures.
+        if (target !== this.el) {
+            return;
+        }
+
         this.el.removeEventListener('expandbegin', this);
     }
 
-    onexpandend() {
+    onexpandend({ target }) {
+        // Ignore events bubbling up from nested disclosures.
+        if (target !== this.el) {
+            return;
+        }
+
         // Stop handling Disclosure expand.
         this.el.removeEventListener('expandend', this);
 
