@@ -76,8 +76,10 @@ fi
 
 # The switch only runs when wp-config.php says development. .env alone isn't enough.
 env_type="$(cd "$main" && wp config get WP_ENVIRONMENT_TYPE 2>/dev/null || true)"
-if [ "$env_type" != "development" ]; then
-    echo "Warning: wp-config.php sets WP_ENVIRONMENT_TYPE to '${env_type:-nothing}', so the worktree switch is off. Run pnpm env:setup in the main checkout."
+if [ -z "$env_type" ]; then
+    echo "Warning: wp-config.php doesn't set WP_ENVIRONMENT_TYPE, so the worktree switch is off. Run pnpm env:setup in the main checkout."
+elif [ "$env_type" != "development" ]; then
+    echo "Warning: wp-config.php sets WP_ENVIRONMENT_TYPE to '$env_type', so the worktree switch is off. Run pnpm env:setup in the main checkout."
 fi
 
 app_url="$(grep '^APP_URL' "$here/.env" | cut -d= -f2)"
