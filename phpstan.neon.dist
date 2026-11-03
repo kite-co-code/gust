@@ -31,6 +31,11 @@ parameters:
         - vendor/php-stubs/acf-pro-stubs/acf-pro-stubs.php
         - vendor/php-stubs/wp-cli-stubs/wp-cli-stubs.php
 
+    # Components read their args as magic properties ($this->heading) via
+    # ComponentBase::__get(), so any property name is valid on them.
+    universalObjectCratesClasses:
+        - Gust\ComponentBase
+
     # Many docblocks in the codebase are looser than the real types, so don't
     # report "always true/false" checks based on PHPDoc alone.
     treatPhpDocTypesAsCertain: false
