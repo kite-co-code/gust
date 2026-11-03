@@ -2,7 +2,7 @@
 
 /**
  * Plugin Name: Gust Worktree Switch (development only)
- * Description: Serves a git worktree of the active theme so agents can test a branch on the shared local site. Worktrees live in <theme>/.claude/worktrees/<name>. Browser: ?worktree=<name> sets a cookie, ?worktree=main clears it. WP-CLI: run from inside the worktree, or set GUST_WORKTREE=<name>. Symlinked into mu-plugins by dev-scripts/worktree-setup.sh. See .claude/agent_docs/worktrees.md.
+ * Description: Serves a git worktree of the active theme so agents can test a branch on the shared local site. Worktrees live in <theme>/.claude/worktrees/<name>. Browser: ?worktree=<name> sets a cookie, ?worktree=main clears it. WP-CLI: run from inside the worktree, or set GUST_WORKTREE=<name>. Only runs when wp-config.php sets WP_ENVIRONMENT_TYPE to development (pnpm env:setup). Symlinked into mu-plugins by dev-scripts/worktree-setup.sh. See .claude/agent_docs/worktrees.md.
  */
 final class GustWorktreeSwitch
 {
@@ -182,27 +182,13 @@ final class GustWorktreeSwitch
     }
 
     /**
-     * Don't call wp_get_environment_type() here: it caches its first answer,
-     * and Gust only defines WP_ENVIRONMENT_TYPE later, from the theme's .env
-     * (Gust\WordPress\Admin). Calling it now would lock the site into production.
+     * WP_ENVIRONMENT_TYPE is defined in wp-config.php (pnpm env:setup), which
+     * loads before mu-plugins, so wp_get_environment_type() is safe to call and
+     * cache here.
      */
     private static function isDevelopment(): bool
     {
-        // Same precedence as wp_get_environment_type(): constant, then env var.
-        if (defined('WP_ENVIRONMENT_TYPE') && WP_ENVIRONMENT_TYPE) {
-            return WP_ENVIRONMENT_TYPE === 'development';
-        }
-
-        $env = getenv('WP_ENVIRONMENT_TYPE');
-
-        if ($env !== false && $env !== '') {
-            return $env === 'development';
-        }
-
-        $dotenv = get_theme_root(get_option('stylesheet')).'/'.get_option('stylesheet').'/.env';
-
-        return is_readable($dotenv)
-            && preg_match('/^WP_ENVIRONMENT_TYPE=["\']?development["\']?\s*$/m', file_get_contents($dotenv));
+        return wp_get_environment_type() === 'development';
     }
 
     private static function isCli(): bool

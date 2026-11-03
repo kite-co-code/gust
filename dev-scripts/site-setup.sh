@@ -23,7 +23,7 @@ echo "| Gust Site Setup      |"
 echo "+----------------------+"
 echo -e "${NC}"
 
-echo -e "${BLUE}This script will configure your WordPress site for development by enabling debugging, adding the ACF Pro licence key, removing default content, setting up language and permalinks, disabling comments, and activating plugins and the current theme.${NC}"
+echo -e "${BLUE}This script will configure your WordPress site for development by enabling debugging, setting WP_ENVIRONMENT_TYPE from .env, adding the ACF Pro licence key, removing default content, setting up language and permalinks, disabling comments, and activating plugins and the current theme.${NC}"
 echo
 
 read -r -p $'\e[34mRun setup? (Y/n) \e[0m' run
@@ -39,7 +39,11 @@ echo "Enabling debugging..."
 wp config set WP_DEBUG true --raw
 wp config set WP_DEBUG_LOG true --raw
 wp config set WP_DEBUG_DISPLAY false --raw
-wp config set WP_ENVIRONMENT_TYPE "development"
+echo -e "${GREEN}Done!${NC}"
+
+printf '\n'
+echo "Setting environment type from .env..."
+bash "$(dirname "$0")/env-setup.sh" || exit 1
 echo -e "${GREEN}Done!${NC}"
 
 printf '\n'

@@ -57,7 +57,7 @@ Rewrite rules are kept per worktree because WordPress compiles them from the pos
 ## Dev-only safety
 
 - The mu-plugin's source lives in `dev-scripts/`, which is in `.deployignore`. It's only ever symlinked into a local `mu-plugins/`.
-- It does nothing unless the environment is `development`: the `WP_ENVIRONMENT_TYPE` constant, then the env var, then the theme's `.env`. It never calls `wp_get_environment_type()`, which caches its first answer before Gust has read `.env`.
+- It does nothing unless `wp_get_environment_type()` is `development`. That comes from the `WP_ENVIRONMENT_TYPE` constant in `wp-config.php`, which `pnpm env:setup` writes from `.env`. The theme's `.env` alone doesn't count, and `worktree:setup` warns if the constant isn't set.
 - It only filters options for the current request. It never activates a theme or changes the `stylesheet` option, so nothing leaks into a `wp-sync` database push.
 
 ## Cleaning up
@@ -70,6 +70,7 @@ wp option delete rewrite_rules_worktree_<name>
 
 ## Troubleshooting
 
+- **`?worktree=` is ignored, or `/_dev/` 404s:** the site isn't in `development`. Run `pnpm env:setup` in the main checkout (ask the user first: it edits the shared `wp-config.php`).
 - **Unstyled page:** the worktree has no build. Run `pnpm build` in it.
 - **"Worktree not found":** the folder name is wrong, or the worktree has been removed. Visit `?worktree=main` to clear the cookie.
 - **Main checkout reloads when a worktree changes:** `vite.config.js` ignores `.claude/worktrees/**`. Restart `pnpm dev` in main if it was started before that change.

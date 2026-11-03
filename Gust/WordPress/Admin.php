@@ -8,9 +8,6 @@ class Admin
 {
     public static function init(): void
     {
-        // Set environment type immediately (needed before modules load)
-        self::setEnvironmentType();
-
         \add_action('init', [__CLASS__, 'disallowFileEdit']);
         \add_action('admin_head', [__CLASS__, 'addWPAdminSubmenuGlobalFilter'], 15);
         \add_action('wp_dashboard_setup', [__CLASS__, 'removeDraftWidget'], 1);
@@ -148,43 +145,9 @@ class Admin
     }
 
     /**
-     * Sets the environment type from .env file if not already defined.
-     */
-    public static function setEnvironmentType(): void
-    {
-        if (defined('WP_ENVIRONMENT_TYPE')) {
-            return;
-        }
-
-        $env_path = \get_theme_file_path('.env');
-
-        if (! file_exists($env_path)) {
-            return;
-        }
-
-        $env_type = self::getEnvValue($env_path, 'WP_ENVIRONMENT_TYPE');
-
-        if ($env_type) {
-            define('WP_ENVIRONMENT_TYPE', $env_type);
-        }
-    }
-
-    /**
-     * Parse a value from an .env file.
-     */
-    protected static function getEnvValue(string $path, string $key): ?string
-    {
-        $contents = file_get_contents($path);
-
-        if (preg_match('/^'.preg_quote($key, '/').'=(.*)$/m', $contents, $matches)) {
-            return trim($matches[1], " \t\n\r\0\x0B\"'");
-        }
-
-        return null;
-    }
-
-    /**
-     * Filter the 'admin_color' user option when .env file is present (e.g. a local or development environment).
+     * Filter the 'admin_color' user option in development, so local sites are easy to tell apart.
+     *
+     * WP_ENVIRONMENT_TYPE is set in wp-config.php by dev-scripts/env-setup.sh.
      *
      * @link https://developer.wordpress.org/reference/hooks/get_user_option_option/
      *

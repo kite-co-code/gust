@@ -169,8 +169,11 @@ cp auth.json.example auth.json    # Add your ACF Pro key and site URL
 
 pnpm run setup                    # Install deps + build
 pnpm run site-setup               # Configure WP site for dev (optional, see dev-scripts/site-setup.sh)
+pnpm run env:setup                # Or just write WP_ENVIRONMENT_TYPE from .env to wp-config.php
 pnpm run dev                      # Start Vite dev server
 ```
+
+`WP_ENVIRONMENT_TYPE` belongs in `wp-config.php`, so it's set before plugins load. `pnpm run env:setup` copies it there from `.env` (default `development`). It's safe to re-run; run it again after changing `.env`. `.env` isn't deployed, so servers default to `production` unless their own `wp-config.php` says otherwise.
 
 `auth.json` gives Composer access to the ACF Pro package. Set `username` to your ACF Pro licence key and `password` to the site URL the licence is activated for (e.g. `https://example.test`). It's gitignored.
 
@@ -182,6 +185,7 @@ Access WordPress at your normal URL (.env `APP_URL`). Don't use localhost:5173 d
 | ---------------------------- | ------------------------------- |
 | `pnpm run dev`               | Vite dev server with HMR        |
 | `pnpm run build`             | Production build                |
+| `pnpm run env:setup`         | Set env type in wp-config.php   |
 | `pnpm run deploy:production` | Build + deploy to production    |
 | `pnpm run deploy:staging`    | Build + deploy to staging       |
 | `pnpm run scaffold <name>`   | Scaffold new component          |
@@ -193,7 +197,7 @@ Access WordPress at your normal URL (.env `APP_URL`). Don't use localhost:5173 d
 
 `dev-scripts/site-setup.sh` configures a fresh WordPress install for development. Requires WP-CLI.
 
-Enables debugging, adds the ACF Pro licence key from `auth.json` to `wp-config.php` (`ACF_PRO_LICENSE`), sets UK locale, disables comments/pings, creates homepage, removes default content/plugins/themes, sets pretty permalinks, and activates all composer-installed plugins.
+Enables debugging, sets `WP_ENVIRONMENT_TYPE` from `.env` (via `env:setup`), adds the ACF Pro licence key from `auth.json` to `wp-config.php` (`ACF_PRO_LICENSE`), sets UK locale, disables comments/pings, creates homepage, removes default content/plugins/themes, sets pretty permalinks, and activates all composer-installed plugins.
 
 ### Deployment
 
@@ -206,7 +210,13 @@ pnpm run deploy:production      # build + deploy to production
 pnpm run deploy:production:dry  # dry-run
 ```
 
-The production build runs `pnpm install && composer install --no-dev && vite build` before rsync.
+`dev-scripts/deploy.sh` checks git first, because rsync sends the working copy rather than a commit:
+
+- Any uncommitted or untracked (non-ignored) file stops the deploy.
+- Production must be on `main` and match `origin/main` (it fetches first). Staging takes any clean branch and prints the branch and commit.
+- Deploys only run from the main checkout, not a git worktree.
+
+The `deploy:*` scripts then run `build:production` (`pnpm install --frozen-lockfile && composer install --no-dev && vite build`), check that the build didn't change tracked files, and rsync. Afterwards `composer install` puts the dev dependencies back, even if the deploy failed.
 
 ---
 
@@ -426,7 +436,7 @@ attributes(['style' => ['color' => 'red', 'font-size' => '1rem']])
 
 ## Dev Kit (`/_dev`)
 
-Browser-based reference environment for component testing and QA. **Only available when `WP_ENVIRONMENT_TYPE=development`** (set in `.env`).
+Browser-based reference environment for component testing and QA. **Only available when `WP_ENVIRONMENT_TYPE` is `development`** (in `wp-config.php`, set by `pnpm run env:setup`).
 
 ### Routes
 

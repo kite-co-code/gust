@@ -10,7 +10,8 @@ Key features include:
 - **ACF Pro**: Custom fields, option pages, and editor blocks. Field groups managed as local JSON in `acf-json/`. Blocks render via `ComponentName::fromBlock()`.
 - **CSS Architecture**: Tailwind + BEM hybrid. Tailwind for layout utilities in templates (`flex`, `gap-4`); per-component `styles.pcss` (BEM) for component styles. Custom type, color, and spacing systems — never use raw Tailwind typography or color classes in components.
 - **Build System**: Vite with per-component entry points. Component `styles.pcss` and `scripts.js` are auto-bundled into the main CSS/JS.
-- **Deployment**: Single-command build and deploy to staging/production; database and asset sync between environments via WP Sync CLI. Don't run these unless specifically requested.
+- **Environment**: `WP_ENVIRONMENT_TYPE` lives in `wp-config.php`, written from `.env` by `pnpm env:setup`. Gust reads it with `wp_get_environment_type()`; `development` turns on the Dev Kit, Vite dev server and worktree switch.
+- **Deployment**: Single-command build and deploy to staging/production; database and asset sync between environments via WP Sync CLI. Deploys refuse a dirty git tree, and production must be on an up-to-date `main`. Don't run these unless specifically requested.
 
 ### MCPs to use:
 
