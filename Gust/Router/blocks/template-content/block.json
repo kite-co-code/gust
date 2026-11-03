@@ -1,0 +1,21 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "theme/template-content",
+    "title": "Template Content",
+    "description": "Displays dynamic page content.",
+    "category": "theme",
+    "icon": "layout",
+    "align": "full",
+    "textdomain": "gust",
+    "acf": {
+        "blockVersion": 3,
+        "mode": "preview",
+        "renderCallback": "Gust\\Router\\Slot::renderTemplateContent"
+    },
+    "supports": {
+        "mode": false,
+        "multiple": false,
+        "jsx": false
+    }
+}
