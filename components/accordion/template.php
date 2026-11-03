@@ -10,7 +10,11 @@
             <div class="accordion__items">
                 <?php foreach ($this->accordion_items as $key => $item) { ?>
                     <div class="accordion__item">
-                        <?= \Gust\Components\Button::make(...$item['button']); ?>
+                        <h3 class="accordion__item__heading">
+                            <button <?= \Gust\Helpers::buildAttributes($item['button_attributes']); ?>>
+                                <span class="accordion__item__title"><?= wp_kses_post($item['title']); ?></span>
+                            </button>
+                        </h3>
 
                         <div <?= \Gust\Helpers::buildAttributes($item['panel_attributes']); ?>>
                             <div class="accordion__item__panel-inner">
