@@ -2,7 +2,14 @@
 
 # Rsync deploy script
 # Reads config from wp-sync.yml, falls back to .env
-# Usage: ./dev-scripts/deploy.sh <environment> [--dry-run]
+# Usage: ./dev-scripts/deploy.sh <environment> [--build] [--dry-run]
+#
+# Refuses to deploy uncommitted or untracked files. Production must be on main
+# and match origin/main.
+#
+# --build runs `pnpm run build:production` after the git checks and restores
+# dev dependencies (`composer install`) afterwards, even if the deploy fails.
+# The pnpm deploy:* scripts use it.
 
 set -e
 
@@ -10,15 +17,95 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 THEME_DIR="$(dirname "$SCRIPT_DIR")"
 CONFIG_FILE="$THEME_DIR/wp-sync.yml"
 ENV_FILE="$THEME_DIR/.env"
-ENV="${1:-staging}"
+ENV=""
 DRY_RUN=""
+BUILD=""
+PRODUCTION_BRANCH="main"
 
-if [[ "$2" == "--dry-run" ]] || [[ "$1" == "--dry-run" ]]; then
-    DRY_RUN="--dry-run"
-    if [[ "$1" == "--dry-run" ]]; then
-        ENV="staging"
+for arg in "$@"; do
+    case "$arg" in
+        --dry-run) DRY_RUN="--dry-run" ;;
+        --build) BUILD="1" ;;
+        -*)
+            echo "Error: Unknown option '$arg'"
+            exit 1
+            ;;
+        *) ENV="$arg" ;;
+    esac
+done
+ENV="${ENV:-staging}"
+
+# Fail unless git status is empty: no uncommitted changes, no untracked
+# (non-ignored) files. rsync deploys the working copy, not the commit.
+require_clean_tree() {
+    local changes
+    changes=$(git -C "$THEME_DIR" status --porcelain)
+    if [[ -n "$changes" ]]; then
+        echo "Error: $1"
+        echo ""
+        echo "$changes"
+        echo ""
+        echo "Commit, stash or remove these files, then deploy again."
+        exit 1
     fi
-fi
+}
+
+preflight() {
+    if ! git -C "$THEME_DIR" rev-parse --git-dir > /dev/null 2>&1; then
+        echo "Error: $THEME_DIR is not a git repository. Deploys must come from a git checkout."
+        exit 1
+    fi
+
+    # A worktree deploys under its folder name and shares the main checkout's
+    # composer paths, so only deploy from the main checkout.
+    if [[ "$(git -C "$THEME_DIR" rev-parse --absolute-git-dir)" != "$(git -C "$THEME_DIR" rev-parse --path-format=absolute --git-common-dir)" ]]; then
+        echo "Error: This is a git worktree. Deploy from the main checkout."
+        exit 1
+    fi
+
+    require_clean_tree "The working tree has uncommitted or untracked files:"
+
+    local branch commit
+    branch=$(git -C "$THEME_DIR" symbolic-ref --short -q HEAD || echo "(detached HEAD)")
+    commit=$(git -C "$THEME_DIR" log -1 --format='%h %s')
+
+    if [[ "$ENV" == "production" ]]; then
+        if [[ "$branch" != "$PRODUCTION_BRANCH" ]]; then
+            echo "Error: Production deploys must be on '$PRODUCTION_BRANCH' (currently on '$branch')."
+            exit 1
+        fi
+
+        echo "Fetching origin/$PRODUCTION_BRANCH..."
+        if ! git -C "$THEME_DIR" fetch --quiet origin "$PRODUCTION_BRANCH"; then
+            echo "Error: Couldn't fetch origin/$PRODUCTION_BRANCH."
+            exit 1
+        fi
+
+        local ahead behind
+        ahead=$(git -C "$THEME_DIR" rev-list --count "origin/$PRODUCTION_BRANCH..HEAD")
+        behind=$(git -C "$THEME_DIR" rev-list --count "HEAD..origin/$PRODUCTION_BRANCH")
+        if [[ "$ahead" != "0" ]] || [[ "$behind" != "0" ]]; then
+            echo "Error: '$PRODUCTION_BRANCH' doesn't match origin/$PRODUCTION_BRANCH ($ahead ahead, $behind behind). Push or pull first."
+            exit 1
+        fi
+    fi
+
+    echo "Deploying branch: $branch"
+    echo "           commit: $commit"
+    echo ""
+}
+
+# After a --build, put back the dev packages that `composer install --no-dev` removed
+# (Faker, Pint, stubs, Query Monitor). Keeps the deploy's exit status.
+restore_dev_dependencies() {
+    local status=$?
+    echo ""
+    echo "Restoring dev dependencies (composer install)..."
+    if ! (cd "$THEME_DIR" && composer install --no-interaction --quiet); then
+        echo "Warning: composer install failed. Run it yourself to restore dev dependencies."
+    fi
+    exit $status
+}
 
 # Parse wp-sync.yml for environment config
 parse_yaml_env() {
@@ -68,6 +155,15 @@ if [[ -z "$HOST" ]] || [[ -z "$REMOTE_PATH" ]]; then
     echo "  DEPLOY_${ENV_UPPER}_PATH=/path/to/wordpress"
     echo "  THEME_NAME=my-theme"
     exit 1
+fi
+
+preflight
+
+if [[ -n "$BUILD" ]]; then
+    trap restore_dev_dependencies EXIT
+    (cd "$THEME_DIR" && pnpm run build:production)
+    echo ""
+    require_clean_tree "The build changed tracked files. Commit the result and deploy again:"
 fi
 
 REMOTE_THEME_PATH="$REMOTE_PATH/wp-content/themes/$THEME_NAME"
