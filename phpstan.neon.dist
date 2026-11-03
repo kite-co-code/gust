@@ -1,0 +1,55 @@
+includes:
+    - vendor/szepeviktor/phpstan-wordpress/extension.neon
+    - phpstan-baseline.neon
+
+parameters:
+    # Level 5 checks argument types, return types, unknown methods/properties
+    # and dead code, which is where real bugs show up. Level 6+ mostly asks
+    # for iterable value types (array<string, mixed>) everywhere, which is
+    # noise for a theme built on loosely-typed WordPress/ACF arrays.
+    level: 5
+
+    paths:
+        - Gust
+        - Theme
+        - components
+        - functions.php
+
+    # The baseline is a snapshot of existing errors. Other branches fix some of
+    # them, so a fixed error should not fail the build. Regenerate the baseline
+    # with `composer phpstan:baseline` after merging.
+    reportUnmatchedIgnoredErrors: false
+
+    excludePaths:
+        analyse:
+            - vendor
+            - node_modules
+            - public
+            - .claude
+
+    scanFiles:
+        - vendor/php-stubs/acf-pro-stubs/acf-pro-stubs.php
+        - vendor/php-stubs/wp-cli-stubs/wp-cli-stubs.php
+
+    # Many docblocks in the codebase are looser than the real types, so don't
+    # report "always true/false" checks based on PHPDoc alone.
+    treatPhpDocTypesAsCertain: false
+
+    ignoreErrors:
+        # Component templates are required from inside ComponentBase::__toString(),
+        # so `$this` (the component) and `$args` are in scope at runtime.
+        -
+            message: '#^Variable \$(this|args) might not be defined\.$#'
+            identifier: variable.undefined
+            reportUnmatched: false
+            paths:
+                - components/*/template.php
+                - components/*/*/template.php
+        # Dev Kit example files are included by Gust\Dev\DevRoutes with $faker in scope.
+        -
+            message: '#^Variable \$faker might not be defined\.$#'
+            identifier: variable.undefined
+            reportUnmatched: false
+            paths:
+                - components/*/example.php
+                - components/*/*/example.php

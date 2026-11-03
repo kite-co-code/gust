@@ -1,0 +1,313 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^PHPDoc tag @return with type string is incompatible with native type array\.$#'
+			identifier: return.phpDocType
+			count: 1
+			path: Gust/Asset.php
+
+		-
+			message: '#^Action callback returns string but should not return anything\.$#'
+			identifier: return.void
+			count: 1
+			path: Gust/Component.php
+
+		-
+			message: '#^Unsafe usage of new static\(\)\.$#'
+			identifier: new.static
+			count: 1
+			path: Gust/ComponentBase.php
+
+		-
+			message: '#^Unsafe access to private property Gust\\Config\:\:\$config through static\:\:\.$#'
+			identifier: staticClassAccess.privateProperty
+			count: 5
+			path: Gust/Config.php
+
+		-
+			message: '#^Unsafe call to private method Gust\\Config\:\:load\(\) through static\:\:\.$#'
+			identifier: staticClassAccess.privateMethod
+			count: 1
+			path: Gust/Config.php
+
+		-
+			message: '#^PHPDoc tag @param references unknown parameter\: \$attrs$#'
+			identifier: parameter.notFound
+			count: 1
+			path: Gust/SVG.php
+
+		-
+			message: '#^Parameter \#1 \$svg of static method Gust\\SVG\:\:info\(\) expects Gust\\DOMDocument\|string, DOMDocument given\.$#'
+			identifier: argument.type
+			count: 1
+			path: Gust/SVG.php
+
+		-
+			message: '#^Parameter \$svg of method Gust\\SVG\:\:attrs\(\) has invalid type Gust\\DOMDocument\.$#'
+			identifier: class.notFound
+			count: 1
+			path: Gust/SVG.php
+
+		-
+			message: '#^Parameter \$svg of method Gust\\SVG\:\:info\(\) has invalid type Gust\\DOMDocument\.$#'
+			identifier: class.notFound
+			count: 1
+			path: Gust/SVG.php
+
+		-
+			message: '#^Call to method add_menu\(\) on an unknown class Gust\\WordPress\\WP_Admin_Bar\.$#'
+			identifier: class.notFound
+			count: 1
+			path: Gust/WordPress/Admin.php
+
+		-
+			message: '#^Parameter \$adminBar of method Gust\\WordPress\\Admin\:\:addViewAllPostsToArchivePages\(\) has invalid type Gust\\WordPress\\WP_Admin_Bar\.$#'
+			identifier: class.notFound
+			count: 1
+			path: Gust/WordPress/Admin.php
+
+		-
+			message: '#^Property WP_Post_Type\:\:\$menu_position \(int\) on left side of \?\? is not nullable\.$#'
+			identifier: nullCoalesce.property
+			count: 2
+			path: Gust/WordPress/Admin.php
+
+		-
+			message: '#^Function remove_action invoked with 4 parameters, 2\-3 required\.$#'
+			identifier: arguments.count
+			count: 3
+			path: Gust/WordPress/Cleanup.php
+
+		-
+			message: '#^Access to property \$base on an unknown class Gust\\WordPress\\WP_Screen\.$#'
+			identifier: class.notFound
+			count: 2
+			path: Gust/WordPress/Comments.php
+
+		-
+			message: '#^Call to method remove_menu\(\) on an unknown class Gust\\WordPress\\WP_Admin_Bar\.$#'
+			identifier: class.notFound
+			count: 1
+			path: Gust/WordPress/Comments.php
+
+		-
+			message: '#^Callback expects 0 parameters, \$accepted_args is set to 2\.$#'
+			identifier: arguments.count
+			count: 3
+			path: Gust/WordPress/Comments.php
+
+		-
+			message: '#^Parameter \$screen of method Gust\\WordPress\\Comments\:\:redirectCommentAdminPage\(\) has invalid type Gust\\WordPress\\WP_Screen\.$#'
+			identifier: class.notFound
+			count: 1
+			path: Gust/WordPress/Comments.php
+
+		-
+			message: '#^Parameter \$wp_admin_bar of method Gust\\WordPress\\Comments\:\:removeAdminBarCommentsLinks\(\) has invalid type Gust\\WordPress\\WP_Admin_Bar\.$#'
+			identifier: class.notFound
+			count: 1
+			path: Gust/WordPress/Comments.php
+
+		-
+			message: '#^Action callback returns string but should not return anything\.$#'
+			identifier: return.void
+			count: 2
+			path: Gust/WordPress/Emails.php
+
+		-
+			message: '#^Callback expects 1 parameter, \$accepted_args is set to 2\.$#'
+			identifier: arguments.count
+			count: 2
+			path: Gust/WordPress/Enqueue.php
+
+		-
+			message: '#^Filter callback return statement is missing\.$#'
+			identifier: return.missing
+			count: 1
+			path: Gust/WordPress/Enqueue.php
+
+		-
+			message: '#^Action callback returns array but should not return anything\.$#'
+			identifier: return.void
+			count: 1
+			path: Gust/WordPress/Escaping.php
+
+		-
+			message: '#^Access to property \$base on an unknown class Gust\\WordPress\\WP_Screen\.$#'
+			identifier: class.notFound
+			count: 2
+			path: Gust/WordPress/PostsPT.php
+
+		-
+			message: '#^Access to property \$post_type on an unknown class Gust\\WordPress\\WP_Screen\.$#'
+			identifier: class.notFound
+			count: 2
+			path: Gust/WordPress/PostsPT.php
+
+		-
+			message: '#^Call to method remove_node\(\) on an unknown class Gust\\WordPress\\WP_Admin_Bar\.$#'
+			identifier: class.notFound
+			count: 1
+			path: Gust/WordPress/PostsPT.php
+
+		-
+			message: '#^Parameter \$screen of method Gust\\WordPress\\PostsPT\:\:redirectPostsAdminPage\(\) has invalid type Gust\\WordPress\\WP_Screen\.$#'
+			identifier: class.notFound
+			count: 1
+			path: Gust/WordPress/PostsPT.php
+
+		-
+			message: '#^Parameter \$wp_admin_bar of method Gust\\WordPress\\PostsPT\:\:removeDefaultPostTypeAddNew\(\) has invalid type Gust\\WordPress\\WP_Admin_Bar\.$#'
+			identifier: class.notFound
+			count: 1
+			path: Gust/WordPress/PostsPT.php
+
+		-
+			message: '#^Action callback returns '''' but should not return anything\.$#'
+			identifier: return.void
+			count: 1
+			path: Gust/WordPress/Security.php
+
+		-
+			message: '#^Call to method get_route\(\) on an unknown class Gust\\WordPress\\WP_REST_Request\.$#'
+			identifier: class.notFound
+			count: 1
+			path: Gust/WordPress/Security.php
+
+		-
+			message: '#^PHPDoc tag @param has invalid value \(string The error message\.\)\: Unexpected token "The", expected variable at offset 163 on line 6$#'
+			identifier: phpDoc.parseError
+			count: 1
+			path: Gust/WordPress/Security.php
+
+		-
+			message: '#^Parameter \$request of method Gust\\WordPress\\Security\:\:filterRestAPIUsersEndpoint\(\) has invalid type Gust\\WordPress\\WP_REST_Request\.$#'
+			identifier: class.notFound
+			count: 1
+			path: Gust/WordPress/Security.php
+
+		-
+			message: '#^Variable \$options_pages in empty\(\) always exists and is not falsy\.$#'
+			identifier: empty.variable
+			count: 1
+			path: Theme/Modules/ACF/module.php
+
+		-
+			message: '#^Filter callback return statement is missing\.$#'
+			identifier: return.missing
+			count: 1
+			path: Theme/Modules/Core/Menus.php
+
+		-
+			message: '#^Variable \$sidebars in empty\(\) always exists and is always falsy\.$#'
+			identifier: empty.variable
+			count: 1
+			path: Theme/Modules/Core/Sidebars.php
+
+		-
+			message: '#^Filter callback return statement is missing\.$#'
+			identifier: return.missing
+			count: 1
+			path: Theme/Modules/GravityForms/module.php
+
+		-
+			message: '#^Static method Theme\\Utils\\ObjectMeta\:\:getObjectDate\(\) invoked with 2 parameters, 1 required\.$#'
+			identifier: arguments.count
+			count: 1
+			path: Theme/Utils/ObjectMeta.php
+
+		-
+			message: '#^Variable \$taxonomies might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: Theme/Utils/ObjectMeta.php
+
+		-
+			message: '#^Parameter \#1 \$extra_attributes of function get_block_wrapper_attributes expects array\<string, string\>, array\<string, mixed\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: components/grid/render.php
+
+		-
+			message: '#^Access to an undefined property WP_Post\:\:\$object\.$#'
+			identifier: property.notFound
+			count: 3
+			path: components/menu/Menu.php
+
+		-
+			message: '#^Access to an undefined property WP_Post\:\:\$object_id\.$#'
+			identifier: property.notFound
+			count: 2
+			path: components/menu/Menu.php
+
+		-
+			message: '#^Access to an undefined property WP_Post\:\:\$type\.$#'
+			identifier: property.notFound
+			count: 1
+			path: components/menu/Menu.php
+
+		-
+			message: '#^Access to an undefined property WP_Post\:\:\$url\.$#'
+			identifier: property.notFound
+			count: 1
+			path: components/menu/Menu.php
+
+		-
+			message: '#^Parameter \#2 \$args of function wp_get_nav_menu_items expects array\{order\?\: string, orderby\?\: string, post_type\?\: string, post_status\?\: string, output\?\: string, output_key\?\: string, nopaging\?\: bool, update_menu_item_cache\?\: bool\}, array\{output\: false\} given\.$#'
+			identifier: argument.type
+			count: 1
+			path: components/menu/Menu.php
+
+		-
+			message: '#^Access to an undefined property WP_Post\:\:\$object_id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: components/menu/menu-item/MenuItem.php
+
+		-
+			message: '#^Access to an undefined property WP_Post\:\:\$type\.$#'
+			identifier: property.notFound
+			count: 1
+			path: components/menu/menu-item/MenuItem.php
+
+		-
+			message: '#^Unsafe usage of new static\(\)\.$#'
+			identifier: new.static
+			count: 1
+			path: components/menu/menu-item/MenuItem.php
+
+		-
+			message: '#^Unsafe usage of new static\(\)\.$#'
+			identifier: new.static
+			count: 1
+			path: components/menu/menu-list/MenuList.php
+
+		-
+			message: '#^Expression on left side of \?\? is not nullable\.$#'
+			identifier: nullCoalesce.expr
+			count: 1
+			path: components/page-header/PageHeader.php
+
+		-
+			message: '#^Parameter \#2 \$user_id of function get_the_author_meta expects int\|false, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: components/page-header/PageHeader.php
+
+		-
+			message: '#^Variable \$image on left side of \?\? always exists and is not nullable\.$#'
+			identifier: nullCoalesce.variable
+			count: 1
+			path: components/site-footer/SiteFooter.php
+
+		-
+			message: '#^Parameter \$content_filter of static method Gust\\Components\\Link\:\:make\(\) expects string\|null, false given\.$#'
+			identifier: argument.type
+			count: 1
+			path: components/site-footer/template.php
+
+		-
+			message: '#^Unsafe access to private property Gust\\Components\\SiteMain\:\:\$openArgs through static\:\:\.$#'
+			identifier: staticClassAccess.privateProperty
+			count: 3
+			path: components/site-main/SiteMain.php
