@@ -70,8 +70,12 @@ class PageHeader extends ComponentBase
             } elseif ($object instanceof \WP_Query && $object->is_search()) {
                 $heading = __('Search', 'gust');
 
-                if (! empty($object->query['s'])) {
-                    $args['subheading'] = sprintf(__("Showing results for '%s'", 'gust'), $object->query['s']);
+                $search_query = \get_search_query(false);
+
+                if ($search_query !== '') {
+                    // Escape the raw search term: the subheading is only filtered with wp_kses_post().
+                    // translators: %s: Search term.
+                    $args['subheading'] = sprintf(__("Showing results for '%s'", 'gust'), \esc_html($search_query));
                 }
             } elseif ($object instanceof \WP_User) {
                 $heading = sprintf(__('Posts by %s', 'gust'), $object->data->display_name);
