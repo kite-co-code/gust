@@ -10,7 +10,7 @@
         "dev": "vite",
         "build": "vite build",
         "preview": "vite preview",
-        "setup": "pnpm install && composer install && pnpm run build",
+        "setup": "pnpm install && composer plugins:update && pnpm run build",
         "site-setup": "bash dev-scripts/site-setup.sh",
         "worktree:setup": "bash dev-scripts/worktree-setup.sh",
         "build:production": "pnpm install && composer install --no-dev && pnpm run build",
